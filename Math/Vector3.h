@@ -36,7 +36,7 @@ public:
 
 	inline float Lenght() const
 	{
-		return sqrt((e[0] * e[0]) + (e[1] * e[1]) + (e[2] * e[2]));
+		return sqrtf((e[0] * e[0]) + (e[1] * e[1]) + (e[2] * e[2]));
 	}
 
 	inline float LengthSquared() const
