@@ -45,6 +45,7 @@ public:
 	}
 
 	inline void UnitVector();
+	// TODO(Darren): May create inline instead like UnitVector()
 	friend Vector3 Reflect(const Vector3 &v, const Vector3 &n);
 	friend Vector3 UnitVector(const Vector3 &vec);
 	friend float Dot(const Vector3 &v1, const Vector3 &v2);

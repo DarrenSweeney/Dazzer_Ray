@@ -23,6 +23,7 @@ void PPM_Image::SavePPM(std::string fileName)
 {
 	ppmFile.open(fileName + ".ppm", std::ofstream::out);
 
+	// 255 is taken as the max component color value.
 	ppmFile << "P3" << "\n" << width << " " << height << "\n" << 255 << "\n";
 
 	for (unsigned int y = height - 1; y > 0; y--)
