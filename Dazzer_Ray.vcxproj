@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera\Camera.cpp" />
+    <ClCompile Include="Materials\Lambertian.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\AABB.cpp" />
@@ -158,6 +159,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\Camera.h" />
+    <ClInclude Include="Materials\Lambertian.h" />
+    <ClInclude Include="Materials\Material.h" />
     <ClInclude Include="Math\MathUtil.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="Hitable.h" />

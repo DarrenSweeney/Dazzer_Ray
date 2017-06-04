@@ -2,7 +2,7 @@
 
 PPM_Image::PPM_Image(unsigned int imageWidth, unsigned int imageHeight)
 //											  Multiply by 3, rgb values for each pixel.
-	: width(imageWidth), height(imageHeight), data(new char[imageWidth * imageHeight * 3])
+	: width(imageWidth), height(imageHeight), data(new uint8_t[imageWidth * imageHeight * 3])
 {
 
 }
@@ -14,9 +14,9 @@ PPM_Image::~PPM_Image()
 
 void PPM_Image::WritePixel(unsigned int pixelPosX, unsigned pixelPosY, Vector3 &rgb)
 {
-	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 0] = char(255 * rgb.r);
-	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 1] = char(255 * rgb.b);
-	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 2] = char(255 * rgb.b);
+	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 0] = uint8_t(255 * rgb.r);
+	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 1] = uint8_t(255 * rgb.b);
+	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 2] = uint8_t(255 * rgb.b);
 }
 
 void PPM_Image::SavePPM(std::string fileName)

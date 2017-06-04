@@ -6,6 +6,7 @@
 
 float randF(float start, float end);
 
+Vector3 RandomInUnitSphere();
 Vector3 RandomInUnitDisk();
 
 #endif

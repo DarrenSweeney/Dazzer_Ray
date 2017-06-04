@@ -16,7 +16,7 @@ public:
 
 private:
 	unsigned int width, height;
-	char *data;
+	uint8_t *data;
 
 	std::ofstream ppmFile;
 };
