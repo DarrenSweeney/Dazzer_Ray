@@ -14,8 +14,8 @@ Sphere::Sphere(const Vector3 &_center, const float &_radius)
 
 bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) const
 {
-	Vector3 m = ray.Origin - center;
-	float b = Dot(m, ray.Direction);
+	Vector3 m = ray.Origin() - center;
+	float b = Dot(m, ray.Direction());
 	float c = Dot(m, m) - (radius * radius);
 
 	/*
