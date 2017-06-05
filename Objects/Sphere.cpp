@@ -12,6 +12,7 @@ Sphere::Sphere(const Vector3 &_center, const float &_radius)
 
 }
 
+// NOTE(Darren): I have not used tMin and tMax here
 bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) const
 {
 	Vector3 m = ray.Origin() - center;

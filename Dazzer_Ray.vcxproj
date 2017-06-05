@@ -156,6 +156,7 @@
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Objects\Sphere.cpp" />
     <ClCompile Include="IO\PPM_Image.cpp" />
+    <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\Camera.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Objects\Sphere.h" />
     <ClInclude Include="IO\PPM_Image.h" />
+    <ClInclude Include="Scene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
