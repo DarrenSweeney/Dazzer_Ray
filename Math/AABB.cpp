@@ -10,9 +10,21 @@ AABB::AABB(const Vector3 &a, const Vector3 &b)
 
 bool AABB::Hit(const Ray &ray, float tMin, float tMax) const
 {
-	// TODO(Darren): Implementation
+	for (int a = 0; a < 3; a++) 
+	{
+		float t0 = fmin((min[a] - ray.Origin()[a]) / ray.Direction()[a],
+			(max[a] - ray.Origin()[a]) / ray.Direction()[a]);
+		float t1 = fmax((min[a] - ray.Origin()[a]) / ray.Direction()[a],
+			(max[a] - ray.Origin()[a]) / ray.Direction()[a]);
 
-	return false;
+		tMin = fmax(t0, tMin);
+		tMax = fmin(t1, tMax);
+
+		if (tMax <= tMin)
+			return false;
+	}
+
+	return true;
 }
 
 AABB AABB::GetSurroundingBox(AABB &box0, AABB& box1)
