@@ -8,6 +8,7 @@
 class PPM_Image
 {
 public:
+	PPM_Image();
 	PPM_Image(unsigned int imageWidth, unsigned int imageHeight);
 	~PPM_Image();
 

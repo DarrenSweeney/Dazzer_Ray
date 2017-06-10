@@ -8,6 +8,7 @@
 class Camera
 {
 public:
+	Camera();
 	Camera(Vector3 &position, Vector3 &lookAt, Vector3 &upVec, float vfov, float aspectRatio,
 		float aperature, float focusDistance, float shutterOpenTime, float shutterCloseTune);
 
