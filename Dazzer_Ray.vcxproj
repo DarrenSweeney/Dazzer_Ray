@@ -149,30 +149,32 @@
   <ItemGroup>
     <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Materials\Lambertian.cpp" />
-    <ClCompile Include="Sampler.cpp" />
+    <ClCompile Include="Math\Sampler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\AABB.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
+    <ClCompile Include="Objects\HitableList.cpp" />
     <ClCompile Include="Objects\Sphere.cpp" />
     <ClCompile Include="IO\PPM_Image.cpp" />
-    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Materials\Lambertian.h" />
     <ClInclude Include="Materials\Material.h" />
     <ClInclude Include="Math\MathUtil.h" />
-    <ClInclude Include="Sampler.h" />
-    <ClInclude Include="Hitable.h" />
-    <ClInclude Include="HitRecord.h" />
+    <ClInclude Include="Math\Sampler.h" />
+    <ClInclude Include="Objects\Hitable.h" />
+    <ClInclude Include="Objects\HitableList.h" />
+    <ClInclude Include="Objects\HitRecord.h" />
     <ClInclude Include="Math\AABB.h" />
     <ClInclude Include="Math\Ray.h" />
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Objects\Sphere.h" />
     <ClInclude Include="IO\PPM_Image.h" />
-    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Scene\Scene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

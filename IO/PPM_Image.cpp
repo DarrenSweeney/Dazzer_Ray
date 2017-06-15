@@ -17,7 +17,7 @@ PPM_Image::~PPM_Image()
 void PPM_Image::WritePixel(unsigned int pixelPosX, unsigned pixelPosY, Vector3 &rgb)
 {
 	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 0] = uint8_t(255 * rgb.r);
-	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 1] = uint8_t(255 * rgb.b);
+	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 1] = uint8_t(255 * rgb.g);
 	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 2] = uint8_t(255 * rgb.b);
 }
 

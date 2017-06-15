@@ -1,8 +1,8 @@
 #ifndef HIT_RECORD_H
 #define HIT_RECORD_H
 
-#include "Math\Vector3.h"
-#include "Math\Vector2.h"
+#include "..\Math\Vector3.h"
+#include "..\Math\Vector2.h"
 
 class Material;
 

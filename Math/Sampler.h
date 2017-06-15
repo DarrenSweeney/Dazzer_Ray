@@ -2,7 +2,7 @@
 #define SAMPLER_H
 
 #include <random>
-#include "Math\Vector3.h" 
+#include "Vector3.h" 
 
 float randF(float start, float end);
 

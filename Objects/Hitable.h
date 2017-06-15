@@ -2,8 +2,8 @@
 #define HITABLE_H
 
 #include "HitRecord.h"
-#include "Math\Ray.h"
-#include "Math\AABB.h"
+#include "..\Math\Ray.h"
+#include "..\Math\AABB.h"
 
 class Hitable
 {

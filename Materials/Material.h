@@ -2,7 +2,7 @@
 #define MATERIAL_H
 
 #include "..\Math\Ray.h"
-#include "..\Hitable.h"
+#include "..\Objects\Hitable.h"
 
 class Material
 {

@@ -2,8 +2,8 @@
 #define LAMBERTIAN_H
 
 #include "Material.h"
-#include "..\Sampler.h"
-#include "..\HitRecord.h"
+#include "..\Math\Sampler.h"
+#include "..\Objects\HitRecord.h"
 
 class Lambertian : public Material
 {

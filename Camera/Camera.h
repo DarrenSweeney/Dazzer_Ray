@@ -2,7 +2,7 @@
 #define CAMERA_H
 
 #include "..\Math\Ray.h"
-#include "..\Sampler.h"
+#include "..\Math\Sampler.h"
 #include "..\Math\MathUtil.h"
 
 class Camera
