@@ -13,13 +13,11 @@ public:
 	~PPM_Image();
 
 	void WritePixel(unsigned int pixelPosX, unsigned pixelPosY, Vector3 &rgb);
-	void SavePPM(std::string fileName);
+	void SavePPM(std::string fileName, std::ofstream &ppmFile);
 
 private:
 	unsigned int width, height;
 	uint8_t *data;
-
-	std::ofstream ppmFile;
 };
 
 #endif

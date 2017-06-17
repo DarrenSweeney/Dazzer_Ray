@@ -1,49 +1,49 @@
 #include "Scene.h"
 
-Scene::Scene() 
-	: width(255), height(255), samples(100), ppmImage(255, 255)
-{ 
+Scene::Scene()
+	: width(255), height(255), samples(1)
+{
 	// TODO(Darren): May want to have each scene to contain camera data
-	Vector3 cameraPosition(0.0f, 3.0f, -5.0f);
+	Vector3 cameraPosition(0.0f, 7.0f, -12.0f);
 	Vector3 lookAtPos(0.0f, 1.0f, 0.0f);
 	float distanceToFocus = 10.0f;
 	float aperture = 0.0f;
 	float vfov = 40.0f;
 	camera = Camera(cameraPosition, lookAtPos, Vector3(0.0f, 1.0f, 0.0f), vfov,
 		float(width) / float(height), aperture, distanceToFocus, 0.0f, 1.0f);
+
+	ppmImage = new PPM_Image(width, height);
 }
 
 Scene::~Scene()
 {
-	delete sceneObects;
+	delete ppmImage;
 }
 
 Vector3 Scene::Color(Ray &ray, HitableList *world, int depth)
 {
 	HitRecord hitRecord;
 
-	//for (Hitable* object : world)
+	if (world->Hit(ray, hitRecord))
 	{
-		if (world->Hit(ray, hitRecord))
-		{
-			Ray scattered;
-			Vector3 attenuation;
+		Ray scattered;
+		Vector3 attenuation;
 
-			if (depth < 50 && hitRecord.material->Scatter(ray, hitRecord, attenuation, scattered))
-			{
-				return attenuation * Color(scattered, world, depth + 1);
-			}
-			else
-				return Vector3();
+		// NOTE(Darren): Would it be possible to add string id to objects 
+		//				 to make it easier to debug them. (only in debug mode)
+		if (depth < 50 && hitRecord.material->Scatter(ray, hitRecord, attenuation, scattered))
+		{
+			return attenuation * Color(scattered, world, depth + 1);
 		}
 		else
-		{
+			return Vector3();
+	}
+	else
+	{
+		Vector3 unitDirection = UnitVector(ray.Direction());
+		float t = 0.5f * (unitDirection.y + 1.0f);
 
-			Vector3 unitDirection = UnitVector(ray.Direction());
-			float t = 0.5f * (unitDirection.y + 1.0f);
-
-			return (1.0f - t) * Vector3(1.0f, 1.0f, 1.0f) + t * Vector3(0.9f, 0.7f, 1.0f);
-		}
+		return (1.0f - t) * Vector3(1.0f, 1.0f, 1.0f) + t * Vector3(0.9f, 0.7f, 1.0f);
 	}
 }
 
@@ -51,6 +51,9 @@ HitableList *Scene::TestScene()
 {
 	Hitable **list = new Hitable*[3];
 	int i = 0;
+	// Ground
+	list[i++] = new Sphere(Vector3(0.0f, -100.0f, 0.0f), 100.0f, new Lambertian(Vector3(0.5f, 0.1f, 0.9f)));
+
 	list[i++] = new Sphere(Vector3(0.0f, 1.0f, 0.0f), 1.0f, new Lambertian(Vector3(1.0f, 0.0f, 0.0f)));
 	list[i++] = new Sphere(Vector3(-2.0f, 1.0f, 0.0f), 1.0f, new Lambertian(Vector3(0.0f, 1.0f, 0.0f)));
 	list[i++] = new Sphere(Vector3(2.0f, 1.0f, 0.0f), 1.0f, new Lambertian(Vector3(0.0f, 0.0f, 1.0f)));
@@ -80,13 +83,13 @@ void Scene::RenderScene()
 
 			col /= float(samples);
 			col = Vector3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
-			ppmImage.WritePixel(x, y, col);
+			ppmImage->WritePixel(x, y, col);
 
 			printf("Image Pos: (%d, %d)\n", y, x);
 		}
 	}
 
 	printf("Saving...\n");
-	ppmImage.SavePPM("TestScene");
+	ppmImage->SavePPM("TestScene", std::ofstream());
 	printf("PPM Image Saved\n");
 }

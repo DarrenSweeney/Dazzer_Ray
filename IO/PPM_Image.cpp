@@ -21,14 +21,14 @@ void PPM_Image::WritePixel(unsigned int pixelPosX, unsigned pixelPosY, Vector3 &
 	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 2] = uint8_t(255 * rgb.b);
 }
 
-void PPM_Image::SavePPM(std::string fileName)
+void PPM_Image::SavePPM(std::string fileName, std::ofstream &ppmFile)
 {
 	ppmFile.open(fileName + ".ppm", std::ofstream::out);
 
 	// 255 is taken as the max component color value.
 	ppmFile << "P3" << "\n" << width << " " << height << "\n" << 255 << "\n";
 
-	for (unsigned int y = height - 1; y > 0; y--)
+	for (unsigned int y = height; y > 0; y--)
 	{
 		for (unsigned int x = 0; x < width; x++)
 		{

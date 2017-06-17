@@ -26,7 +26,7 @@ private:
 	HitableList* TestScene();
 	HitableList *sceneObects;
 	Camera camera;
-	PPM_Image ppmImage;
+	PPM_Image *ppmImage;
 	unsigned int width, height, samples;
 };
 
