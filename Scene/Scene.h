@@ -3,11 +3,11 @@
 
 #include <cfloat>
 #include <vector>
-#include "..\Math\Ray.h"
 // NOTE(Darren): Need to include because of incomplete class type with struct HitRecord
 #include "..\Materials\Lambertian.h"
+#include "..\Materials\Metal.h"
+#include "..\Materials\Dielectric.h"
 #include "..\Objects\Sphere.h"
-#include "..\Math\Sampler.h"
 #include "..\Camera\Camera.h"
 #include "..\IO\PPM_Image.h"
 #include "..\Objects\HitableList.h"
