@@ -17,9 +17,11 @@ PPM_Image::~PPM_Image()
 
 void PPM_Image::WritePixel(unsigned int pixelPosX, unsigned pixelPosY, Vector3 &rgb)
 {
-	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 0] = uint8_t(255 * rgb.r);
-	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 1] = uint8_t(255 * rgb.g);
-	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 2] = uint8_t(255 * rgb.b);
+	// @(Darren): May just write data to current position at pointer, could make
+	//				things easier. Check
+	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 0] = uint8_t(255.99 * rgb.r);
+	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 1] = uint8_t(255.99 * rgb.g);
+	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 2] = uint8_t(255.99 * rgb.b);
 }
 
 void PPM_Image::SavePPM(std::string fileName, std::ofstream &ppmFile)
@@ -29,7 +31,7 @@ void PPM_Image::SavePPM(std::string fileName, std::ofstream &ppmFile)
 	// 255 is taken as the max component color value.
 	ppmFile << "P3" << "\n" << width << " " << height << "\n" << 255 << "\n";
 
-	for (unsigned int y = height; y > 0; y--)
+	for (unsigned int y = 0; y < height; y++)
 	{
 		for (unsigned int x = 0; x < width; x++)
 		{
@@ -37,7 +39,7 @@ void PPM_Image::SavePPM(std::string fileName, std::ofstream &ppmFile)
 			uint8_t g = data[(y * width * 3) + (x * 3) + 1];
 			uint8_t b = data[(y * width * 3) + (x * 3) + 2];
 
-			ppmFile << unsigned(r) << " " << unsigned(b) << " " << unsigned(g) << "\n";
+			ppmFile << unsigned(r) << " " << unsigned(g) << " " << unsigned(b) << "\n";
 		}
 	}
 
