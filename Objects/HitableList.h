@@ -9,8 +9,9 @@ public:
 	HitableList();
 	HitableList(Hitable **list, int size);
 	~HitableList();
-	bool Hit(const Ray &ray,  HitRecord &rec) const;
-	bool BoundingBox(float t0, float t1, AABB &box) const;
+
+	bool Hit(const Ray &ray, float tMin, float tMax, HitRecord &rec) const override;
+	bool BoundingBox(float t0, float t1, AABB &box) const override;
 
 private:
 	Hitable **hitableList;

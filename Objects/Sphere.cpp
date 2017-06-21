@@ -18,7 +18,7 @@ Sphere::~Sphere()
 		delete material;
 }
 
-bool Sphere::Hit(const Ray &ray, HitRecord &hitRecord) const
+bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) const
 {
 	Vector3 m = ray.Origin() - center;
 	float a = Dot(ray.Direction(), ray.Direction());
@@ -30,7 +30,10 @@ bool Sphere::Hit(const Ray &ray, HitRecord &hitRecord) const
 	{
 		float temp = (-b - sqrt(discriminant)) / a;
 
-		if (temp < FLT_MAX && temp > 0.001f)
+		float one = tMin;
+		float two = 0.001f;
+
+		if (temp < FLT_MAX && temp > one)
 		{
 			hitRecord.t = temp;
 			hitRecord.point = ray.PointAtParamater(hitRecord.t);
@@ -41,7 +44,7 @@ bool Sphere::Hit(const Ray &ray, HitRecord &hitRecord) const
 
 		temp = (-b + sqrt(discriminant)) / a;
 
-		if (temp < FLT_MAX && temp > 0.001f)
+		if (temp < FLT_MAX && temp > one)
 		{
 			hitRecord.t = temp;
 			hitRecord.point = ray.PointAtParamater(hitRecord.t);

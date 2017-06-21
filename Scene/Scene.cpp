@@ -1,13 +1,13 @@
 #include "Scene.h"
 
 Scene::Scene()
-	: width(800), height(600), samples(1)
+	: width(200), height(100), samples(100)
 {
 	// TODO(Darren): May want to have each scene to contain camera data
-	Vector3 cameraPosition(0.0f, 5.0f, 15.0f);
-	Vector3 lookAtPos(0.0f, 1.0f, 0.0f);
-	float distanceToFocus = 10.0f;
-	float aperture = 0.1f;
+	Vector3 cameraPosition(0.0f, 0.0f, 1.0f);
+	Vector3 lookAtPos(0.0f, 0.0f, 0.0f);
+	float distanceToFocus = 2.0f;
+	float aperture = 0.0f;
 	float vfov = 40.0f;
 	camera = Camera(cameraPosition, lookAtPos, Vector3(0.0f, 1.0f, 0.0f), vfov,
 		float(width) / float(height), aperture, distanceToFocus, 0.0f, 1.0f);
@@ -24,7 +24,7 @@ Vector3 Scene::Color(Ray &ray, HitableList *world, int depth)
 {
 	HitRecord hitRecord;
 
-	if (world->Hit(ray, hitRecord))
+	if (world->Hit(ray, 0.001f, FLT_MAX, hitRecord))
 	{
 		Ray scattered;
 		Vector3 attenuation;

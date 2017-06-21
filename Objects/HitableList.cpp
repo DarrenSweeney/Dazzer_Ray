@@ -13,14 +13,14 @@ HitableList::HitableList(Hitable **list, int size)
 	
 }
 
-bool HitableList::Hit(const Ray &ray, HitRecord &rec) const
+bool HitableList::Hit(const Ray &ray, float tMin, float tMax, HitRecord &rec) const
 {
 	HitRecord tempRecord;
 	bool hitAnything = false;
-	float closestSoFar;
+	float closestSoFar = tMax;
 	for (int i = 0; i < listSize; i++)
 	{
-		if (hitableList[i]->Hit(ray, tempRecord))
+		if (hitableList[i]->Hit(ray, tMin, closestSoFar, tempRecord))
 		{
 			hitAnything = true;
 			closestSoFar = tempRecord.t;
