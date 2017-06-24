@@ -3,7 +3,7 @@
 #include "Scene.h"
 
 Scene::Scene()
-	: width(800), height(400), samples(100)
+	: width(800), height(400), samples(10)
 {
 	// TODO(Darren): May want to have each scene to contain camera data
 	Vector3 cameraPosition(0.0f, 0.0f, 1.0f);
