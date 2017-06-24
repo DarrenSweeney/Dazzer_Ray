@@ -4,6 +4,7 @@
 #include "..\Math\Vector3.h"
 #include <string>
 #include <fstream>
+#include <iostream>
 
 class PPM_Image
 {

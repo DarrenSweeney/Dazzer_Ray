@@ -30,10 +30,7 @@ bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) c
 	{
 		float temp = (-b - sqrt(discriminant)) / a;
 
-		float one = tMin;
-		float two = 0.001f;
-
-		if (temp < FLT_MAX && temp > one)
+		if (temp < tMax && temp > tMin)
 		{
 			hitRecord.t = temp;
 			hitRecord.point = ray.PointAtParamater(hitRecord.t);
@@ -44,7 +41,7 @@ bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) c
 
 		temp = (-b + sqrt(discriminant)) / a;
 
-		if (temp < FLT_MAX && temp > one)
+		if (temp < tMax && temp > tMin)
 		{
 			hitRecord.t = temp;
 			hitRecord.point = ray.PointAtParamater(hitRecord.t);

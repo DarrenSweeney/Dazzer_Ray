@@ -1,7 +1,7 @@
 #include "Scene.h"
 
 Scene::Scene()
-	: width(200), height(100), samples(100)
+	: width(800), height(400), samples(100)
 {
 	// TODO(Darren): May want to have each scene to contain camera data
 	Vector3 cameraPosition(0.0f, 0.0f, 1.0f);
@@ -24,6 +24,7 @@ Vector3 Scene::Color(Ray &ray, HitableList *world, int depth)
 {
 	HitRecord hitRecord;
 
+	// FLT_MAX is for x64, will not work on x86 as FLT_MAX is max possible value of float.
 	if (world->Hit(ray, 0.001f, FLT_MAX, hitRecord))
 	{
 		Ray scattered;
