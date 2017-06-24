@@ -35,6 +35,7 @@ bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) c
 			hitRecord.t = temp;
 			hitRecord.point = ray.PointAtParamater(hitRecord.t);
 			hitRecord.normal = (hitRecord.point - center) / radius;
+			hitRecord.uv = SphereUV(hitRecord.normal);
 			hitRecord.material = material;
 			return true;
 		}
@@ -46,12 +47,23 @@ bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) c
 			hitRecord.t = temp;
 			hitRecord.point = ray.PointAtParamater(hitRecord.t);
 			hitRecord.normal = (hitRecord.point - center) / radius;
+			hitRecord.uv = SphereUV(hitRecord.normal);
 			hitRecord.material = material;
 			return true;
 		}
 	}
 
 	return false;
+}
+
+Vector2 Sphere::SphereUV(const Vector3 &p) const
+{
+	float theta = asin(p.y);
+	float phi = atan2(p.z, p.x);
+	float u = 1 - (phi + PI) / (2 * PI);
+	float v = (theta + PI / 2) / PI;
+
+	return Vector2(u, v);
 }
 
 bool Sphere::BoundingBox(float t0, float t1, AABB &box) const

@@ -4,16 +4,17 @@
 #include "Material.h"
 #include "..\Math\Sampler.h"
 #include "..\Objects\HitRecord.h"
+#include "..\Textures\Texture.h"
 
 class Lambertian : public Material
 {
 public:
-	Lambertian(const Vector3 &_albedo);
+	Lambertian(Texture *_albedo);
 
-	virtual bool Scatter(const Ray &rayIn, const HitRecord &hitRecord, Vector3 &attenuation, Ray &scattered) const;
+	bool Scatter(const Ray &rayIn, const HitRecord &hitRecord, Vector3 &attenuation, Ray &scattered) const override;
 
 private:
-	Vector3 albedo;
+	Texture* albedo;
 };
 
 #endif

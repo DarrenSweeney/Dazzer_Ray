@@ -1,3 +1,5 @@
+#define STB_IMAGE_IMPLEMENTATION
+
 #include "Scene.h"
 
 Scene::Scene()
@@ -53,10 +55,15 @@ HitableList *Scene::TestScene()
 	Hitable **list = new Hitable*[4];
 	int i = 0;
 
-	// Ground
-	list[i++] = new Sphere(Vector3(0.0f, -100.5f, -1.0f), 100.0f, new Lambertian(Vector3(0.8f, 0.8f, 0.0f)));
+	int width, height, comp;
+	unsigned char *imageData = stbi_load("Resources/three.png", &width, &height, &comp, 0);
+	Texture *ballTexture = new ImageTexture(imageData, width, height);
 
-	list[i++] = new Sphere(Vector3(0.0f, 0.0f, -1.0f), 0.5f, new Lambertian(Vector3(0.8f, 0.3f, 0.3f)));
+	// Ground
+	list[i++] = new Sphere(Vector3(0.0f, -100.5f, -1.0f), 100.0f, 
+		new Lambertian(new ConstantTexture(Vector3(0.8f, 0.3f, 0.3f))));
+
+	list[i++] = new Sphere(Vector3(0.0f, 0.0f, -1.0f), 0.5f, new Lambertian(ballTexture));
 	list[i++] = new Sphere(Vector3(1.0f, 0.0f, -1.0f), 0.5f, new Metal(Vector3(0.8f, 0.6f, 0.2f), 0.0f));
 	list[i++] = new Sphere(Vector3(-1.0f, 0.0f, -1.0f), 0.5f, new Metal(Vector3(0.8f, 0.8f, 0.8f), 0.0f));
 

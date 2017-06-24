@@ -7,6 +7,8 @@
 #include "..\Materials\Lambertian.h"
 #include "..\Materials\Metal.h"
 #include "..\Materials\Dielectric.h"
+#include "..\Textures\ImageTexture.h"
+#include "..\Textures\ConstantTexture.h"
 #include "..\Objects\Sphere.h"
 #include "..\Camera\Camera.h"
 #include "..\IO\PPM_Image.h"

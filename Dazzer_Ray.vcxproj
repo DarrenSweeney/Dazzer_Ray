@@ -160,6 +160,9 @@
     <ClCompile Include="Objects\Sphere.cpp" />
     <ClCompile Include="IO\PPM_Image.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
+    <ClCompile Include="Textures\CheckerTexture.cpp" />
+    <ClCompile Include="Textures\ConstantTexture.cpp" />
+    <ClCompile Include="Textures\ImageTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\Camera.h" />
@@ -179,6 +182,11 @@
     <ClInclude Include="Objects\Sphere.h" />
     <ClInclude Include="IO\PPM_Image.h" />
     <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Textures\CheckerTexture.h" />
+    <ClInclude Include="Textures\ConstantTexture.h" />
+    <ClInclude Include="Textures\ImageTexture.h" />
+    <ClInclude Include="Textures\stb_image.h" />
+    <ClInclude Include="Textures\Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
