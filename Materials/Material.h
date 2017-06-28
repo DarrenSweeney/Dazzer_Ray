@@ -7,6 +7,7 @@
 class Material
 {
 public:
+	// @Darren: Possible remove pure virtual
 	virtual bool Scatter(const Ray &rayIn, const HitRecord &hitRecord, Vector3 &attenuation, Ray &scattered) const = 0;
 };
 

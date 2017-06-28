@@ -1,4 +1,5 @@
 #define STB_IMAGE_IMPLEMENTATION
+#define MULTITHREAD true
 
 #include "Scene.h"
 
@@ -26,7 +27,7 @@ Vector3 Scene::Color(Ray &ray, HitableList *world, int depth)
 {
 	HitRecord hitRecord;
 
-	// FLT_MAX is for x64, will not work on x86 as FLT_MAX is max possible value of float.
+	// @Darren: FLT_MAX is for x64, will not work on x86 as FLT_MAX is max possible value of float.
 	if (world->Hit(ray, 0.001f, FLT_MAX, hitRecord))
 	{
 		Ray scattered;
@@ -66,14 +67,29 @@ HitableList *Scene::TestScene()
 	list[i++] = new Sphere(Vector3(0.0f, 0.0f, -1.0f), 0.5f, new Lambertian(ballTexture));
 	list[i++] = new Sphere(Vector3(1.0f, 0.0f, -1.0f), 0.5f, new Metal(Vector3(0.8f, 0.6f, 0.2f), 0.0f));
 	list[i++] = new Sphere(Vector3(-1.0f, 0.0f, -1.0f), 0.5f, new Metal(Vector3(0.8f, 0.8f, 0.8f), 0.0f));
-
+	
 	return new HitableList(list, i);
 }
 
+/*
+	@Darren: Spereate the render scene into render image tile, then create two threads to render
+	each tile as a test. Look into syncing and other threading stuff i need to learn.
+*/
 void Scene::RenderScene()
 {
 	sceneObects = TestScene();
 
+#if MULTITHREAD
+	std::thread thread_1(&Scene::RenderTile, this, 0, 0, width / 2, height);						// Top Bottom
+	std::thread thread_2(&Scene::RenderTile, this, 0, height / 2, width / 2,  height / 2);			// Top Left
+	std::thread thread_3(&Scene::RenderTile, this, width / 2, 0, width / 2, height / 2);			// Bottom Right
+	std::thread thread_4(&Scene::RenderTile, this, width / 2, height / 2, width / 2, height / 2);	// Top Right
+
+	if (thread_1.joinable()) thread_1.join();
+	if (thread_2.joinable()) thread_2.join();
+	if (thread_3.joinable()) thread_3.join();
+	if (thread_4.joinable()) thread_4.join();
+#else
 	for (unsigned int y = 0; y < height; y++)
 	{
 		for (unsigned int x = 0; x < width; x++)
@@ -97,8 +113,40 @@ void Scene::RenderScene()
 			printf("Image Pos: (%d, %d)\n", x, y);
 		}
 	}
+#endif
 
 	printf("Saving...\n");
 	ppmImage->SavePPM("TestScene", std::ofstream());
 	printf("PPM Image Saved\n");
+}
+
+void Scene::RenderTile(unsigned int tilePosX, unsigned int tilePosY,	// {0,   200}
+	unsigned int tileWidth, unsigned int tileHeight)					// {400, 200}
+{
+	assert(tilePosX + tileWidth  <= width );
+	assert(tilePosY + tileHeight <= height);
+
+	for (unsigned int y = tilePosY; y < tilePosY + tileHeight; y++)
+	{
+		for (unsigned int x = tilePosX; x < tilePosX + tileWidth; x++)
+		{
+			Vector3 col;
+
+			for (unsigned int s = 0; s < samples; s++)
+			{
+				float u = float(x + randF(0.0f, 1.0f)) / width;
+				float v = float(y + randF(0.0f, 1.0f)) / height;
+
+				Ray ray = camera.GetRay(u, v);
+				Vector3 point = ray.PointAtParamater(2.0f);
+				col += Color(ray, sceneObects, 0);
+			}
+
+			col /= float(samples);
+			col = Vector3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
+			ppmImage->WritePixel(x, y, col);
+
+			printf("Image Pos: (%d, %d)\n", x, y);
+		}
+	}
 }
