@@ -12,13 +12,13 @@ bool AABB::Hit(const Ray &ray, float tMin, float tMax) const
 {
 	for (int a = 0; a < 3; a++) 
 	{
-		float t0 = fmin((min[a] - ray.Origin()[a]) / ray.Direction()[a],
+		float t0 = fminf((min[a] - ray.Origin()[a]) / ray.Direction()[a],
 			(max[a] - ray.Origin()[a]) / ray.Direction()[a]);
-		float t1 = fmax((min[a] - ray.Origin()[a]) / ray.Direction()[a],
+		float t1 = fmaxf((min[a] - ray.Origin()[a]) / ray.Direction()[a],
 			(max[a] - ray.Origin()[a]) / ray.Direction()[a]);
 
-		tMin = fmax(t0, tMin);
-		tMax = fmin(t1, tMax);
+		tMin = fmaxf(t0, tMin);
+		tMax = fminf(t1, tMax);
 
 		if (tMax <= tMin)
 			return false;
