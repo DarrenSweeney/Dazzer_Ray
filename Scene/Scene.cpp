@@ -74,12 +74,40 @@ HitableList *Scene::TestScene()
 }
 
 /*
-	@TODO(Darren): Give each avaible thread a tile to render, threads that are finished are 
-					assigned a new tile to render.
+	@TODO(Darren): Give each available thread a tile to render, threads that are finished are 
+					assigned a new tile to render. 
+
+					I want to test one thread doing all tiles vs no multithreading. Time to change
+					rendering of a different tile.
 */
-void Scene::AssignThreadsTiles()
+void Scene::QueueThreadRenderTask()
 {
-	
+	std::lock_guard<std::mutex> lock(tileMutex);
+
+	if (tilesToRender.size() <= 0)
+		return;
+
+	// Get a tile that needs to be rendered
+	TileData tileToRender;
+	tileToRender = {
+		tilesToRender.back()
+	};
+
+	std::cout << "Current Tile being rendered: " << tilesToRender.size() 
+		<< " Rendered by Thread: " << std::this_thread::get_id() << std::endl;
+
+	// Remove the tile as it's going to be rendered
+	tilesToRender.pop_back();
+
+	/*
+		@Darren: When the thread is finished rendering the scene how do i start again for remaining scenes?
+	*/
+	RenderTile(tileToRender);
+
+	/*
+		If another tile is avaible and this thread is done with RenderTIle(..) then
+		call method again? Until all tiles are finished.
+	*/
 }
 
 /*
@@ -90,35 +118,46 @@ void Scene::RenderScene()
 {
 	sceneObects = TestScene();
 
+#if MULTITHREAD
 	// Divide the scene image into tiles based on the tileSize
-	for (unsigned int y = 0; y < height; y++)
+	for (unsigned int y = 0; y < height; y += tileSize)
 	{
-		unsigned int yTile = tileSize < height - tileSize ? tileSize : height - tileSize;
+		unsigned int yTile = tileSize < height - y ? tileSize : height - y;
 
-		for (unsigned int x = 0; x < width; x++)
+		for (unsigned int x = 0; x < width; x += tileSize)
 		{
-			unsigned int xTile = tileSize < width - tileSize ? tileSize : width - tileSize;
+			unsigned int xTile = tileSize < width - x ? tileSize : width - x;
 
-			tilesToRender.push_back({xTile, yTile, tileSize});
+			tilesToRender.push_back({x, y, xTile, yTile});
 		}
 	}
 
-#if MULTITHREAD
 	/*
-		Need to create a vector/array of threads based on how many tiles there are.
-		Go across the x axis loop, increment based on tileSize, width is fmin(tileSize, (width - tilePosX)
+		Loop through all tiles to render and test and slower or faster it is.
 	*/
-	std::thread thread_1(&Scene::RenderTile, this, 0, 0, width / 2, height);						// Top Bottom
-	std::thread thread_2(&Scene::RenderTile, this, 0, height / 2, width / 2,  height / 2);			// Top Left
-	std::thread thread_3(&Scene::RenderTile, this, width / 2, 0, width / 2, height / 2);			// Bottom Right
-	std::thread thread_4(&Scene::RenderTile, this, width / 2, height / 2, width / 2, height / 2);	// Top Right
+	/*for (int i = 0; i < tilesToRender.size(); i++)
+	{
+		RenderTile(tilesToRender.at(i));
 
-	if (thread_1.joinable()) thread_1.join();
-	if (thread_2.joinable()) thread_2.join();
-	if (thread_3.joinable()) thread_3.join();
-	if (thread_4.joinable()) thread_4.join();
+		std::cout << "Current Tile being rendered: " << i << std::endl;
+	}*/
+
+	for (uint8_t i = 0; i < numOfThreads; i++)
+	{
+		/*
+			@NOTE(Darren): Need to think to about to go onto next avaible tile.
+		*/
+		threads.push_back(std::thread(&Scene::QueueThreadRenderTask, this));
+	}
+
+	for (std::thread &t : threads)
+	{
+		if (t.joinable()) 
+			t.join();
+	}
 #else
-	RenderTile(0, 0, width, height);
+	TileData tile = {0, 0, width, height};
+	RenderTile(tile);
 #endif
 
 	printf("Saving...\n");
@@ -126,15 +165,14 @@ void Scene::RenderScene()
 	printf("PPM Image Saved\n");
 }
 
-void Scene::RenderTile(unsigned int tilePosX, unsigned int tilePosY,
-	unsigned int tileWidth, unsigned int tileHeight)
+void Scene::RenderTile(TileData &tileData)
 {
-	assert(tilePosX + tileWidth  <= width );
-	assert(tilePosY + tileHeight <= height);
+	assert(tileData.tilePosX + tileData.tileWidth  <= width );
+	assert(tileData.tilePosY + tileData.tileHeight <= height);
 
-	for (unsigned int y = tilePosY; y < tilePosY + tileHeight; y++)
+	for (unsigned int y = tileData.tilePosY; y < tileData.tilePosY + tileData.tileHeight; y++)
 	{
-		for (unsigned int x = tilePosX; x < tilePosX + tileWidth; x++)
+		for (unsigned int x = tileData.tilePosX; x < tileData.tilePosX + tileData.tileWidth; x++)
 		{
 			Vector3 col;
 
@@ -152,7 +190,7 @@ void Scene::RenderTile(unsigned int tilePosX, unsigned int tilePosY,
 			col = Vector3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
 			ppmImage->WritePixel(x, y, col);
 
-			printf("Image Pos: (%d, %d)\n", x, y);
+			//printf("Image Pos: (%d, %d)\n", x, y);
 		}
 	}
 }
