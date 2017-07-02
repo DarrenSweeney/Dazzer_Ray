@@ -4,6 +4,7 @@
 #include <cfloat>
 #include <thread>
 #include <mutex>
+#include <vector>
 
 // NOTE(Darren): Need to include because of incomplete class type with struct HitRecord
 #include "..\Materials\Lambertian.h"
@@ -15,7 +16,7 @@
 #include "..\Camera\Camera.h"
 #include "..\IO\PPM_Image.h"
 #include "..\Objects\HitableList.h"
-#include <vector>
+#include "..\IO\OBJ_Parser.h"
 
 struct TileData
 {
@@ -45,6 +46,7 @@ private:
 	std::vector<TileData> tilesToRender;
 	Camera camera;
 	PPM_Image* ppmImage;
+	ObjParser objParser;
 	uint8_t numOfThreads;
 	unsigned int width, height, samples, tileSize;
 };

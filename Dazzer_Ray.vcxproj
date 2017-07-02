@@ -53,6 +53,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\OrbisWavePsslc.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -159,6 +160,7 @@
     <ClCompile Include="Objects\HitableList.cpp" />
     <ClCompile Include="Objects\Sphere.cpp" />
     <ClCompile Include="IO\PPM_Image.cpp" />
+    <ClCompile Include="IO\ObjParser.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Textures\CheckerTexture.cpp" />
     <ClCompile Include="Textures\ConstantTexture.cpp" />
@@ -166,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\Camera.h" />
+    <ClInclude Include="IO\tiny_obj_loader.h" />
     <ClInclude Include="Materials\Dielectric.h" />
     <ClInclude Include="Materials\Lambertian.h" />
     <ClInclude Include="Materials\Material.h" />
@@ -181,6 +184,7 @@
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Objects\Sphere.h" />
     <ClInclude Include="IO\PPM_Image.h" />
+    <ClInclude Include="IO\OBJ_Parser.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Textures\CheckerTexture.h" />
@@ -191,5 +195,6 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\OrbisWavePsslc.targets" />
   </ImportGroup>
 </Project>

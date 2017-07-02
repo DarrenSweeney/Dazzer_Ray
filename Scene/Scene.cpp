@@ -1,5 +1,6 @@
 #define STB_IMAGE_IMPLEMENTATION
-#define MULTITHREAD true
+#define TINYOBJLOADER_IMPLEMENTATION
+#define MULTITHREAD false
 
 #include "Scene.h"
 
@@ -18,6 +19,8 @@ Scene::Scene()
 		float(width) / float(height), aperture, distanceToFocus, 0.0f, 1.0f);
 
 	ppmImage = new PPM_Image(width, height);
+
+	objParser.ParseObjFile("catmark_torus_creases0.obj");
 }
 
 Scene::~Scene()
@@ -75,7 +78,7 @@ HitableList *Scene::TestScene()
 
 /*
 	@TODO(Darren): Give each available thread a tile to render, threads that are finished are 
-					assigned a new tile to render. 
+					assigned a new tile to render.
 
 					I want to test one thread doing all tiles vs no multithreading. Time to change
 					rendering of a different tile.
