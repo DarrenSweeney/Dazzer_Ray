@@ -7,7 +7,7 @@
 class Metal : public Material
 {
 public:
-	Metal(const Vector3 &_albedo, const float roughness);
+	Metal(const Vector3 &_albedo, const float roughness = 0.0f);
 
 	bool Scatter(const Ray &rayIn, const HitRecord &hitRecord, Vector3 &attenuation, Ray &scattered) const override;
 

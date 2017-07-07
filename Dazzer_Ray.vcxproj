@@ -161,6 +161,7 @@
     <ClCompile Include="Objects\Sphere.cpp" />
     <ClCompile Include="IO\PPM_Image.cpp" />
     <ClCompile Include="IO\ObjParser.cpp" />
+    <ClCompile Include="Objects\Triangle.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Textures\CheckerTexture.cpp" />
     <ClCompile Include="Textures\ConstantTexture.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Objects\Sphere.h" />
     <ClInclude Include="IO\PPM_Image.h" />
     <ClInclude Include="IO\OBJ_Parser.h" />
+    <ClInclude Include="Objects\Triangle.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Textures\CheckerTexture.h" />

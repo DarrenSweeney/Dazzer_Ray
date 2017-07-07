@@ -7,7 +7,7 @@
 // @Darren: May want to take out the render functionality and put into RayTrace.cpp (or something)
 //			Use scene to load in and save scenes to disk.
 Scene::Scene()
-	: width(800), height(400), samples(10), tileSize(256), numOfThreads(2)
+	: width(1024), height(512), samples(10), tileSize(256), numOfThreads(2)
 {
 	// @TODO(Darren): May want to have each scene to contain camera data
 	Vector3 cameraPosition(0.0f, 0.0f, 1.0f);
@@ -20,7 +20,7 @@ Scene::Scene()
 
 	ppmImage = new PPM_Image(width, height);
 
-	objParser.ParseObjFile("catmark_torus_creases0.obj");
+	//objParser.ParseObjFile("catmark_torus_creases0.obj");
 }
 
 Scene::~Scene()
@@ -65,11 +65,14 @@ HitableList *Scene::TestScene()
 	unsigned char *imageData = stbi_load("Resources/three.png", &width, &height, &comp, 0);
 	Texture *ballTexture = new ImageTexture(imageData, width, height);
 
-	// Ground
-	list[i++] = new Sphere(Vector3(0.0f, -100.5f, -1.0f), 100.0f, 
-		new Lambertian(new ConstantTexture(Vector3(0.8f, 0.3f, 0.3f))));
+	// Ground	
+	//list[i++] = new Sphere(Vector3(0.0f, -100.5f, -1.0f), 100.0f, 
+		//new Lambertian(new ConstantTexture(Vector3(0.8f, 0.3f, 0.3f))));
 
-	list[i++] = new Sphere(Vector3(0.0f, 0.0f, -1.0f), 0.5f, new Lambertian(ballTexture));
+	// Triangle
+	list[i++] = new Triangle(Vector3(-0.5f, -0.5f, -1.0f), Vector3(0.0f, 0.2f, 0.0f), Vector3(0.5f, -0.5f, -4.0f),
+		new Metal(Vector3(1.0f, 0.2f, 0.5f)));
+	list[i++] = new Sphere(Vector3(0.25f, 0.5f, -1.0f), 0.1f, new Lambertian(ballTexture));
 	list[i++] = new Sphere(Vector3(1.0f, 0.0f, -1.0f), 0.5f, new Metal(Vector3(0.8f, 0.6f, 0.2f), 0.0f));
 	list[i++] = new Sphere(Vector3(-1.0f, 0.0f, -1.0f), 0.5f, new Metal(Vector3(0.8f, 0.8f, 0.8f), 0.0f));
 	
@@ -82,25 +85,30 @@ HitableList *Scene::TestScene()
 
 					I want to test one thread doing all tiles vs no multithreading. Time to change
 					rendering of a different tile.
+
+				->	Look into pool of threads. Queues and dequeues.
 */
 void Scene::QueueThreadRenderTask()
 {
-	std::lock_guard<std::mutex> lock(tileMutex);
-
-	if (tilesToRender.size() <= 0)
-		return;
-
-	// Get a tile that needs to be rendered
 	TileData tileToRender;
-	tileToRender = {
-		tilesToRender.back()
-	};
 
-	std::cout << "Current Tile being rendered: " << tilesToRender.size() 
-		<< " Rendered by Thread: " << std::this_thread::get_id() << std::endl;
+	// @Note(Darren): Testing out a beter way with mutex's still have a lot of questions
+	{ std::lock_guard<std::mutex> lock(tileMutex);
 
-	// Remove the tile as it's going to be rendered
-	tilesToRender.pop_back();
+		if (tilesToRender.size() <= 0)
+			return;
+
+		// Get a tile that needs to be rendered
+		tileToRender = {
+			tilesToRender.back()
+		};
+
+		std::cout << "Current Tile being rendered: " << tilesToRender.size()
+			<< " Rendered by Thread: " << std::this_thread::get_id() << std::endl;
+
+		// Remove the tile as it's going to be rendered
+		tilesToRender.pop_back();
+	}
 
 	/*
 		@Darren: When the thread is finished rendering the scene how do i start again for remaining scenes?
@@ -136,7 +144,7 @@ void Scene::RenderScene()
 	}
 
 	/*
-		Loop through all tiles to render and test and slower or faster it is.
+		Loop through all tiles to render and test how slower or faster it is.
 	*/
 	/*for (int i = 0; i < tilesToRender.size(); i++)
 	{

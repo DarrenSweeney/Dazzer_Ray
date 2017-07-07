@@ -9,6 +9,10 @@
 class ObjParser
 {
 public:
+	/*
+		@Note(Darren): Maybe have the ParseOBjFile have a reference to attrib_t, shape_t & material_t and
+						store the memebers in a mesh class that was a struct for it's data.
+	*/
 	bool ParseObjFile(const char* fileName, const char* basePath = nullptr, bool triangulate = true);
 
 private:
