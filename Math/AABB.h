@@ -14,7 +14,8 @@ public:
 	AABB(const Vector3 &a, const Vector3 &b);
 
 	bool Hit(const Ray &ray, float tMin, float tMax) const;
-	AABB GetSurroundingBox(AABB &box0, AABB& box1);
+	AABB ExpandBoundingBox(const AABB &box);
+	AABB GetSurroundingBox(const AABB &box0, const AABB& box1);
 };
 
 #endif

@@ -27,7 +27,15 @@ bool AABB::Hit(const Ray &ray, float tMin, float tMax) const
 	return true;
 }
 
-AABB AABB::GetSurroundingBox(AABB &box0, AABB& box1)
+AABB AABB::ExpandBoundingBox(const AABB &box)
+{
+	Vector3 min(fminf(min.x, box.min.x), fminf(min.y, box.min.y), fminf(min.z, box.min.z));
+	Vector3 max(fmaxf(max.x, box.max.x), fmaxf(max.y, box.max.y), fmaxf(max.z, box.max.z));
+
+	return AABB(min, max);
+}
+
+AABB AABB::GetSurroundingBox(const AABB &box0, const AABB& box1)
 {
 	Vector3 min(fminf(box0.min.x, box1.min.x), fminf(box0.min.y, box1.min.y), fminf(box0.min.z, box1.min.z));
 	Vector3 max(fmaxf(box0.max.x, box1.max.x), fmaxf(box0.max.y, box1.max.y), fmaxf(box0.max.z, box1.max.z));

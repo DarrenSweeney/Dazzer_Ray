@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Accelerators\KD_Node.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Materials\Dielectric.cpp" />
     <ClCompile Include="Materials\Lambertian.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="Textures\ImageTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Accelerators\KD_Node.h" />
     <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="IO\tiny_obj_loader.h" />
     <ClInclude Include="Materials\Dielectric.h" />

@@ -7,7 +7,7 @@
 // @Darren: May want to take out the render functionality and put into RayTrace.cpp (or something)
 //			Use scene to load in and save scenes to disk.
 Scene::Scene()
-	: width(1024), height(512), samples(10), tileSize(256), numOfThreads(2)
+	: width(1024), height(512), samples(100), tileSize(256), numOfThreads(2)
 {
 	// @TODO(Darren): May want to have each scene to contain camera data
 	Vector3 cameraPosition(0.0f, 0.0f, 1.0f);
@@ -71,7 +71,7 @@ HitableList *Scene::TestScene()
 
 	// Triangle
 	list[i++] = new Triangle(Vector3(-0.5f, -0.5f, -1.0f), Vector3(0.0f, 0.2f, 0.0f), Vector3(0.5f, -0.5f, -4.0f),
-		new Metal(Vector3(1.0f, 0.2f, 0.5f)));
+		new Lambertian(new ConstantTexture(Vector3(1.0f, 0.2f, 0.5f))));
 	list[i++] = new Sphere(Vector3(0.25f, 0.5f, -1.0f), 0.1f, new Lambertian(ballTexture));
 	list[i++] = new Sphere(Vector3(1.0f, 0.0f, -1.0f), 0.5f, new Metal(Vector3(0.8f, 0.6f, 0.2f), 0.0f));
 	list[i++] = new Sphere(Vector3(-1.0f, 0.0f, -1.0f), 0.5f, new Metal(Vector3(0.8f, 0.8f, 0.8f), 0.0f));

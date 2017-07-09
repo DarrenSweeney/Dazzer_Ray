@@ -19,12 +19,12 @@ bool Triangle::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord)
 	float det = Dot(d1, pvec);
 
 #if CULLING
-	// if the determinant is negative the triangle is backfacing
-	// if the determinant is close to 0, the ray misses the triangle
+	// If the determinant is negative the triangle is backfacing
+	// If the determinant is close to 0, the ray misses the triangle
 	if (det < FLT_EPSILON)
 		return false;
 #else
-	// ray and triangle are parallel if det is close to 0
+	// Ray and triangle are parallel if det is close to 0
 	if (fabs(det) < FLT_EPSILON)
 		return false;
 #endif
@@ -56,8 +56,14 @@ bool Triangle::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord)
 	return true;
 }
 
-// @Todo(Darren): Implement this
+// @Darren (Note): I don't like having t0, t1, at this momment. Maybe for motion blur but... 
+//						pointless code design for future plans.
 bool Triangle::BoundingBox(float t0, float t1, AABB &box) const
 {
+	Vector3 minExtent(fminf(fminf(p1.x, p2.x), p3.x), fminf(fminf(p1.y, p2.y), p3.y), fminf(fminf(p1.z, p2.z), p3.z));
+	Vector3 maxExtent(fmaxf(fmaxf(p1.x, p2.x), p3.x), fmaxf(fmaxf(p1.y, p2.y), p3.y), fmaxf(fmaxf(p1.z, p2.z), p3.z));
+
+	box = AABB(minExtent, maxExtent);
+
 	return true;
 }
