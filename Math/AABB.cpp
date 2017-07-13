@@ -27,6 +27,17 @@ bool AABB::Hit(const Ray &ray, float tMin, float tMax) const
 	return true;
 }
 
+Axis AABB::GetLongestAxis() const
+{
+	Vector3 vec = max - min;
+
+	if (vec.x > vec.y && vec.x > vec.z)	return Axis::X;
+	if (vec.y > vec.x && vec.y > vec.z)	return Axis::Y;
+	if (vec.z > vec.x && vec.z > vec.y)	return Axis::Z;
+
+	return Axis::X;
+}
+
 AABB AABB::ExpandBoundingBox(const AABB &box)
 {
 	Vector3 min(fminf(min.x, box.min.x), fminf(min.y, box.min.y), fminf(min.z, box.min.z));

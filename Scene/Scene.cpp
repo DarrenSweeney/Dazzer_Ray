@@ -5,7 +5,8 @@
 #include "Scene.h"
 
 // @Darren: May want to take out the render functionality and put into RayTrace.cpp (or something)
-//			Use scene to load in and save scenes to disk.
+//			Use scene to load in and save scenes to disk. Create a renderer which takes a reference
+//			to a scene. Scene had scene.Add(...) function.
 Scene::Scene()
 	: width(1024), height(512), samples(100), tileSize(256), numOfThreads(2)
 {
