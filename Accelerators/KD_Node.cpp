@@ -85,7 +85,39 @@ KD_Node* KD_Node::Build(std::vector<Triangle*> &triangles, int depth) const
 	return kdNode;
 }
 
-bool KD_Node::Hit(const Ray *ray, float tMin, float tMax, HitRecord &hitRecord)
+bool KD_Node::Hit(KD_Node *node, const Ray &ray, float tMin, float tMax, HitRecord &hitRecord)
 {
-	return true;
+	// Check if the ray intersects the current node bounding box
+	if (node->boundingBox.Hit(ray, tMin, tMax))
+	{
+		// Check if either child node has triangles, if yes, recurse down tree for intersections
+		if (node->left->triangles.size() > 0)
+		{
+			bool hitLeftNode = Hit(node->left, ray, tMin, tMax, hitRecord);
+			return hitLeftNode;
+		}
+		else if (node->right->triangles.size() > 0)
+		{
+			bool hitRightNode = Hit(node->right, ray, tMin, tMax, hitRecord);
+			return hitRightNode;
+		}
+		
+		// If theere are no child nodes, we have reached a leaf node
+		else
+		{
+			float closestSoFar = tMax;
+
+			// Check all triangles in the node for intersection
+			for (Triangle *triangle : triangles)
+			{
+				if (triangle->Hit(ray, tMin, tMax, hitRecord))
+				{
+					closestSoFar = hitRecord.t;
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
 }

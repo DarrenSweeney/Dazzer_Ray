@@ -15,6 +15,7 @@ HitableList::HitableList(Hitable **list, int size)
 
 bool HitableList::Hit(const Ray &ray, float tMin, float tMax, HitRecord &rec) const
 {
+	// @Todo(Darren): Take tempRecord out
 	HitRecord tempRecord;
 	bool hitAnything = false;
 	float closestSoFar = tMax;

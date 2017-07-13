@@ -11,7 +11,7 @@ class KD_Node
 public:
 	KD_Node();
 	KD_Node* Build(std::vector<Triangle*> &triangles, int depth) const;
-	bool Hit(const Ray *ray, float tMin, float tMax, HitRecord &hitRecord);
+	bool Hit(KD_Node *node, const Ray &ray, float tMin, float tMax, HitRecord &hitRecord);
 
 private:
 	AABB boundingBox;
