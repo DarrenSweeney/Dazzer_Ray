@@ -1,5 +1,7 @@
 #include "Scene\Scene.h"
 
+// @Todo(Darren): Put stb image into IO?
+
 int main()
 {
 	printf("Dazzer_Raytracer\n");

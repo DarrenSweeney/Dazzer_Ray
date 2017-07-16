@@ -16,7 +16,7 @@
 
 #include "..\Objects\HitableList.h"
 #include "..\Objects\Sphere.h"
-#include "..\Objects\Triangle.h"
+#include "..\Objects\Mesh.h"
 
 #include "..\Camera\Camera.h"
 
@@ -50,8 +50,8 @@ private:
 	std::mutex tileMutex;
 	std::vector<TileData> tilesToRender;
 	Camera camera;
-	PPM_Image* ppmImage;
-	ObjParser objParser;
+	PPM_Image *ppmImage;
+	Mesh *mesh;
 	uint8_t numOfThreads;
 	unsigned int width, height, samples, tileSize;
 };

@@ -1,6 +1,6 @@
 #include "Triangle.h"
 
-#define CULLING false
+#define CULLING true
 
 Triangle::Triangle() { }
 

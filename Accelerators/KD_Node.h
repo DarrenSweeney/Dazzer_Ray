@@ -10,11 +10,14 @@ class KD_Node
 {
 public:
 	KD_Node();
+	~KD_Node();
+
 	KD_Node* Build(std::vector<Triangle*> &triangles, int depth) const;
-	bool Hit(KD_Node *node, const Ray &ray, float tMin, float tMax, HitRecord &hitRecord);
+	bool Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord);
+
+	AABB boundingBox;
 
 private:
-	AABB boundingBox;
 	KD_Node *left, *right;
 	std::vector<Triangle*> triangles;
 };

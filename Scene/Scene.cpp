@@ -7,26 +7,68 @@
 // @Darren: May want to take out the render functionality and put into RayTrace.cpp (or something)
 //			Use scene to load in and save scenes to disk. Create a renderer which takes a reference
 //			to a scene. Scene had scene.Add(...) function.
-Scene::Scene()
-	: width(1024), height(512), samples(100), tileSize(256), numOfThreads(2)
+
+struct MeshFace
 {
-	// @TODO(Darren): May want to have each scene to contain camera data
-	Vector3 cameraPosition(0.0f, 0.0f, 1.0f);
+	int vertexIndex[3];
+};
+
+Scene::Scene()
+	: width(1024), height(512), samples(1), tileSize(256), numOfThreads(2)
+{
+	Vector3 cameraPosition(0.0f, 0.0f, 4.0f);
 	Vector3 lookAtPos(0.0f, 0.0f, 0.0f);
 	float distanceToFocus = 2.0f;
 	float aperture = 0.0f;
 	float vfov = 40.0f;
+
 	camera = Camera(cameraPosition, lookAtPos, Vector3(0.0f, 1.0f, 0.0f), vfov,
 		float(width) / float(height), aperture, distanceToFocus, 0.0f, 1.0f);
 
 	ppmImage = new PPM_Image(width, height);
 
-	//objParser.ParseObjFile("catmark_torus_creases0.obj");
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+	ParseObjFile(attrib, shapes, materials, "Resources/monkey.obj");
+
+	// @Todo(Darren): Refactor this into the mesh constructor
+	std::vector<MeshFace> meshFaces;
+	for (int i = 0; i < shapes.size(); i++)
+	{
+		for (int j = 0; j < shapes[i].mesh.indices.size() / 3; j++)
+		{
+			meshFaces.push_back({shapes[i].mesh.indices[j * 3 + 0].vertex_index, 
+				shapes[i].mesh.indices[j * 3 + 1].vertex_index, 
+				shapes[i].mesh.indices[j * 3 + 2].vertex_index});
+		}
+	}
+
+	std::vector<Vector3> vertexPositions;
+	vertexPositions.reserve(attrib.vertices.size() / 3);
+	for (int i = 0; i < attrib.vertices.size() / 3; i++)
+	{
+		vertexPositions.push_back(Vector3(attrib.vertices[i * 3 + 0], attrib.vertices[i * 3 + 1], attrib.vertices[i * 3 + 2]));
+	}
+
+	std::vector<Triangle*> triangles;
+
+	for (int i = 0; i < meshFaces.size(); i++)
+	{
+		Vector3 p1 = vertexPositions[meshFaces[i].vertexIndex[0]];
+		Vector3 p2 = vertexPositions[meshFaces[i].vertexIndex[1]];
+		Vector3 p3 = vertexPositions[meshFaces[i].vertexIndex[2]];
+
+		triangles.push_back(new Triangle(p1, p2, p3, new Lambertian(new ConstantTexture(Vector3(1.0f, 0.2f, 0.5f)))));
+	}
+
+	mesh = new Mesh(triangles);
 }
 
 Scene::~Scene()
 {
 	delete ppmImage;
+	delete mesh;
 }
 
 Vector3 Scene::Color(Ray &ray, HitableList *world, int depth)
@@ -59,7 +101,7 @@ Vector3 Scene::Color(Ray &ray, HitableList *world, int depth)
 
 HitableList *Scene::TestScene()
 {
-	Hitable **list = new Hitable*[4];
+	Hitable **list = new Hitable*[5];
 	int i = 0;
 
 	int width, height, comp;
@@ -71,11 +113,12 @@ HitableList *Scene::TestScene()
 		//new Lambertian(new ConstantTexture(Vector3(0.8f, 0.3f, 0.3f))));
 
 	// Triangle
-	list[i++] = new Triangle(Vector3(-0.5f, -0.5f, -1.0f), Vector3(0.0f, 0.2f, 0.0f), Vector3(0.5f, -0.5f, -4.0f),
-		new Lambertian(new ConstantTexture(Vector3(1.0f, 0.2f, 0.5f))));
-	list[i++] = new Sphere(Vector3(0.25f, 0.5f, -1.0f), 0.1f, new Lambertian(ballTexture));
-	list[i++] = new Sphere(Vector3(1.0f, 0.0f, -1.0f), 0.5f, new Metal(Vector3(0.8f, 0.6f, 0.2f), 0.0f));
-	list[i++] = new Sphere(Vector3(-1.0f, 0.0f, -1.0f), 0.5f, new Metal(Vector3(0.8f, 0.8f, 0.8f), 0.0f));
+	//list[i++] = new Triangle(Vector3(-0.5f, -0.5f, -1.0f), Vector3(0.0f, 0.2f, 0.0f), Vector3(0.5f, -0.5f, -4.0f),
+	//	new Lambertian(new ConstantTexture(Vector3(1.0f, 0.2f, 0.5f))));
+	list[i++] = new Sphere(Vector3(0.25f, 0.5f, 1.2f), 0.1f, new Lambertian(ballTexture));
+	list[i++] = new Sphere(Vector3(1.0f, 0.0f, 1.2f), 0.5f, new Metal(Vector3(0.8f, 0.6f, 0.2f), 0.0f));
+	list[i++] = new Sphere(Vector3(-1.0f, 0.0f, 1.2f), 0.5f, new Metal(Vector3(0.8f, 0.8f, 0.8f), 0.0f));
+	list[i++] = mesh;
 	
 	return new HitableList(list, i);
 }
@@ -202,7 +245,7 @@ void Scene::RenderTile(TileData &tileData)
 			col = Vector3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
 			ppmImage->WritePixel(x, y, col);
 
-			//printf("Image Pos: (%d, %d)\n", x, y);
+			printf("Image Pos: (%d, %d)\n", x, y);
 		}
 	}
 }
