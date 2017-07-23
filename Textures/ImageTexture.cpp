@@ -1,9 +1,6 @@
 #include "ImageTexture.h"
 
-ImageTexture::ImageTexture()
-{
-
-}
+ImageTexture::ImageTexture() { }
 
 ImageTexture::ImageTexture(unsigned char *_imageData, int _width, int _height)
 	: imageData(_imageData), width(_width), height(_height)

@@ -4,7 +4,6 @@ PPM_Image::PPM_Image() { }
 
 PPM_Image::PPM_Image(unsigned int imageWidth, unsigned int imageHeight)
 //											  Multiply by 3, rgb values for each pixel.
-//											  TODO(Darren): Test the size difference with uint32_t
 	: width(imageWidth), height(imageHeight), data(new uint8_t[imageWidth * imageHeight * 3])
 {
 

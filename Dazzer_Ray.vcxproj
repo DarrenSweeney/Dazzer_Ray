@@ -196,8 +196,11 @@
     <ClInclude Include="Textures\CheckerTexture.h" />
     <ClInclude Include="Textures\ConstantTexture.h" />
     <ClInclude Include="Textures\ImageTexture.h" />
-    <ClInclude Include="Textures\stb_image.h" />
+    <ClInclude Include="IO\stb_image.h" />
     <ClInclude Include="Textures\Texture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

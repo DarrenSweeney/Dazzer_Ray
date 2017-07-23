@@ -34,18 +34,9 @@ public:
 	Vector3& operator*=(const float value);
 	Vector3& operator/=(const float value);
 
-	inline float Lenght() const
-	{
-		return sqrtf((e[0] * e[0]) + (e[1] * e[1]) + (e[2] * e[2]));
-	}
+	float Lenght() const;
+	float LengthSquared() const;
 
-	inline float LengthSquared() const
-	{
-		return (e[0] * e[0]) + (e[1] * e[1]) + (e[2] * e[2]);
-	}
-
-	inline void UnitVector();
-	// @Todo(Darren): May create inline instead like UnitVector()
 	friend Vector3 Reflect(const Vector3 &v, const Vector3 &n);
 	friend Vector3 UnitVector(const Vector3 &vec);
 	friend float Dot(const Vector3 &v1, const Vector3 &v2);

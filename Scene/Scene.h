@@ -6,7 +6,6 @@
 #include <mutex>
 #include <vector>
 
-// NOTE(Darren): Need to include because of incomplete class type with struct HitRecord
 #include "..\Materials\Lambertian.h"
 #include "..\Materials\Metal.h"
 #include "..\Materials\Dielectric.h"
@@ -22,6 +21,7 @@
 
 #include "..\IO\PPM_Image.h"
 #include "..\IO\OBJ_Parser.h"
+#include "..\IO\stb_image.h"
 
 struct TileData
 {

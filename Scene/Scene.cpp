@@ -8,17 +8,12 @@
 //			Use scene to load in and save scenes to disk. Create a renderer which takes a reference
 //			to a scene. Scene had scene.Add(...) function.
 
-struct MeshFace
-{
-	int vertexIndex[3];
-};
-
 Scene::Scene()
 	: width(1024), height(512), samples(1), tileSize(256), numOfThreads(2)
 {
-	Vector3 cameraPosition(0.0f, 0.0f, 4.0f);
-	Vector3 lookAtPos(0.0f, 0.0f, 0.0f);
-	float distanceToFocus = 2.0f;
+	Vector3 cameraPosition(0.0f, 3.0f, 20.0f);
+	Vector3 lookAtPos(0.0f, 2.0f, 0.0f);
+	float distanceToFocus = 10.0f;
 	float aperture = 0.0f;
 	float vfov = 40.0f;
 
@@ -31,38 +26,7 @@ Scene::Scene()
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 	ParseObjFile(attrib, shapes, materials, "Resources/monkey.obj");
-
-	// @Todo(Darren): Refactor this into the mesh constructor
-	std::vector<MeshFace> meshFaces;
-	for (int i = 0; i < shapes.size(); i++)
-	{
-		for (int j = 0; j < shapes[i].mesh.indices.size() / 3; j++)
-		{
-			meshFaces.push_back({shapes[i].mesh.indices[j * 3 + 0].vertex_index, 
-				shapes[i].mesh.indices[j * 3 + 1].vertex_index, 
-				shapes[i].mesh.indices[j * 3 + 2].vertex_index});
-		}
-	}
-
-	std::vector<Vector3> vertexPositions;
-	vertexPositions.reserve(attrib.vertices.size() / 3);
-	for (int i = 0; i < attrib.vertices.size() / 3; i++)
-	{
-		vertexPositions.push_back(Vector3(attrib.vertices[i * 3 + 0], attrib.vertices[i * 3 + 1], attrib.vertices[i * 3 + 2]));
-	}
-
-	std::vector<Triangle*> triangles;
-
-	for (int i = 0; i < meshFaces.size(); i++)
-	{
-		Vector3 p1 = vertexPositions[meshFaces[i].vertexIndex[0]];
-		Vector3 p2 = vertexPositions[meshFaces[i].vertexIndex[1]];
-		Vector3 p3 = vertexPositions[meshFaces[i].vertexIndex[2]];
-
-		triangles.push_back(new Triangle(p1, p2, p3, new Lambertian(new ConstantTexture(Vector3(1.0f, 0.2f, 0.5f)))));
-	}
-
-	mesh = new Mesh(triangles);
+	mesh = new Mesh(attrib, shapes, new Lambertian(new ConstantTexture(Vector3(1.0f, 0.2f, 0.5f))));
 }
 
 Scene::~Scene()
@@ -80,9 +44,7 @@ Vector3 Scene::Color(Ray &ray, HitableList *world, int depth)
 	{
 		Ray scattered;
 		Vector3 attenuation;
-
-		// NOTE(Darren): Would it be possible to add string id to objects 
-		//				 to make it easier to debug them. (only in debug mode)
+		
 		if (depth < 50 && hitRecord.material->Scatter(ray, hitRecord, attenuation, scattered))
 		{
 			return attenuation * Color(scattered, world, depth + 1);
@@ -108,14 +70,7 @@ HitableList *Scene::TestScene()
 	unsigned char *imageData = stbi_load("Resources/three.png", &width, &height, &comp, 0);
 	Texture *ballTexture = new ImageTexture(imageData, width, height);
 
-	// Ground	
-	//list[i++] = new Sphere(Vector3(0.0f, -100.5f, -1.0f), 100.0f, 
-		//new Lambertian(new ConstantTexture(Vector3(0.8f, 0.3f, 0.3f))));
-
-	// Triangle
-	//list[i++] = new Triangle(Vector3(-0.5f, -0.5f, -1.0f), Vector3(0.0f, 0.2f, 0.0f), Vector3(0.5f, -0.5f, -4.0f),
-	//	new Lambertian(new ConstantTexture(Vector3(1.0f, 0.2f, 0.5f))));
-	list[i++] = new Sphere(Vector3(0.25f, 0.5f, 1.2f), 0.1f, new Lambertian(ballTexture));
+	list[i++] = new Sphere(Vector3(0.0f, 0.5f, -1.2f), 0.1f, new Lambertian(ballTexture));
 	list[i++] = new Sphere(Vector3(1.0f, 0.0f, 1.2f), 0.5f, new Metal(Vector3(0.8f, 0.6f, 0.2f), 0.0f));
 	list[i++] = new Sphere(Vector3(-1.0f, 0.0f, 1.2f), 0.5f, new Metal(Vector3(0.8f, 0.8f, 0.8f), 0.0f));
 	list[i++] = mesh;
@@ -165,10 +120,6 @@ void Scene::QueueThreadRenderTask()
 	*/
 }
 
-/*
-	@Darren: Spereate the render scene into render image tile, then create two threads to render
-	each tile as a test. Look into syncing and other threading stuff i need to learn.
-*/
 void Scene::RenderScene()
 {
 	sceneObects = TestScene();

@@ -4,8 +4,8 @@
 
 Triangle::Triangle() { }
 
-Triangle::Triangle(Vector3 &_p1, Vector3 &_p2, Vector3 &_p3, Material *_material)
-	: p1(_p1), p2(_p2), p3(_p3), material(_material)
+Triangle::Triangle(Vector3 &_p1, Vector3 &_p2, Vector3 &_p3)
+	: p1(_p1), p2(_p2), p3(_p3)
 {
 
 }
@@ -51,13 +51,10 @@ bool Triangle::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord)
 	hitRecord.t = t;
 	hitRecord.point = ray.PointAtParamater(hitRecord.t);
 	hitRecord.normal = Cross(d1, d2);
-	hitRecord.material = material;
 
 	return true;
 }
 
-// @Darren (Note): I don't like having t0, t1, at this momment. Maybe for motion blur but... 
-//						pointless code design for future plans.
 bool Triangle::BoundingBox(float t0, float t1, AABB &box) const
 {
 	Vector3 minExtent(fminf(fminf(p1.x, p2.x), p3.x), fminf(fminf(p1.y, p2.y), p3.y), fminf(fminf(p1.z, p2.z), p3.z));

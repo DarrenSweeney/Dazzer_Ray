@@ -2,7 +2,6 @@
 #define IMAGE_TEXTURE_H
 
 #include "Texture.h"
-#include "stb_image.h"
 
 class ImageTexture : public Texture
 {

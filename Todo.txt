@@ -1,0 +1,21 @@
+Dazzer Ray
+
+- Refactor material pure virutal function, eh, bad use of base class
+- Implement lights
+- Fix color function so if hitable had no material it will not crash
+- Implement multithreading where threads get a tile from a list
+
+// Target Scene i would like to have on my portfolio
+- Woman statue with different colored lights and simple background
+- Pool table scene with depth of field and motion blur of ball being hit
+- Simple classic cornel box
+
+// Key fetures for portfolio?
+- Multithreading task system
+- Depth of field
+- Motion blur
+- Model loading
+- KD-Trees
+- BVH
+- Custum profile loggin?
+- Save scenes to disk?

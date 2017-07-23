@@ -1,9 +1,5 @@
 #include "OBJ_Parser.h"
 
-/*
-	@Todo(Darren): Rename file to ObjLoader -> Loading my needs
-*/
-
 bool ParseObjFile(tinyobj::attrib_t &attrib, std::vector<tinyobj::shape_t> &shapes,
 	std::vector<tinyobj::material_t> &materials, const char* fileName,
 	const char* basePath, bool triangulate)

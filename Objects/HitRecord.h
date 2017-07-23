@@ -6,14 +6,13 @@
 
 class Material;
 
-// TODO(Darren): Test layout in memory with timing.
 struct HitRecord
 {
 	Vector3 point;
 	Vector3 normal;
 	Vector2 uv;
-	float t;
-	Material *material;
+	float t = 0.0f;
+	Material *material = nullptr;
 };
 
 #endif

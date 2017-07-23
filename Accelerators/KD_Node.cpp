@@ -109,7 +109,7 @@ bool KD_Node::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord)
 			return hitRightNode;
 		}
 		
-		// If theere are no child nodes, we have reached a leaf node
+		// If there are no child nodes, we have reached a leaf node
 		else
 		{
 			float closestSoFar = tMax;

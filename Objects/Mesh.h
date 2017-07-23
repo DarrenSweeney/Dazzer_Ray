@@ -2,11 +2,12 @@
 #define MESH_H
 
 #include "..\Accelerators\KD_Node.h"
+#include "..\IO\OBJ_Parser.h"
 
 class Mesh : public Hitable
 {
 public:
-	Mesh(std::vector<Triangle*> &triangles);
+	Mesh(tinyobj::attrib_t &attrib, std::vector<tinyobj::shape_t> &shapes, Material *_material);
 	~Mesh();
 
 	bool Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) const override;
@@ -14,9 +15,8 @@ public:
 
 private:
 	KD_Node *kdNode;
+	Material *material;
 	std::vector<Triangle*> triangles;
-
-	// @Todo(Darren): Check the address of this against the kdNode triangles
 };
 
 #endif

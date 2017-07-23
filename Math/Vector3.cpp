@@ -89,9 +89,14 @@ Vector3& Vector3::operator/=(const float value)
 	return *this;
 }
 
-inline void Vector3::UnitVector()
+float Vector3::Lenght() const
 {
-	*this = *this / this->Lenght();
+	return sqrtf((e[0] * e[0]) + (e[1] * e[1]) + (e[2] * e[2]));
+}
+
+float Vector3::LengthSquared() const
+{
+	return (e[0] * e[0]) + (e[1] * e[1]) + (e[2] * e[2]);
 }
 
 Vector3 UnitVector(const Vector3 &vec)

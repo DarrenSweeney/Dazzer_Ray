@@ -2,12 +2,11 @@
 #define MATERIAL_H
 
 #include "..\Math\Ray.h"
-#include "..\Objects\Hitable.h"
+#include "..\Objects\HitRecord.h"
 
 class Material
 {
 public:
-	// @Darren: Possible remove pure virtual
 	virtual bool Scatter(const Ray &rayIn, const HitRecord &hitRecord, Vector3 &attenuation, Ray &scattered) const = 0;
 };
 

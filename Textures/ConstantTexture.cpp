@@ -1,9 +1,6 @@
 #include "ConstantTexture.h"
 
-ConstantTexture::ConstantTexture()
-{
-
-}
+ConstantTexture::ConstantTexture() { }
 
 ConstantTexture::ConstantTexture(Vector3 &_color)
 	: color(_color)

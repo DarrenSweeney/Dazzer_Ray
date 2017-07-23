@@ -7,6 +7,7 @@ class HitableList : public Hitable
 {
 public:
 	HitableList();
+	// @Todo(Darren): Replace pointer array with std::vector?
 	HitableList(Hitable **list, int size);
 	~HitableList();
 
