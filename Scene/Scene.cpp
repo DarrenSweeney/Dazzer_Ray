@@ -4,15 +4,15 @@
 
 #include "Scene.h"
 
-// @Darren: May want to take out the render functionality and put into RayTrace.cpp (or something)
+// @Note(Darren): May want to take out the render functionality and put into RayTrace.cpp (or something)
 //			Use scene to load in and save scenes to disk. Create a renderer which takes a reference
 //			to a scene. Scene had scene.Add(...) function.
 
 Scene::Scene()
 	: width(1024), height(512), samples(1), tileSize(256), numOfThreads(2)
 {
-	Vector3 cameraPosition(0.0f, 3.0f, 20.0f);
-	Vector3 lookAtPos(0.0f, 2.0f, 0.0f);
+	Vector3 cameraPosition(0.0f, 0.0f, 4.0f);
+	Vector3 lookAtPos(0.0f, 0.0f, 0.0f);
 	float distanceToFocus = 10.0f;
 	float aperture = 0.0f;
 	float vfov = 40.0f;
@@ -39,7 +39,7 @@ Vector3 Scene::Color(Ray &ray, HitableList *world, int depth)
 {
 	HitRecord hitRecord;
 
-	// @Darren: FLT_MAX is for x64, will not work on x86 as FLT_MAX is max possible value of float.
+	// @Note(Darren): FLT_MAX is for x64, will not work on x86 as FLT_MAX is max possible value of float.
 	if (world->Hit(ray, 0.001f, FLT_MAX, hitRecord))
 	{
 		Ray scattered;
@@ -110,7 +110,7 @@ void Scene::QueueThreadRenderTask()
 	}
 
 	/*
-		@Darren: When the thread is finished rendering the scene how do i start again for remaining scenes?
+		@Note(Darren): When the thread is finished rendering the scene how do i start again for remaining scenes?
 	*/
 	RenderTile(tileToRender);
 
