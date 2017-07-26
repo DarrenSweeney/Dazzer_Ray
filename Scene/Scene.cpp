@@ -9,9 +9,9 @@
 //			to a scene. Scene had scene.Add(...) function.
 
 Scene::Scene()
-	: width(1024), height(512), samples(1), tileSize(256), numOfThreads(2)
+	: width(1024), height(512), samples(100), tileSize(256), numOfThreads(2)
 {
-	Vector3 cameraPosition(0.0f, 0.0f, 4.0f);
+	Vector3 cameraPosition(0.0f, 3.5f, 7.0f);
 	Vector3 lookAtPos(0.0f, 0.0f, 0.0f);
 	float distanceToFocus = 10.0f;
 	float aperture = 0.0f;
@@ -35,7 +35,7 @@ Scene::~Scene()
 	delete mesh;
 }
 
-Vector3 Scene::Color(Ray &ray, HitableList *world, int depth)
+Vector3 Scene::Color(Ray &ray, Hitable *world, int depth)
 {
 	HitRecord hitRecord;
 
@@ -77,6 +77,24 @@ HitableList *Scene::TestScene()
 	
 	return new HitableList(list, i);
 }
+
+Hitable *BVH_TestScene()
+{
+	Hitable **list = new Hitable*[12];
+	int ii = 0;
+
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			list[ii++] = new Sphere(Vector3(-1.0f + j, 0.5f, -1.0 + i), 0.1f, new Lambertian(new ConstantTexture(Vector3(1.0f, 0.0f, 0.0f))));
+		}
+	}
+
+	return new HitableList(list, ii);
+	//return new BVH(list, ii);
+}
+
 
 /*
 	@TODO(Darren): Give each available thread a tile to render, threads that are finished are 
@@ -122,7 +140,7 @@ void Scene::QueueThreadRenderTask()
 
 void Scene::RenderScene()
 {
-	sceneObects = TestScene();
+	sceneObects = BVH_TestScene();
 
 #if MULTITHREAD
 	// Divide the scene image into tiles based on the tileSize
@@ -163,7 +181,14 @@ void Scene::RenderScene()
 	}
 #else
 	TileData tile = {0, 0, width, height};
-	RenderTile(tile);
+
+	{
+		// 23.343	23.209	24.230
+		// 22.483	22.710	22.397
+		PROFILE("RenderTile");
+		RenderTile(tile);
+	}
+
 #endif
 
 	printf("Saving...\n");
@@ -173,7 +198,7 @@ void Scene::RenderScene()
 
 void Scene::RenderTile(TileData &tileData)
 {
-	assert(tileData.tilePosX + tileData.tileWidth  <= width );
+	assert(tileData.tilePosX + tileData.tileWidth  <= width);
 	assert(tileData.tilePosY + tileData.tileHeight <= height);
 
 	for (unsigned int y = tileData.tilePosY; y < tileData.tilePosY + tileData.tileHeight; y++)
@@ -196,7 +221,7 @@ void Scene::RenderTile(TileData &tileData)
 			col = Vector3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
 			ppmImage->WritePixel(x, y, col);
 
-			printf("Image Pos: (%d, %d)\n", x, y);
+			//printf("Image Pos: (%d, %d)\n", x, y);
 		}
 	}
 }

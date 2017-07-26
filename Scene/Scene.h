@@ -23,6 +23,9 @@
 #include "..\IO\OBJ_Parser.h"
 #include "..\IO\stb_image.h"
 
+#include "..\Accelerators\BVH.h"
+#include "..\Profiler.h"
+
 struct TileData
 {
 	unsigned int tilePosX;
@@ -40,12 +43,12 @@ public:
 	void RenderScene();
 
 private:
-	Vector3 Color(Ray &ray, HitableList *world, int depth);
+	Vector3 Color(Ray &ray, Hitable *world, int depth);
 	void RenderTile(TileData &date);
 	HitableList* TestScene();
 	void QueueThreadRenderTask();
 
-	HitableList* sceneObects;
+	Hitable* sceneObects;
 	std::vector<std::thread> threads;
 	std::mutex tileMutex;
 	std::vector<TileData> tilesToRender;

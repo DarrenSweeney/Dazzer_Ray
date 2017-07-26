@@ -1,5 +1,6 @@
 #include "HitableList.h"
 
+// @Todo(Darren): Remove this class
 HitableList::HitableList() { }
 
 HitableList::HitableList(Hitable **list, int size)
@@ -18,6 +19,7 @@ bool HitableList::Hit(const Ray &ray, float tMin, float tMax, HitRecord &rec) co
 	HitRecord tempRecord;
 	bool hitAnything = false;
 	float closestSoFar = tMax;
+
 	for (int i = 0; i < listSize; i++)
 	{
 		if (hitableList[i]->Hit(ray, tMin, closestSoFar, tempRecord))

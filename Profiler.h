@@ -1,5 +1,5 @@
-#include <WinBase.h>
-#include <cstdint>
+#include <time.h> 
+#include <stdio.h>
 
 #define PROFILE(name) AutoProfile p(name)
 
@@ -8,16 +8,16 @@ struct AutoProfile
 	AutoProfile(const char *_name)
 	{
 		name = _name;
-		QueryPerformanceCounter(startTime);
+		start = clock();
 	}
 
 	~AutoProfile()
 	{
-		LARGE_INTEGER *endTime; 
-		QueryPerformanceCounter(endTime);
-		//LARGE_INTEGER elapsedTime = *endTime - *startTime;
+		duration = (clock() - start) / (double)CLOCKS_PER_SEC;
+		printf("Profile of %s took %f\n", name, duration);
 	}
 
 	const char *name;
-	LARGE_INTEGER *startTime;
+	clock_t start;
+	double duration;
 };
