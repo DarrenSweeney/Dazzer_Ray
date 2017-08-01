@@ -2,44 +2,39 @@
 
 BVH::BVH() { }
 
-BVH::BVH(Hitable **list, int size)
-	: hitableList(list), listSize(size)
+BVH::BVH(std::vector<Hitable*> *_primsVector)
+	: primsVector(_primsVector)
 {
 	// Calculate the bounding box surround the whole list of hitables
-	hitableList[0]->BoundingBox(0.0f, 0.0f, boundingBox);
+	primsVector->at(0)->BoundingBox(0.0f, 0.0f, boundingBox);	// Top level bound
 	AABB box;
-	for (int i = 1; i < listSize; i++)
+	for (size_t i = 1; i < primsVector->size(); i++)
 	{
-		hitableList[i]->BoundingBox(0.0f, 0.0f, box);
+		primsVector->at(i)->BoundingBox(0.0f, 0.0f, box);
 		boundingBox = boundingBox.ExpandBoundingBox(box);
 	}
 }
 
 BVH::~BVH()
 {
-	delete[] hitableList;
+	for (Hitable *hitable : *primsVector)
+		delete hitable;
+}
+
+bool BVH::RayTraveral(std::vector<Hitable*> *prims, const Ray & ray,
+	float tMin, float tMax, HitRecord & rec) const
+{
+	
+
+	return false;
 }
 
 bool BVH::Hit(const Ray &ray, float tMin, float tMax, HitRecord &rec) const
 {
-	HitRecord tempRecord;
-	bool hitAnything = false;
-	float closestSoFar = tMax;
-
-	if (boundingBox.Hit(ray, tMin, tMax))
-	{
-		for (int i = 0; i < listSize; i++)
-		{
-			if (hitableList[i]->Hit(ray, tMin, closestSoFar, tempRecord))
-			{
-				hitAnything = true;
-				closestSoFar = tempRecord.t;
-				rec = tempRecord;
-			}
-		}
-	}
-
-	return hitAnything;
+	if (RayTraveral(primsVector, ray, tMin, tMax, rec))
+		return true;
+	else
+		return false;
 }
 
 bool BVH::BoundingBox(float t0, float t1, AABB &box) const

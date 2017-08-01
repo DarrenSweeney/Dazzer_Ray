@@ -11,7 +11,7 @@
 Scene::Scene()
 	: width(1024), height(512), samples(100), tileSize(256), numOfThreads(2)
 {
-	Vector3 cameraPosition(0.0f, 3.5f, 7.0f);
+	Vector3 cameraPosition(0.0f, 3.0f, 6.0f);
 	Vector3 lookAtPos(0.0f, 0.0f, 0.0f);
 	float distanceToFocus = 10.0f;
 	float aperture = 0.0f;
@@ -57,7 +57,7 @@ Vector3 Scene::Color(Ray &ray, Hitable *world, int depth)
 		Vector3 unitDirection = UnitVector(ray.Direction());
 		float t = 0.5f * (unitDirection.y + 1.0f);
 
-		return (1.0f - t) * Vector3(1.0f, 1.0f, 1.0f) + t * Vector3(0.5f, 0.7f, 1.0f);
+		return (1.0f - t) * Vector3(1.0f, 1.0f, 1.0f) + t * Vector3(0.23f, 0.37f, 0.41f);
 	}
 }
 
@@ -70,29 +70,30 @@ HitableList *Scene::TestScene()
 	unsigned char *imageData = stbi_load("Resources/three.png", &width, &height, &comp, 0);
 	Texture *ballTexture = new ImageTexture(imageData, width, height);
 
-	list[i++] = new Sphere(Vector3(0.0f, 0.5f, -1.2f), 0.1f, new Lambertian(ballTexture));
+	// Ground
+	list[i++] = new Sphere(Vector3(0.0f, -100.5f, 0.0f), 100.0f, new Lambertian(new ConstantTexture(Vector3(0.6f, 1.0f, 1.0f))));
+
+	list[i++] = new Sphere(Vector3(0.0f, 1.5f, -0.2f), 0.45f, new Lambertian(ballTexture));
 	list[i++] = new Sphere(Vector3(1.0f, 0.0f, 1.2f), 0.5f, new Metal(Vector3(0.8f, 0.6f, 0.2f), 0.0f));
 	list[i++] = new Sphere(Vector3(-1.0f, 0.0f, 1.2f), 0.5f, new Metal(Vector3(0.8f, 0.8f, 0.8f), 0.0f));
-	list[i++] = mesh;
+	list[i++] = new Sphere(Vector3(0.0f, 0.65f, 2.0f), 0.65f, new Lambertian(new ConstantTexture(Vector3(0.6f, 0.8f, 0.5f)))); //mesh;
 	
 	return new HitableList(list, i);
 }
 
-Hitable *BVH_TestScene()
+Hitable* BVH_TestScene()
 {
-	Hitable **list = new Hitable*[12];
-	int ii = 0;
+	std::vector<Hitable*> hitables;
 
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			list[ii++] = new Sphere(Vector3(-1.0f + j, 0.5f, -1.0 + i), 0.1f, new Lambertian(new ConstantTexture(Vector3(1.0f, 0.0f, 0.0f))));
+			hitables.push_back(new Sphere(Vector3(-1.0f + j, 0.5f, -1.0 + i), 0.1f, new Lambertian(new ConstantTexture(Vector3(1.0f, 0.0f, 0.0f)))));
 		}
 	}
 
-	return new HitableList(list, ii);
-	//return new BVH(list, ii);
+	return new BVH(&hitables);
 }
 
 
@@ -140,7 +141,7 @@ void Scene::QueueThreadRenderTask()
 
 void Scene::RenderScene()
 {
-	sceneObects = BVH_TestScene();
+	sceneObects = TestScene();
 
 #if MULTITHREAD
 	// Divide the scene image into tiles based on the tileSize
@@ -183,8 +184,6 @@ void Scene::RenderScene()
 	TileData tile = {0, 0, width, height};
 
 	{
-		// 23.343	23.209	24.230
-		// 22.483	22.710	22.397
 		PROFILE("RenderTile");
 		RenderTile(tile);
 	}

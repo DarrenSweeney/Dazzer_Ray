@@ -48,7 +48,7 @@ private:
 	HitableList* TestScene();
 	void QueueThreadRenderTask();
 
-	Hitable* sceneObects;
+	Hitable *sceneObects;
 	std::vector<std::thread> threads;
 	std::mutex tileMutex;
 	std::vector<TileData> tilesToRender;

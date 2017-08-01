@@ -16,6 +16,7 @@ public:
 private:
 	Material *material;
 	std::vector<Triangle*> triangles;
+	AABB boundingBox;
 };
 
 #endif

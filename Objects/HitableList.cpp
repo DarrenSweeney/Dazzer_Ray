@@ -1,6 +1,6 @@
 #include "HitableList.h"
 
-// @Todo(Darren): Remove this class
+// @Todo(Darren): Remove this class when i implement BVH
 HitableList::HitableList() { }
 
 HitableList::HitableList(Hitable **list, int size)

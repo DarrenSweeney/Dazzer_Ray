@@ -14,9 +14,11 @@
 class Ray
 {
 public:
-	Ray() {}
-	Ray(const Vector3 &_origin, const Vector3 &_direction, float ti = 0.0) : origin(_origin), direction(_direction), time(ti) {}
+	Ray() { }
+	Ray(const Vector3 &_origin, const Vector3 &_direction, float ti = 0.0)
+		: origin(_origin), direction(_direction), time(ti) { }
 
+	// @Note(Darren): Should i bother using return functions here? Getters and setters etc.
 	Vector3 Origin() const { return origin; }
 	Vector3 Direction() const { return direction; }
 	Vector3 PointAtParamater(float t) const { return origin + t * direction; }

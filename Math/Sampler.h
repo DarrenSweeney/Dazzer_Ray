@@ -4,7 +4,7 @@
 #include <random>
 #include "Vector3.h" 
 
-float randF(float start, float end);
+float randF(float start = 0.0f, float end = 1.0f);
 
 Vector3 RandomInUnitSphere();
 Vector3 RandomInUnitDisk();

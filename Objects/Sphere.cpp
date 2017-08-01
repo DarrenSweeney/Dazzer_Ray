@@ -58,8 +58,8 @@ bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) c
 
 Vector2 Sphere::SphereUV(const Vector3 &p) const
 {
-	float theta = asin(p.y);
-	float phi = atan2(p.z, p.x);
+	float theta = asinf(p.y);
+	float phi = atan2f(p.z, p.x);
 	float u = 1 - (phi + PI) / (2 * PI);
 	float v = (theta + PI / 2) / PI;
 

@@ -13,6 +13,6 @@ Dazzer Ray
 - Depth of field
 - Motion blur
 - Model loading
-- BVH
+- BVH using the median split method
 - Custum profile loggin?
 - Save scenes to disk?

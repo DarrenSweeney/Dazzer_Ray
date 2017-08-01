@@ -2,6 +2,7 @@
 #define AABB_H
 
 #include "Ray.h"
+#include <stdint.h>
 
 enum class Axis { X, Y, Z };
 
