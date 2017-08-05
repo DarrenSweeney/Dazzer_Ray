@@ -1,7 +1,8 @@
 Dazzer Ray
 
-- Implement lights
+- Implement lights <- May just implmenet as light material? Not making much progress outside of work.
 - Implement multithreading where threads get a tile from a list
+- Seperate into renderer and scene. I want something to similar to pt.
 
 // Target Scene i would like to have on my portfolio
 - Woman statue with different colored lights and simple background

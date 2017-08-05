@@ -9,7 +9,7 @@
 //			to a scene. Scene had scene.Add(...) function.
 
 Scene::Scene()
-	: width(1024), height(512), samples(100), tileSize(256), numOfThreads(2)
+	: width(1024), height(512), samples(10), tileSize(256), numOfThreads(2)
 {
 	Vector3 cameraPosition(0.0f, 3.0f, 6.0f);
 	Vector3 lookAtPos(0.0f, 0.0f, 0.0f);
@@ -33,6 +33,11 @@ Scene::~Scene()
 {
 	delete ppmImage;
 	delete mesh;
+
+	for (Light *light : lights)
+	{
+		delete light;
+	}
 }
 
 Vector3 Scene::Color(Ray &ray, Hitable *world, int depth)
@@ -47,6 +52,21 @@ Vector3 Scene::Color(Ray &ray, Hitable *world, int depth)
 		
 		if (depth < 50 && hitRecord.material->Scatter(ray, hitRecord, attenuation, scattered))
 		{
+			for (const Light *light : lights)
+			{
+				Vector3 wi = light->GetDirection(hitRecord);
+				float dot = Dot(hitRecord.normal, wi);
+
+				if (dot < 0.001f)
+					continue;
+
+				Ray shadowRay(hitRecord.point, wi);
+				bool isInShadow = light->InShadow(ray, 0.001f, FLT_MAX, world);
+
+				if (!isInShadow)
+					attenuation += attenuation * light->L() * dot;
+			}
+
 			return attenuation * Color(scattered, world, depth + 1);
 		}
 		else
@@ -57,7 +77,7 @@ Vector3 Scene::Color(Ray &ray, Hitable *world, int depth)
 		Vector3 unitDirection = UnitVector(ray.Direction());
 		float t = 0.5f * (unitDirection.y + 1.0f);
 
-		return (1.0f - t) * Vector3(1.0f, 1.0f, 1.0f) + t * Vector3(0.23f, 0.37f, 0.41f);
+		return (1.0f - t) * Vector3(0.0f, 0.0f, 0.0f) + t * Vector3(0.23f, 0.37f, 0.41f);
 	}
 }
 
@@ -77,6 +97,9 @@ HitableList *Scene::TestScene()
 	list[i++] = new Sphere(Vector3(1.0f, 0.0f, 1.2f), 0.5f, new Metal(Vector3(0.8f, 0.6f, 0.2f), 0.0f));
 	list[i++] = new Sphere(Vector3(-1.0f, 0.0f, 1.2f), 0.5f, new Metal(Vector3(0.8f, 0.8f, 0.8f), 0.0f));
 	list[i++] = new Sphere(Vector3(0.0f, 0.65f, 2.0f), 0.65f, new Lambertian(new ConstantTexture(Vector3(0.6f, 0.8f, 0.5f)))); //mesh;
+
+	lights.clear();
+	lights.push_back(new PointLight(Vector3(1.0f, 2.0f, 1.2f), Vector3(1.0f, 0.0f, 0.0f), 0.8f));
 	
 	return new HitableList(list, i);
 }
@@ -89,7 +112,7 @@ Hitable* BVH_TestScene()
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			hitables.push_back(new Sphere(Vector3(-1.0f + j, 0.5f, -1.0 + i), 0.1f, new Lambertian(new ConstantTexture(Vector3(1.0f, 0.0f, 0.0f)))));
+			hitables.push_back(new Sphere(Vector3(-1.0f + j, 0.5f, -1.0f + i), 0.1f, new Lambertian(new ConstantTexture(Vector3(1.0f, 0.0f, 0.0f)))));
 		}
 	}
 

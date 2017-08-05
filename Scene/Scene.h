@@ -17,6 +17,8 @@
 #include "..\Objects\Sphere.h"
 #include "..\Objects\Mesh.h"
 
+#include "..\Lights\PointLight.h"
+
 #include "..\Camera\Camera.h"
 
 #include "..\IO\PPM_Image.h"
@@ -49,6 +51,7 @@ private:
 	void QueueThreadRenderTask();
 
 	Hitable *sceneObects;
+	std::vector<Light*> lights;
 	std::vector<std::thread> threads;
 	std::mutex tileMutex;
 	std::vector<TileData> tilesToRender;

@@ -10,8 +10,8 @@ class Light
 public:
 	Light() : ls(1.0f), color(1.0f, 1.0f, 1.0f) { };
 	virtual Vector3 GetDirection(HitRecord &hitRecord) const = 0;
-	virtual Vector3 L(HitRecord &hitRecord) = 0;
-	virtual bool InShadow(const Ray &ray, const Hitable *h) const = 0;
+	virtual Vector3 L() const = 0;
+	virtual bool InShadow(const Ray &ray, float tMin, float tMax, const Hitable *h) const = 0;
 
 protected:
 	float ls;

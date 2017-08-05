@@ -14,19 +14,18 @@ Vector3 PointLight::GetDirection(HitRecord &hitRecord) const
 	return UnitVector(position - hitRecord.point);
 }
 
-Vector3 PointLight::L(HitRecord& rec) 
+Vector3 PointLight::L() const
 {
 	return ls * color;
 }
 
-bool PointLight::InShadow(const Ray &ray, const Hitable* hitable) const 
+bool PointLight::InShadow(const Ray &ray, float tMin, float tMax, const Hitable* hitable) const 
 {
 	float d = (position - ray.Origin()).Lenght();
 	bool isInShadow = false;
 
 	HitRecord rec;
-	// @Todo(Darren): Remove this max value or pass in min and max
-	if (hitable->Hit(ray, 0.001, 100000.0f, rec) && rec.t < d) 
+	if (hitable->Hit(ray, tMin, tMax, rec) && rec.t < d)
 		isInShadow  = true;
 
 	// @Todo(Darren): Add Emmit function to material base class
@@ -38,7 +37,7 @@ bool PointLight::InShadow(const Ray &ray, const Hitable* hitable) const
 		float cosine = Dot(scattered.Direction(), ray.Direction());
 
 		if (cosine > 0.001 && randF() < cosine) 
-			return InShadow(scattered, hitable);
+			return InShadow(scattered, tMin, tMax, hitable);
 	}
 
 	return isInShadow;

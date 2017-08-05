@@ -3,18 +3,20 @@
 Camera::Camera() { }
 
 Camera::Camera(Vector3 &position, Vector3 &lookAt, Vector3 &upVec, float vfov, float aspectRatio,
-	float aperature, float focusDistance, float shutterOpenTime, float shutterCloseTime)
+	float aperature, float focusDistance, float _shutterOpenTime, float _shutterCloseTime)
 {
-	this->shutterOpenTime = shutterOpenTime;
-	this->shutterCloseTime = shutterCloseTime;
+	shutterOpenTime = _shutterOpenTime;
+	shutterCloseTime = _shutterCloseTime;
 	lensRadius = aperature / 2;
-	float theta = vfov * PI / 180.0f;
-	float halfHeight = tan(theta / 2);
-	float halfWidth = aspectRatio * halfHeight;
+
 	origin = position;
 	w = UnitVector(position - lookAt);
 	u = UnitVector(Cross(upVec, w));
 	v = Cross(w, u);
+
+	float theta = vfov * PI / 180.0f;
+	float halfHeight = tan(theta / 2);
+	float halfWidth = aspectRatio * halfHeight;
 
 	lowerLeftCorner = origin - halfWidth * focusDistance * u
 		- halfHeight * focusDistance * v - focusDistance * w;
