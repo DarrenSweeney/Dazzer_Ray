@@ -1,8 +1,8 @@
 Dazzer Ray
 
-- Implement lights <- May just implmenet as light material? Not making much progress outside of work.
 - Implement multithreading where threads get a tile from a list
 - Seperate into renderer and scene. I want something to similar to pt.
+- Add plane as an object to intersect in a scene.
 
 // Target Scene i would like to have on my portfolio
 - Woman statue with different colored lights and simple background
@@ -16,4 +16,4 @@ Dazzer Ray
 - Model loading
 - BVH using the median split method
 - Custum profile loggin?
-- Save scenes to disk?
+- Save scenes to disk, read/write?

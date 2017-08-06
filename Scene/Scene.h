@@ -9,6 +9,7 @@
 #include "..\Materials\Lambertian.h"
 #include "..\Materials\Metal.h"
 #include "..\Materials\Dielectric.h"
+#include "..\Lights\DiffuseLight.h"
 
 #include "..\Textures\ImageTexture.h"
 #include "..\Textures\ConstantTexture.h"
@@ -16,8 +17,6 @@
 #include "..\Objects\HitableList.h"
 #include "..\Objects\Sphere.h"
 #include "..\Objects\Mesh.h"
-
-#include "..\Lights\PointLight.h"
 
 #include "..\Camera\Camera.h"
 
@@ -51,7 +50,6 @@ private:
 	void QueueThreadRenderTask();
 
 	Hitable *sceneObects;
-	std::vector<Light*> lights;
 	std::vector<std::thread> threads;
 	std::mutex tileMutex;
 	std::vector<TileData> tilesToRender;

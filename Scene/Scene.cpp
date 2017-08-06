@@ -9,9 +9,9 @@
 //			to a scene. Scene had scene.Add(...) function.
 
 Scene::Scene()
-	: width(1024), height(512), samples(10), tileSize(256), numOfThreads(2)
+	: width(1024), height(512), samples(16), tileSize(256), numOfThreads(2)
 {
-	Vector3 cameraPosition(0.0f, 3.0f, 6.0f);
+	Vector3 cameraPosition(0.0f, 2.0f, 4.0f);
 	Vector3 lookAtPos(0.0f, 0.0f, 0.0f);
 	float distanceToFocus = 10.0f;
 	float aperture = 0.0f;
@@ -25,7 +25,7 @@ Scene::Scene()
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
-	ParseObjFile(attrib, shapes, materials, "Resources/monkey.obj");
+	ParseObjFile(attrib, shapes, materials, "Resources/mokey_low_poly.obj");
 	mesh = new Mesh(attrib, shapes, new Lambertian(new ConstantTexture(Vector3(1.0f, 0.2f, 0.5f))));
 }
 
@@ -33,11 +33,6 @@ Scene::~Scene()
 {
 	delete ppmImage;
 	delete mesh;
-
-	for (Light *light : lights)
-	{
-		delete light;
-	}
 }
 
 Vector3 Scene::Color(Ray &ray, Hitable *world, int depth)
@@ -49,28 +44,12 @@ Vector3 Scene::Color(Ray &ray, Hitable *world, int depth)
 	{
 		Ray scattered;
 		Vector3 attenuation;
+		Vector3 emmited = hitRecord.material->Emitted(hitRecord.uv, hitRecord.point);
 		
 		if (depth < 50 && hitRecord.material->Scatter(ray, hitRecord, attenuation, scattered))
-		{
-			for (const Light *light : lights)
-			{
-				Vector3 wi = light->GetDirection(hitRecord);
-				float dot = Dot(hitRecord.normal, wi);
-
-				if (dot < 0.001f)
-					continue;
-
-				Ray shadowRay(hitRecord.point, wi);
-				bool isInShadow = light->InShadow(ray, 0.001f, FLT_MAX, world);
-
-				if (!isInShadow)
-					attenuation += attenuation * light->L() * dot;
-			}
-
-			return attenuation * Color(scattered, world, depth + 1);
-		}
+			return emmited + attenuation * Color(scattered, world, depth + 1);
 		else
-			return Vector3();
+			return emmited;
 	}
 	else
 	{
@@ -89,17 +68,20 @@ HitableList *Scene::TestScene()
 	int width, height, comp;
 	unsigned char *imageData = stbi_load("Resources/three.png", &width, &height, &comp, 0);
 	Texture *ballTexture = new ImageTexture(imageData, width, height);
+	Texture *groundTexture = new ConstantTexture(Vector3(0.6f, 1.0f, 1.0f));
+	Texture *lightTexture = new ConstantTexture(Vector3(1.0f, 1.0f, 1.0f));
 
 	// Ground
-	list[i++] = new Sphere(Vector3(0.0f, -100.5f, 0.0f), 100.0f, new Lambertian(new ConstantTexture(Vector3(0.6f, 1.0f, 1.0f))));
+	list[i++] = new Sphere(Vector3(0.0f, -100.5f, 0.0f), 100.0f, new Lambertian(groundTexture));
 
-	list[i++] = new Sphere(Vector3(0.0f, 1.5f, -0.2f), 0.45f, new Lambertian(ballTexture));
+	//list[i++] = new Sphere(Vector3(0.0f, 1.5f, -0.2f), 0.45f, new Lambertian(ballTexture));
 	list[i++] = new Sphere(Vector3(1.0f, 0.0f, 1.2f), 0.5f, new Metal(Vector3(0.8f, 0.6f, 0.2f), 0.0f));
 	list[i++] = new Sphere(Vector3(-1.0f, 0.0f, 1.2f), 0.5f, new Metal(Vector3(0.8f, 0.8f, 0.8f), 0.0f));
-	list[i++] = new Sphere(Vector3(0.0f, 0.65f, 2.0f), 0.65f, new Lambertian(new ConstantTexture(Vector3(0.6f, 0.8f, 0.5f)))); //mesh;
+	//list[i++] = new Sphere(Vector3(1.0f, 0.7f, 0.2f), 0.3f, new DiffuseLight(lightTexture));
+	list[i++] = mesh;
 
-	lights.clear();
-	lights.push_back(new PointLight(Vector3(1.0f, 2.0f, 1.2f), Vector3(1.0f, 0.0f, 0.0f), 0.8f));
+	//lights.clear();
+	//lights.push_back(new PointLight(Vector3(0.0f, 2.1f, 1.2f), Vector3(1.0f, 1.0f, 1.0f), 1.0f));
 	
 	return new HitableList(list, i);
 }
@@ -204,7 +186,7 @@ void Scene::RenderScene()
 			t.join();
 	}
 #else
-	TileData tile = {0, 0, width, height};
+	TileData tile{0, 0, width, height};
 
 	{
 		PROFILE("RenderTile");
