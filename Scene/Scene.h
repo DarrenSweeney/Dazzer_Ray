@@ -17,6 +17,7 @@
 #include "..\Objects\HitableList.h"
 #include "..\Objects\Sphere.h"
 #include "..\Objects\Mesh.h"
+#include "..\Objects\Plane.h"
 
 #include "..\Camera\Camera.h"
 

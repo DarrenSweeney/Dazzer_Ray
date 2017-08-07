@@ -9,9 +9,9 @@
 //			to a scene. Scene had scene.Add(...) function.
 
 Scene::Scene()
-	: width(1024), height(512), samples(16), tileSize(256), numOfThreads(2)
+	: width(1024), height(512), samples(256), tileSize(256), numOfThreads(2)
 {
-	Vector3 cameraPosition(0.0f, 2.0f, 4.0f);
+	Vector3 cameraPosition(0.0f, 1.0f, 6.0f);
 	Vector3 lookAtPos(0.0f, 0.0f, 0.0f);
 	float distanceToFocus = 10.0f;
 	float aperture = 0.0f;
@@ -53,10 +53,12 @@ Vector3 Scene::Color(Ray &ray, Hitable *world, int depth)
 	}
 	else
 	{
-		Vector3 unitDirection = UnitVector(ray.Direction());
+		/*Vector3 unitDirection = UnitVector(ray.Direction());
 		float t = 0.5f * (unitDirection.y + 1.0f);
 
-		return (1.0f - t) * Vector3(0.0f, 0.0f, 0.0f) + t * Vector3(0.23f, 0.37f, 0.41f);
+		return (1.0f - t) * Vector3(0.0f, 0.0f, 0.0f) + t * Vector3(0.23f, 0.37f, 0.41f);*/
+
+		return Vector3();
 	}
 }
 
@@ -72,16 +74,14 @@ HitableList *Scene::TestScene()
 	Texture *lightTexture = new ConstantTexture(Vector3(1.0f, 1.0f, 1.0f));
 
 	// Ground
-	list[i++] = new Sphere(Vector3(0.0f, -100.5f, 0.0f), 100.0f, new Lambertian(groundTexture));
+	//list[i++] = new Sphere(Vector3(0.0f, -100.5f, 0.0f), 100.0f, new Lambertian(groundTexture));
+	list[i++] = new Plane(Vector3(0.0f, -0.5f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), new Lambertian(groundTexture));
 
 	//list[i++] = new Sphere(Vector3(0.0f, 1.5f, -0.2f), 0.45f, new Lambertian(ballTexture));
 	list[i++] = new Sphere(Vector3(1.0f, 0.0f, 1.2f), 0.5f, new Metal(Vector3(0.8f, 0.6f, 0.2f), 0.0f));
 	list[i++] = new Sphere(Vector3(-1.0f, 0.0f, 1.2f), 0.5f, new Metal(Vector3(0.8f, 0.8f, 0.8f), 0.0f));
-	//list[i++] = new Sphere(Vector3(1.0f, 0.7f, 0.2f), 0.3f, new DiffuseLight(lightTexture));
-	list[i++] = mesh;
-
-	//lights.clear();
-	//lights.push_back(new PointLight(Vector3(0.0f, 2.1f, 1.2f), Vector3(1.0f, 1.0f, 1.0f), 1.0f));
+	list[i++] = new Sphere(Vector3(0.0f, 4.0f, -6.0f), 5.0f, new DiffuseLight(lightTexture));
+	//list[i++] = mesh;
 	
 	return new HitableList(list, i);
 }
@@ -136,7 +136,10 @@ void Scene::QueueThreadRenderTask()
 	/*
 		@Note(Darren): When the thread is finished rendering the scene how do i start again for remaining scenes?
 	*/
-	RenderTile(tileToRender);
+	{
+		PROFILE("TileRender");
+		RenderTile(tileToRender);
+	}
 
 	/*
 		If another tile is avaible and this thread is done with RenderTIle(..) then

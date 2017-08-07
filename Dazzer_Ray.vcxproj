@@ -161,6 +161,7 @@
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Objects\HitableList.cpp" />
     <ClCompile Include="Objects\Mesh.cpp" />
+    <ClCompile Include="Objects\Plane.cpp" />
     <ClCompile Include="Objects\Sphere.cpp" />
     <ClCompile Include="IO\PPM_Image.cpp" />
     <ClCompile Include="IO\ObjParser.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Objects\Mesh.h" />
+    <ClInclude Include="Objects\Plane.h" />
     <ClInclude Include="Objects\Sphere.h" />
     <ClInclude Include="IO\PPM_Image.h" />
     <ClInclude Include="IO\OBJ_Parser.h" />
