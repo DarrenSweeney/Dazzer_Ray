@@ -18,7 +18,16 @@ bool Plane::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) co
 	if (t < 0.001f)
 		return false;
 	
+	// Experiment
+	Vector3 point = ray.PointAtParamater(t);
+	Vector3 vec = (position - point);
+
+	if(vec.x <= -2.0f || vec.x >= 2.0f || vec.z <= -2.0f || vec.z >= 2.0f)
+		return false;
+	// End experiment
+
 	hitRecord.t = t;
+	hitRecord.normal = normal;
 	hitRecord.point = ray.PointAtParamater(t);
 	hitRecord.material = material;
 

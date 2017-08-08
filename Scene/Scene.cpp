@@ -9,13 +9,13 @@
 //			to a scene. Scene had scene.Add(...) function.
 
 Scene::Scene()
-	: width(1024), height(512), samples(256), tileSize(256), numOfThreads(2)
+	: width(1024), height(512), samples(8), tileSize(256), numOfThreads(2)
 {
-	Vector3 cameraPosition(0.0f, 1.0f, 6.0f);
-	Vector3 lookAtPos(0.0f, 0.0f, 0.0f);
+	Vector3 cameraPosition(0.0f, 2.0f, 6.0f);
+	Vector3 lookAtPos(0.0f, 0.5f, 0.0f);
 	float distanceToFocus = 10.0f;
 	float aperture = 0.0f;
-	float vfov = 40.0f;
+	float vfov = 90.0f;
 
 	camera = Camera(cameraPosition, lookAtPos, Vector3(0.0f, 1.0f, 0.0f), vfov,
 		float(width) / float(height), aperture, distanceToFocus, 0.0f, 1.0f);
@@ -25,7 +25,7 @@ Scene::Scene()
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
-	ParseObjFile(attrib, shapes, materials, "Resources/mokey_low_poly.obj");
+	ParseObjFile(attrib, shapes, materials, "Resources/cube.obj");
 	mesh = new Mesh(attrib, shapes, new Lambertian(new ConstantTexture(Vector3(1.0f, 0.2f, 0.5f))));
 }
 
@@ -53,12 +53,10 @@ Vector3 Scene::Color(Ray &ray, Hitable *world, int depth)
 	}
 	else
 	{
-		/*Vector3 unitDirection = UnitVector(ray.Direction());
+		Vector3 unitDirection = UnitVector(ray.Direction());
 		float t = 0.5f * (unitDirection.y + 1.0f);
 
-		return (1.0f - t) * Vector3(0.0f, 0.0f, 0.0f) + t * Vector3(0.23f, 0.37f, 0.41f);*/
-
-		return Vector3();
+		return (1.0f - t) * Vector3(0.0f, 0.0f, 0.0f) + t * Vector3(0.23f, 0.37f, 0.41f);
 	}
 }
 
@@ -67,22 +65,17 @@ HitableList *Scene::TestScene()
 	Hitable **list = new Hitable*[5];
 	int i = 0;
 
-	int width, height, comp;
-	unsigned char *imageData = stbi_load("Resources/three.png", &width, &height, &comp, 0);
-	Texture *ballTexture = new ImageTexture(imageData, width, height);
-	Texture *groundTexture = new ConstantTexture(Vector3(0.6f, 1.0f, 1.0f));
-	Texture *lightTexture = new ConstantTexture(Vector3(1.0f, 1.0f, 1.0f));
+	Material *material = new Metal(Vector3(1.0f, 1.0f, 1.0f), 0.9f);
+	Material *material2 = new Lambertian(new ConstantTexture(Vector3(0.9f, 0.5f, 1.0f)));
+	Material *light = new DiffuseLight(new ConstantTexture(Vector3(1.0f, 1.0f, 1.0f)));
 
-	// Ground
-	//list[i++] = new Sphere(Vector3(0.0f, -100.5f, 0.0f), 100.0f, new Lambertian(groundTexture));
-	list[i++] = new Plane(Vector3(0.0f, -0.5f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), new Lambertian(groundTexture));
-
-	//list[i++] = new Sphere(Vector3(0.0f, 1.5f, -0.2f), 0.45f, new Lambertian(ballTexture));
-	list[i++] = new Sphere(Vector3(1.0f, 0.0f, 1.2f), 0.5f, new Metal(Vector3(0.8f, 0.6f, 0.2f), 0.0f));
-	list[i++] = new Sphere(Vector3(-1.0f, 0.0f, 1.2f), 0.5f, new Metal(Vector3(0.8f, 0.8f, 0.8f), 0.0f));
-	list[i++] = new Sphere(Vector3(0.0f, 4.0f, -6.0f), 5.0f, new DiffuseLight(lightTexture));
-	//list[i++] = mesh;
-	
+	list[i++] = new Disk(Vector3(0.0f, -1.0f, 0.0f), UnitVector(Vector3(0.0f, 1.0f, 0.0f)), 2.0f, material);
+		//new Plane(Vector3(0.0f, -1.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), material);
+	list[i++] = new Sphere(Vector3(0.0f, 0.0f, 1.0f), 1.0f, material2);
+	//list[i++] = new Sphere(Vector3(0.0f, 4.0f, 9.0f), 1.0f, light);
+	//list[i++] = new Sphere(Vector3(-2.0f, 2.0f, -3.0f), 0.5f, light);
+	//list[i++] = new Sphere(Vector3(3.0f, 1.0f, 2.0f), 0.5f, light);
+	//
 	return new HitableList(list, i);
 }
 
@@ -168,11 +161,14 @@ void Scene::RenderScene()
 	/*
 		Loop through all tiles to render and test how slower or faster it is.
 	*/
-	/*for (int i = 0; i < tilesToRender.size(); i++)
-	{
-		RenderTile(tilesToRender.at(i));
+	/*{
+		PROFILE("No Multi-threading");
+		for (int i = 0; i < tilesToRender.size(); i++)
+		{
+			RenderTile(tilesToRender.at(i));
 
-		std::cout << "Current Tile being rendered: " << i << std::endl;
+			std::cout << "Current Tile being rendered: " << i << std::endl;
+		}
 	}*/
 
 	for (uint8_t i = 0; i < numOfThreads; i++)

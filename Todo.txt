@@ -1,13 +1,14 @@
 Dazzer Ray
 
-- Implement multithreading where threads get a tile from a list
+// Things i need to do to complete this project
+- Implement multithreading where threads get a tile from a list.
 - Seperate into renderer and scene. I want something to similar to pt.
-- Add plane as an object to intersect in a scene.
+- Create a rectangle shape.
 
 // Target Scene i would like to have on my portfolio
-- Woman statue with different colored lights and simple background
 - Pool table scene with depth of field and motion blur of ball being hit
 - Simple classic cornel box
+- Monkey with simple background
 
 // Key fetures for portfolio?
 - Multithreading task system

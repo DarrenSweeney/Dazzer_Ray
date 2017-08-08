@@ -18,6 +18,7 @@
 #include "..\Objects\Sphere.h"
 #include "..\Objects\Mesh.h"
 #include "..\Objects\Plane.h"
+#include "..\Objects\Disk.h"
 
 #include "..\Camera\Camera.h"
 

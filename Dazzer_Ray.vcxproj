@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="Accelerators\BVH.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
+    <ClCompile Include="Objects\Disk.cpp" />
     <ClCompile Include="Lights\DiffuseLight.cpp" />
     <ClCompile Include="Materials\Dielectric.cpp" />
     <ClCompile Include="Materials\Lambertian.cpp" />
@@ -174,6 +175,7 @@
   <ItemGroup>
     <ClInclude Include="Accelerators\BVH.h" />
     <ClInclude Include="Camera\Camera.h" />
+    <ClInclude Include="Objects\Disk.h" />
     <ClInclude Include="IO\tiny_obj_loader.h" />
     <ClInclude Include="Lights\DiffuseLight.h" />
     <ClInclude Include="Materials\Dielectric.h" />
