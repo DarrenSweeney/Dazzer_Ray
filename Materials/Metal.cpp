@@ -9,7 +9,7 @@ Metal::Metal(const Vector3 &_albedo, const float _roughness)
 bool Metal::Scatter(const Ray &rayIn, const HitRecord &hitRecord, Vector3 &attenuation, Ray &scattered) const
 {
 	Vector3 reflected = Reflect(UnitVector(rayIn.Direction()), hitRecord.normal);
-	scattered = Ray(hitRecord.point, reflected);
+	scattered = Ray(hitRecord.point, reflected + RandomInUnitSphere());
 	attenuation = albedo;
 
 	return (Dot(scattered.Direction(), hitRecord.normal) > 0);
