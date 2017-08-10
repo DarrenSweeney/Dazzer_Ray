@@ -67,9 +67,13 @@ HitableList *Scene::TestScene()
 
 	Material *material = new Metal(Vector3(1.0f, 1.0f, 1.0f), 0.9f);
 	Material *material2 = new Lambertian(new ConstantTexture(Vector3(0.9f, 0.5f, 1.0f)));
+	Material *redMat = new Lambertian(new ConstantTexture(Vector3(0.96f, 0.1f, 0.1f)));
+	Material *greenMat = new Lambertian(new ConstantTexture(Vector3(0.1f, 0.96f, 0.1f)));
 	Material *light = new DiffuseLight(new ConstantTexture(Vector3(1.0f, 1.0f, 1.0f)));
 
 	list[i++] = new Disk(Vector3(0.0f, -1.0f, 0.0f), UnitVector(Vector3(0.0f, 1.0f, 0.0f)), 2.0f, material);
+	list[i++] = new XYRect(-2.5f, 2.5f, -0.5f, 2.0f, -1.0f, false, redMat);
+	list[i++] = new YZRect(-0.5f, 2.0f, -2.0f, 2.0f, -2.5f, false, greenMat);
 		//new Plane(Vector3(0.0f, -1.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), material);
 	list[i++] = new Sphere(Vector3(0.0f, 0.0f, 1.0f), 1.0f, material2);
 	//list[i++] = new Sphere(Vector3(0.0f, 4.0f, 9.0f), 1.0f, light);

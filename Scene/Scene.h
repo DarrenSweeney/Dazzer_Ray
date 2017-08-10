@@ -19,6 +19,7 @@
 #include "..\Objects\Mesh.h"
 #include "..\Objects\Plane.h"
 #include "..\Objects\Disk.h"
+#include "..\Objects\Rect.h"
 
 #include "..\Camera\Camera.h"
 

@@ -4,6 +4,7 @@ Dazzer Ray
 - Implement multithreading where threads get a tile from a list.
 - Seperate into renderer and scene. I want something to similar to pt.
 - Create a rectangle shape.
+- Motion blur for sphere
 
 // Target Scene i would like to have on my portfolio
 - Pool table scene with depth of field and motion blur of ball being hit
@@ -17,4 +18,3 @@ Dazzer Ray
 - Model loading
 - BVH using the median split method
 - Custum profile loggin?
-- Save scenes to disk, read/write?
