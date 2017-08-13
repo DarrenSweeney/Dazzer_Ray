@@ -3,7 +3,7 @@ Dazzer Ray
 // Things i need to do to complete this project
 - Implement multithreading where threads get a tile from a list.
 - Seperate into renderer and scene. I want something to similar to pt.
-- Motion blur for sphere
+- Implement a BVH for mesh rendering
 
 // Target Scene i would like to have on my portfolio
 - Pool table scene with depth of field and motion blur of ball being hit

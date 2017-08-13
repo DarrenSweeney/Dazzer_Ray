@@ -9,7 +9,7 @@
 //			to a scene. Scene had scene.Add(...) function.
 
 Scene::Scene()
-	: width(1024), height(512), samples(256), tileSize(256), numOfThreads(2)
+	: width(1024), height(512), samples(8), tileSize(256), numOfThreads(2)
 {
 	Vector3 cameraPosition(0.0f, 2.0f, 6.0f);
 	Vector3 lookAtPos(0.0f, 0.5f, 0.0f);
@@ -56,6 +56,7 @@ Vector3 Scene::Color(Ray &ray, Hitable *world, int depth)
 		Vector3 unitDirection = UnitVector(ray.Direction());
 		float t = 0.5f * (unitDirection.y + 1.0f);
 
+		// @todo(Darren): Add lerp to vec3 class
 		return (1.0f - t) * Vector3(0.0f, 0.0f, 0.0f) + t * Vector3(0.23f, 0.37f, 0.41f);
 	}
 }
@@ -65,17 +66,17 @@ HitableList *Scene::TestScene()
 	Hitable **list = new Hitable*[5];
 	int i = 0;
 
-	Material *material = new Metal(Vector3(1.0f, 1.0f, 1.0f), 0.9f);
+	Material *material = new Metal(Vector3(1.0f, 1.0f, 1.0f), 0.65f);
 	Material *material2 = new Lambertian(new ConstantTexture(Vector3(0.9f, 0.5f, 1.0f)));
 	Material *redMat = new Lambertian(new ConstantTexture(Vector3(0.96f, 0.1f, 0.1f)));
 	Material *greenMat = new Lambertian(new ConstantTexture(Vector3(0.1f, 0.96f, 0.1f)));
-	Material *light = new DiffuseLight(new ConstantTexture(Vector3(1.0f, 1.0f, 1.0f)));
+	Material *light = new DiffuseLight(new ConstantTexture(Vector3(0.65f, 0.5f, 0.15f)));
 
 	list[i++] = new Disk(Vector3(0.0f, -1.0f, 0.0f), UnitVector(Vector3(0.0f, 1.0f, 0.0f)), 4.0f, material);
 	list[i++] = new XYRect(-2.5f, 2.5f, -1.0f, 2.0f, -1.0f, false, redMat);
 	list[i++] = new YZRect(-1.0f, 2.0f, -2.0f, 2.0f, -2.5f, false, greenMat);
-	list[i++] = new Sphere(Vector3(-1.5f, 0.0f, 1.5f), 1.0f, material2);
-	list[i++] = new Sphere(Vector3(3.5f, 0.5f, 2.0f), 0.5f, light);
+	list[i++] = new Sphere(Vector3(-1.5f, 0.0f, 1.5f), Vector3(-1.0f, 0.0f, 1.5f), 0.0f, 1.0f, 1.0f, material2);
+	list[i++] = new Sphere(Vector3(3.0f, -0.3f, -0.7f), 0.7f, light);
 	return new HitableList(list, i);
 }
 

@@ -10,6 +10,8 @@
 				A - Ray Origin
 				B - Ray Direction
 				t - Ray parameter (any point on the line defined by the ray's origin and direction)
+
+	Note(Darren): When B is normalized to unit lenght, t corresponds to the actual distance from start point A
 */
 class Ray
 {

@@ -1,13 +1,14 @@
 #include "Sphere.h"
 
-Sphere::Sphere()
-	: radius(0.0f)
+Sphere::Sphere(const Vector3 &_startPos, const float &_radius, Material *_material)
+	: startPos(_startPos), radius(_radius), material(_material), endPos(_startPos), time0(0.0f), time1(0.0f), motionBlur(false)
 {
 
 }
 
-Sphere::Sphere(const Vector3 &_center, const float &_radius, Material *_material)
-	: center(_center), radius(_radius), material(_material)
+Sphere::Sphere(const Vector3 &_startPos, const Vector3 &_endPos, float _time0, float _time1,
+				const float &_radius, Material *_material)
+	: startPos(_startPos), endPos(_endPos), time0(_time0), time1(_time1), radius(_radius), material(_material), motionBlur(true)
 {
 
 }
@@ -20,7 +21,10 @@ Sphere::~Sphere()
 
 bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) const
 {
+	Vector3 center = Center(ray.Time());
 	Vector3 m = ray.Origin() - center;
+	// Note(Darren): The ray direction is not normalized
+	// Dot product of a vector itself is the square lenght of that vector
 	float a = Dot(ray.Direction(), ray.Direction());
 	float b = Dot(m, ray.Direction());
 	float c = Dot(m, m) - (radius * radius);
@@ -66,9 +70,24 @@ Vector2 Sphere::SphereUV(const Vector3 &p) const
 	return Vector2(u, v);
 }
 
+/*
+	Time is from 0-1 as set up in scene
+	Time between pos of sphere is also 0-1
+
+*/
+Vector3 Sphere::Center(float time) const
+{
+	if (!motionBlur)
+		return startPos;
+	else
+		//				  |<--------Range from 0-1-------->|
+		return startPos + ((time - time0) / (time1 - time0)) * (endPos - startPos);
+}
+
 bool Sphere::BoundingBox(float t0, float t1, AABB &box) const
 {
-	box = AABB(center - Vector3(radius, radius, radius), center + Vector3(radius, radius, radius));
+	// todo(Darren): Might take out t0 and t1
+	//box = AABB(center - Vector3(radius, radius, radius), center + Vector3(radius, radius, radius));
 
 	return true;
 }
