@@ -38,6 +38,11 @@ Axis AABB::GetLongestAxis() const
 	return Axis::X;
 }
 
+Vector3 AABB::GetCentroidPoint() const
+{
+	return Vector3(0.5f * min + 0.5f * max);
+}
+
 AABB AABB::ExpandBoundingBox(const AABB &box)
 {
 	Vector3 min(fminf(min.x, box.min.x), fminf(min.y, box.min.y), fminf(min.z, box.min.z));

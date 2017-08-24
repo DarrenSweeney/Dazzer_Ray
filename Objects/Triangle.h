@@ -12,6 +12,7 @@ public:
 
 	bool Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) const;
 	bool BoundingBox(float t0, float t1, AABB &box) const;
+	Vector3 Centroid() const;
 
 private:
 	Vector3 p1, p2, p3;

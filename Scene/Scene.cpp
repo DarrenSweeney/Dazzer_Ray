@@ -53,6 +53,7 @@ Vector3 Scene::Color(Ray &ray, Hitable *world, int depth)
 	}
 	else
 	{
+		// @todo(Darren)L Use a darker gradient from f.lux
 		Vector3 unitDirection = UnitVector(ray.Direction());
 		float t = 0.5f * (unitDirection.y + 1.0f);
 
@@ -77,24 +78,9 @@ HitableList *Scene::TestScene()
 	list[i++] = new YZRect(-1.0f, 2.0f, -2.0f, 2.0f, -2.5f, false, greenMat);
 	list[i++] = new Sphere(Vector3(-1.5f, 0.0f, 1.5f), Vector3(-1.0f, 0.0f, 1.5f), 0.0f, 1.0f, 1.0f, material2);
 	list[i++] = new Sphere(Vector3(3.0f, -0.3f, -0.7f), 0.7f, light);
+
 	return new HitableList(list, i);
 }
-
-Hitable* BVH_TestScene()
-{
-	std::vector<Hitable*> hitables;
-
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			hitables.push_back(new Sphere(Vector3(-1.0f + j, 0.5f, -1.0f + i), 0.1f, new Lambertian(new ConstantTexture(Vector3(1.0f, 0.0f, 0.0f)))));
-		}
-	}
-
-	return new BVH(&hitables);
-}
-
 
 /*
 	@TODO(Darren): Give each available thread a tile to render, threads that are finished are 

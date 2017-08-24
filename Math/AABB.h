@@ -11,6 +11,9 @@ class AABB
 public:
 	// minimum and maximum extent of the box
 	Vector3 min, max;
+	int start, end;
+	// True means start to end refer to other bounds, false means it refers to prims
+	bool flag;
 
 	AABB();
 	// a -> top back left of box, b -> bottom front right of box
@@ -18,6 +21,7 @@ public:
 
 	bool Hit(const Ray &ray, float tMin, float tMax) const;
 	Axis GetLongestAxis() const;
+	Vector3 GetCentroidPoint() const;
 	AABB ExpandBoundingBox(const AABB &box);
 	AABB GetSurroundingBox(const AABB &box0, const AABB& box1);
 };

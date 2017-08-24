@@ -2,8 +2,10 @@
 
 int main()
 {
-	Scene scene;
-	scene.RenderScene();
+
+
+	//Scene scene;
+	//scene.RenderScene();
 
 	/*
 		@todo(Daren): Going to seperate renderer and scene to have something similar to pt.
@@ -28,6 +30,8 @@ int main()
 
 		Renderer render = new render(scene, camera, 1024, 512, 256, 2);
 		render->RenderScene("Scene");
+
+		delete all the stuff!
 	*/
 
 	return 0;

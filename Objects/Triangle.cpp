@@ -55,6 +55,8 @@ bool Triangle::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord)
 	return true;
 }
 
+// @refactor(Darren): Make this method beter, i think this has shown to much friction.
+//					  Needs another look.
 bool Triangle::BoundingBox(float t0, float t1, AABB &box) const
 {
 	Vector3 minExtent(fminf(fminf(p1.x, p2.x), p3.x), fminf(fminf(p1.y, p2.y), p3.y), fminf(fminf(p1.z, p2.z), p3.z));
@@ -63,4 +65,10 @@ bool Triangle::BoundingBox(float t0, float t1, AABB &box) const
 	box = AABB(minExtent, maxExtent);
 
 	return true;
+}
+
+Vector3 Triangle::Centroid() const
+{
+	// Todo(Darren): Implement the centroid function
+	return Vector3();
 }
