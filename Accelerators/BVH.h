@@ -27,7 +27,6 @@ public:
 class BVH : public Hitable
 {
 public:
-	BVH();
 	BVH(std::vector<Triangle*> *_primsVector, int leafSize = 1);
 	~BVH();
 
@@ -42,7 +41,7 @@ private:
 	// Just leave until i get it working. Might have a BVH for scene of hitables 
 	// and BVH for mesh of hitables
 	std::vector<Triangle*> *primsVector;
-	std::vector<BVH_Node> nodeList;
+	int leafSize;
 
 	BVH_Node *root;
 };

@@ -11,9 +11,6 @@ class AABB
 public:
 	// minimum and maximum extent of the box
 	Vector3 min, max;
-	int start, end;
-	// True means start to end refer to other bounds, false means it refers to prims
-	bool flag;
 
 	AABB();
 	// a -> top back left of box, b -> bottom front right of box

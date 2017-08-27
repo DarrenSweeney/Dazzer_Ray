@@ -22,6 +22,9 @@ Mesh::Mesh(tinyobj::attrib_t &attrib, std::vector<tinyobj::shape_t> &shapes, Mat
 		}
 	}
 
+	// Create the bounding volume hierarchy for the mesh
+	bvh = new BVH(&triangles, 5);
+
 	AABB box;
 	for (size_t i = 1; i < triangles.size(); i++)
 	{
@@ -34,6 +37,8 @@ Mesh::~Mesh()
 {
 	for (size_t i = 0; i < triangles.size(); i++)
 		delete triangles[i];
+
+	delete bvh;
 }
 
 bool Mesh::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) const

@@ -1,6 +1,6 @@
 #include "Triangle.h"
 
-#define CULLING true
+#define CULLING false
 
 Triangle::Triangle() { }
 
@@ -69,6 +69,5 @@ bool Triangle::BoundingBox(float t0, float t1, AABB &box) const
 
 Vector3 Triangle::Centroid() const
 {
-	// Todo(Darren): Implement the centroid function
-	return Vector3();
+	return (p1 + p2 + p3) / 3;
 }

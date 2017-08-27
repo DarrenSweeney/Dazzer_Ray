@@ -9,7 +9,7 @@
 //			to a scene. Scene had scene.Add(...) function.
 
 Scene::Scene()
-	: width(1024), height(512), samples(8), tileSize(256), numOfThreads(2)
+	: width(1024), height(512), samples(1), tileSize(256), numOfThreads(2)
 {
 	Vector3 cameraPosition(0.0f, 2.0f, 6.0f);
 	Vector3 lookAtPos(0.0f, 0.5f, 0.0f);
@@ -25,7 +25,7 @@ Scene::Scene()
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
-	ParseObjFile(attrib, shapes, materials, "Resources/cube.obj");
+	ParseObjFile(attrib, shapes, materials, "Resources/cube_explode.obj");
 	mesh = new Mesh(attrib, shapes, new Lambertian(new ConstantTexture(Vector3(1.0f, 0.2f, 0.5f))));
 }
 
@@ -73,11 +73,12 @@ HitableList *Scene::TestScene()
 	Material *greenMat = new Lambertian(new ConstantTexture(Vector3(0.1f, 0.96f, 0.1f)));
 	Material *light = new DiffuseLight(new ConstantTexture(Vector3(0.65f, 0.5f, 0.15f)));
 
-	list[i++] = new Disk(Vector3(0.0f, -1.0f, 0.0f), UnitVector(Vector3(0.0f, 1.0f, 0.0f)), 4.0f, material);
+	/*list[i++] = new Disk(Vector3(0.0f, -1.0f, 0.0f), UnitVector(Vector3(0.0f, 1.0f, 0.0f)), 4.0f, material);
 	list[i++] = new XYRect(-2.5f, 2.5f, -1.0f, 2.0f, -1.0f, false, redMat);
-	list[i++] = new YZRect(-1.0f, 2.0f, -2.0f, 2.0f, -2.5f, false, greenMat);
-	list[i++] = new Sphere(Vector3(-1.5f, 0.0f, 1.5f), Vector3(-1.0f, 0.0f, 1.5f), 0.0f, 1.0f, 1.0f, material2);
-	list[i++] = new Sphere(Vector3(3.0f, -0.3f, -0.7f), 0.7f, light);
+	list[i++] = new YZRect(-1.0f, 2.0f, -2.0f, 2.0f, -2.5f, false, greenMat);*/
+	list[i++] = mesh;
+	//list[i++] = new Sphere(Vector3(-1.5f, 0.0f, 1.5f), Vector3(-1.0f, 0.0f, 1.5f), 0.0f, 1.0f, 1.0f, material2);
+	//list[i++] = new Sphere(Vector3(3.0f, -0.3f, -0.7f), 0.7f, light);
 
 	return new HitableList(list, i);
 }

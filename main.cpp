@@ -2,10 +2,8 @@
 
 int main()
 {
-
-
-	//Scene scene;
-	//scene.RenderScene();
+	Scene scene;
+	scene.RenderScene();
 
 	/*
 		@todo(Daren): Going to seperate renderer and scene to have something similar to pt.

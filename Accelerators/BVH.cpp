@@ -24,10 +24,8 @@ void BVH_Node::MakeLeaf(uint32_t index, uint32_t nTriangles)
 	m_nOfTriangles = nTriangles;
 }
 
-BVH::BVH() { }
-
-BVH::BVH(std::vector<Triangle*> *_primsVector, int leafSize)
-	: primsVector(_primsVector)
+BVH::BVH(std::vector<Triangle*> *_primsVector, int _leafSize)
+	: primsVector(_primsVector), leafSize(_leafSize)
 {
 	Build();
 }
@@ -44,10 +42,11 @@ void BVH::Build()
 {
 	// Calculate the world bounding box for the root node
 	AABB worldBound;
-	for(Triangle *prims : *primsVector)
+	primsVector->at(0)->BoundingBox(0.0f, 0.0f, worldBound);
+	for(size_t i = 1; i < primsVector->size(); i++)
 	{
 		AABB hitableBound;
-		prims->BoundingBox(0.0f, 0.0f, hitableBound);
+		primsVector->at(i)->BoundingBox(0.0f, 0.0f, hitableBound);
 		worldBound = worldBound.ExpandBoundingBox(hitableBound);
 	}
 
@@ -61,17 +60,12 @@ void BVH::Build()
 	BuildRecursive(leftIndex, rightIndex, root);
 }
 
-// Note(Darren): Do i need to know the depth?
 void BVH::BuildRecursive(int leftIndex, int rightIndex, BVH_Node *node)
 {
-	// @Note(Darren): Leaving threshold here for now
-	int leafTheshold = 5;
-
 	// Check if the number of hitables is less than the threshold
-	if ((rightIndex - leftIndex) <= leafTheshold)
+	if ((rightIndex - leftIndex) <= leafSize)
 	{
 		node->MakeLeaf(leftIndex, rightIndex - leftIndex);
-		// Todo(Darren): Count how many leafs for debugging
 	}
 	// @Todo(Darren): Is is bad that i am branching most of the time, because most of the time
 	// the number of hitables will be less than the threshold?
@@ -81,14 +75,14 @@ void BVH::BuildRecursive(int leftIndex, int rightIndex, BVH_Node *node)
 		AABB nodeBound = node->boundingBox;
 		Axis axis = nodeBound.GetLongestAxis();
 		// @refactor(Darren): I don't like this code
-		float midPointOnAxis = (nodeBound.max - nodeBound.min)[static_cast<uint8_t>(axis)] / 2;
+		Vector3 axisVec_debug = (nodeBound.min + nodeBound.max);
+		float midPointOnAxis = axisVec_debug[static_cast<uint8_t>(axis)] * 0.5f;
 
 		// Sort the hitables in this dimension
 		switch (axis)
 		{
 		case Axis::X:
 			std::sort(primsVector->begin() + leftIndex, primsVector->begin() + rightIndex,
-				// @note(Darren): Should i be getting the centroid of the bound?
 				[](const Triangle *t1, const Triangle *t2) -> bool { return t1->Centroid().x < t2->Centroid().x; });
 			break;
 		case Axis::Y:
@@ -108,7 +102,10 @@ void BVH::BuildRecursive(int leftIndex, int rightIndex, BVH_Node *node)
 		{
 			// @todo(Darren): Get Axis to use ints as default, maybe just get bvh working for now
 			if (primsVector->at(i)->Centroid()[static_cast<uint8_t>(axis)] > midPointOnAxis)
+			{
 				splitIndex = i;
+				break;
+			}
 		}
 
 		// Allocate two new nodes
@@ -116,14 +113,18 @@ void BVH::BuildRecursive(int leftIndex, int rightIndex, BVH_Node *node)
 		BVH_Node *rightNode = new BVH_Node();
 
 		// Find the bounding box for the left and right node
-		AABB leftBound, rightBound;
-		for (size_t i = leftIndex; i < splitIndex; i++)
+		AABB leftBound;
+		primsVector->at(leftIndex)->BoundingBox(0.0f, 0.0f, leftBound);
+		for (size_t i = leftIndex + 1; i < splitIndex; i++)
 		{
 			AABB primsBound;
 			primsVector->at(i)->BoundingBox(0.0f, 0.0f, primsBound);
 			leftBound = leftBound.ExpandBoundingBox(primsBound);
 		}
-		for (size_t i = splitIndex; i < rightIndex; i++)
+
+		AABB rightBound;
+		primsVector->at(splitIndex)->BoundingBox(0.0f, 0.0f, rightBound);
+		for (size_t i = splitIndex + 1; i < rightIndex; i++)
 		{
 			AABB primsBound;
 			primsVector->at(i)->BoundingBox(0.0f, 0.0f, primsBound);

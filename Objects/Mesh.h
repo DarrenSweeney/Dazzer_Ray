@@ -3,6 +3,7 @@
 
 #include "..\IO\OBJ_Parser.h"
 #include "..\Objects\Triangle.h"
+#include "..\Accelerators\BVH.h"
 
 class Mesh : public Hitable
 {
@@ -17,6 +18,8 @@ private:
 	Material *material;
 	std::vector<Triangle*> triangles;
 	AABB boundingBox;
+
+	BVH *bvh;
 };
 
 #endif
