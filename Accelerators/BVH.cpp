@@ -1,14 +1,14 @@
 #include "BVH.h"
 
 BVH_Node::BVH_Node()
-	: m_index(0), m_isLeaf(false), m_nOfTriangles(0), leftNode(nullptr), rightNode(nullptr)
+	: startIndex(0), isLeaf(false), nOfTriangles(0), leftNode(nullptr), rightNode(nullptr)
 {
 
 }
 
 BVH_Node::~BVH_Node()
 {
-	if (!m_isLeaf)
+	if (!isLeaf)
 	{
 		if (leftNode) 
 			delete leftNode;
@@ -19,22 +19,20 @@ BVH_Node::~BVH_Node()
 
 void BVH_Node::MakeLeaf(uint32_t index, uint32_t nTriangles)
 {
-	m_isLeaf = true;
-	m_index = index;
-	m_nOfTriangles = nTriangles;
+	isLeaf = true;
+	startIndex = index;
+	nOfTriangles = nTriangles;
 }
 
-BVH::BVH(std::vector<Triangle*> *_primsVector, int _leafSize)
+BVH::BVH(std::vector<Triangle*> *_primsVector, uint8_t _leafSize)
 	: primsVector(_primsVector), leafSize(_leafSize)
 {
+	PROFILE("BVH::Build");
 	Build();
 }
 
 BVH::~BVH()
 {
-	for (Triangle *hitable : *primsVector)
-		delete hitable;
-
 	delete root;
 }
 
@@ -145,7 +143,77 @@ void BVH::BuildRecursive(int leftIndex, int rightIndex, BVH_Node *node)
 
 bool BVH::Hit(const Ray &ray, float tMin, float tMax, HitRecord &rec) const
 {
+	if (!root) return false;
+
+	float tminLeft = 0.001f;
+	float tMaxLeft = FLT_MAX;
+
+	if (root->boundingBox.Hit(ray, tminLeft, tMaxLeft))
+	{
+		bool hit = Hit(root, ray, tMin, tMax, rec);
+		return hit;
+	}
+
 	return false;
+}
+
+bool BVH::Hit(BVH_Node *node, const Ray &ray, float tMin, float tMax, HitRecord &rec) const
+{
+	bool isIntersection = false;
+
+	if (node->isLeaf)
+	{
+		uint32_t startIndex = node->startIndex;
+		uint32_t noOfTriangles = node->nOfTriangles;
+
+		for (uint32_t i = startIndex; i < startIndex + noOfTriangles; i++)
+		{
+			if (primsVector->at(i)->Hit(ray, tMin, tMax, rec))
+				isIntersection = true;
+ 		}
+	}
+	// We have not hit the lead node which contains the triangle intersectables
+	else
+	{
+		float tminLeft = 0.001f;
+		float tMaxLeft = FLT_MAX;
+		bool hitLeftNode = false;
+		BVH_Node *leftNode = node->leftNode;
+		if (leftNode)
+		{
+			hitLeftNode = node->leftNode->boundingBox.Hit(ray, tminLeft, tMaxLeft);
+		}
+
+		float tminRight = 0.001f;
+		float tMaxRight = FLT_MAX;
+		bool hitRightNode = false;
+		BVH_Node *rightNode = node->rightNode;
+		if (rightNode)
+		{
+			hitRightNode = node->rightNode->boundingBox.Hit(ray, tminRight, tMaxRight);
+		}
+
+		if (hitRightNode && hitRightNode)
+		{
+			// Decide which node we are going to traverse into
+			if (tminLeft < tminRight)
+				isIntersection = Hit(node->leftNode, ray, tMin, tMax, rec);
+			else if (tminRight < tminLeft)
+				isIntersection = Hit(node->rightNode, ray, tMin, tMax, rec);
+		}
+
+		if (hitLeftNode && !hitRightNode)
+		{
+			isIntersection = Hit(node->leftNode, ray, tMin, tMax, rec);
+		}
+
+		if (hitRightNode && !hitLeftNode)
+		{
+			isIntersection = Hit(node->rightNode, ray, tMin, tMax, rec);
+		}
+	}
+
+	return isIntersection;
 }
 
 bool BVH::BoundingBox(float t0, float t1, AABB &box) const

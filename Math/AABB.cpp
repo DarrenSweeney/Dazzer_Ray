@@ -8,7 +8,7 @@ AABB::AABB(const Vector3 &a, const Vector3 &b)
 
 }
 
-bool AABB::Hit(const Ray &ray, float tMin, float tMax) const
+bool AABB::Hit(const Ray &ray, float &tMin, float &tMax) const
 {
 	for (int a = 0; a < 3; a++) 
 	{

@@ -1,6 +1,9 @@
 #include <time.h> 
 #include <stdio.h>
 
+#ifndef PROFILE_H
+#define PROFILE_H
+
 #define PROFILE(name) AutoProfile p(name)
 
 struct AutoProfile
@@ -21,3 +24,5 @@ struct AutoProfile
 	clock_t start;
 	double duration;
 };
+
+#endif PROFILE_H

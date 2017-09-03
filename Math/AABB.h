@@ -16,7 +16,7 @@ public:
 	// a -> top back left of box, b -> bottom front right of box
 	AABB(const Vector3 &a, const Vector3 &b);
 
-	bool Hit(const Ray &ray, float tMin, float tMax) const;
+	bool Hit(const Ray &ray, float &tMin, float &tMax) const;
 	Axis GetLongestAxis() const;
 	Vector3 GetCentroidPoint() const;
 	AABB ExpandBoundingBox(const AABB &box);
