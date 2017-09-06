@@ -16,17 +16,15 @@ HitableList::~HitableList()
 
 bool HitableList::Hit(const Ray &ray, float tMin, float tMax, HitRecord &rec) const
 {
-	HitRecord tempRecord;
 	bool hitAnything = false;
 	float closestSoFar = tMax;
 
 	for (int i = 0; i < listSize; i++)
 	{
-		if (hitableList[i]->Hit(ray, tMin, closestSoFar, tempRecord))
+		if (hitableList[i]->Hit(ray, tMin, closestSoFar, rec))
 		{
 			hitAnything = true;
-			closestSoFar = tempRecord.t;
-			rec = tempRecord;
+			closestSoFar = rec.t;
 		}
 	}
 

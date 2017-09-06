@@ -7,8 +7,7 @@
 #include <algorithm>
 #include "..\Profiler.h"
 
-// Todo(Darren): Can i make this a very simple struct
-class BVH_Node 
+class BVH_Node
 {
 public:
 	BVH_Node();
@@ -16,19 +15,12 @@ public:
 
 	void MakeLeaf(uint32_t index, uint32_t nTriangles);
 
-	AABB boundingBox;
 	BVH_Node* leftNode;
 	BVH_Node* rightNode;
-	// @note(Darren): Use unint32_t and the like more through out code?
 	uint32_t  startIndex;
-	bool isLeaf;
 	uint32_t nOfTriangles;
-};
-
-struct StackNode
-{
-	BVH_Node *node;
-	float t;
+	AABB boundingBox;
+	bool isLeaf;
 };
 
 class BVH : public Hitable
@@ -38,10 +30,10 @@ public:
 	~BVH();
 
 	void Build();
-	void BuildRecursive(int leftIndex, int rightIndex, BVH_Node *node);
+	void BuildRecursive(uint32_t leftIndex, uint32_t rightIndex, BVH_Node *node);
 
 	bool Hit(const Ray &ray, float tMin, float tMax, HitRecord &rec) const override;
-	bool Hit(BVH_Node *node, const Ray &ray, float tMin, float tMax, HitRecord &rec) const;
+	bool Hit(BVH_Node *node, const Ray &ray, float &tMin, float &tMax, HitRecord &rec) const;
 	bool BoundingBox(float t0, float t1, AABB &box) const override;
 
 private:

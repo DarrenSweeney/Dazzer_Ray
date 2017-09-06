@@ -9,9 +9,9 @@
 //			to a scene. Scene had scene.Add(...) function.
 
 Scene::Scene()
-	: width(1024), height(512), samples(256), tileSize(256), numOfThreads(2)
+	: width(1024), height(512), samples(1), tileSize(256), numOfThreads(2)
 {
-	Vector3 cameraPosition(0.0f, 2.0f, 6.0f);
+	Vector3 cameraPosition(1.0f, 0.0f, 4.0f);
 	Vector3 lookAtPos(0.0f, 0.5f, 0.0f);
 	float distanceToFocus = 10.0f;
 	float aperture = 0.0f;
@@ -26,7 +26,8 @@ Scene::Scene()
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 	ParseObjFile(attrib, shapes, materials, "Resources/monkey.obj");
-	mesh = new Mesh(attrib, shapes, new Lambertian(new ConstantTexture(Vector3(0.0f, 0.8f, 0.5f))));
+	// @todo(Darren): Implement error handling for mesh loading
+	mesh = new Mesh(attrib, shapes, new Lambertian(new ConstantTexture(Vector3(0.47f, 0.18f, 0.34f))));
 }
 
 Scene::~Scene()
@@ -64,21 +65,23 @@ Vector3 Scene::Color(Ray &ray, Hitable *world, int depth)
 
 HitableList *Scene::TestScene()
 {
-	Hitable **list = new Hitable*[5];
+	Hitable **list = new Hitable*[7];
 	int i = 0;
 
 	Material *material = new Metal(Vector3(1.0f, 1.0f, 1.0f), 0.65f);
-	Material *material2 = new Lambertian(new ConstantTexture(Vector3(0.9f, 0.5f, 1.0f)));
 	Material *redMat = new Lambertian(new ConstantTexture(Vector3(0.96f, 0.1f, 0.1f)));
 	Material *greenMat = new Lambertian(new ConstantTexture(Vector3(0.1f, 0.96f, 0.1f)));
-	Material *light = new DiffuseLight(new ConstantTexture(Vector3(0.65f, 0.5f, 0.15f)));
+	Material *light1 = new DiffuseLight(new ConstantTexture(Vector3(0.65f, 0.5f, 0.15f)));
+	Material *light2 = new DiffuseLight(new ConstantTexture(Vector3(0.85f, 0.12f, 0.35f)));
+	Material *light3 = new DiffuseLight(new ConstantTexture(Vector3(1.0f, 1.0f, 1.0f)));
 
 	list[i++] = new Disk(Vector3(0.0f, -1.0f, 0.0f), UnitVector(Vector3(0.0f, 1.0f, 0.0f)), 4.0f, material);
 	list[i++] = new XYRect(-2.5f, 2.5f, -1.0f, 2.0f, -1.0f, false, redMat);
 	list[i++] = new YZRect(-1.0f, 2.0f, -2.0f, 2.0f, -2.5f, false, greenMat);
 	list[i++] = mesh;
-	//list[i++] = new Sphere(Vector3(-1.5f, 0.0f, 1.5f), Vector3(-1.0f, 0.0f, 1.5f), 0.0f, 1.0f, 1.0f, material2);
-	//list[i++] = new Sphere(Vector3(3.0f, -0.3f, -0.7f), 0.7f, light);
+	list[i++] = new Sphere(Vector3(0.8f, -0.85f, 1.0f), 0.15f, light1);
+	list[i++] = new Sphere(Vector3(-1.0f, -0.85f, 1.7f), 0.15f, light2);
+	list[i++] = new Disk(Vector3(0.3f, 1.5f, 0.9f), UnitVector(Vector3(0.0f, 1.0f, 0.0f)), 0.75f, light3);
 
 	return new HitableList(list, i);
 }

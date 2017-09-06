@@ -58,48 +58,49 @@ void BVH::Build()
 	BuildRecursive(leftIndex, rightIndex, root);
 }
 
-void BVH::BuildRecursive(int leftIndex, int rightIndex, BVH_Node *node)
+void BVH::BuildRecursive(uint32_t leftIndex, uint32_t rightIndex, BVH_Node *node)
 {
+	// @todo(Darren): Take this out
+	static int counter = 0;
+	counter++;
+	printf("Counter is at: %i\n", counter);
+
 	// Check if the number of hitables is less than the threshold
 	if ((rightIndex - leftIndex) <= leafSize)
 	{
 		node->MakeLeaf(leftIndex, rightIndex - leftIndex);
 	}
-	// @Todo(Darren): Is is bad that i am branching most of the time, because most of the time
-	// the number of hitables will be less than the threshold?
 	else
 	{
 		// Find the longest axis of the current node bounding box and use it as the splitting axis
 		AABB nodeBound = node->boundingBox;
-		Axis axis = nodeBound.GetLongestAxis();
-		// @refactor(Darren): I don't like this code
-		Vector3 axisVec_debug = (nodeBound.min + nodeBound.max);
-		float midPointOnAxis = axisVec_debug[static_cast<uint8_t>(axis)] * 0.5f;
+		uint8_t longestAxis = nodeBound.GetLongestAxis();
+		Vector3 nodeAxis = (nodeBound.min + nodeBound.max);
+		
+		float midPointOnAxis = nodeAxis[longestAxis] * 0.5f;
 
 		// Sort the hitables in this dimension
-		switch (axis)
+		switch (longestAxis)
 		{
-		case Axis::X:
+		case 0:
 			std::sort(primsVector->begin() + leftIndex, primsVector->begin() + rightIndex,
 				[](const Triangle *t1, const Triangle *t2) -> bool { return t1->Centroid().x < t2->Centroid().x; });
 			break;
-		case Axis::Y:
+		case 1:
 			std::sort(primsVector->begin() + leftIndex, primsVector->begin() + rightIndex,
 				[](const Triangle *t1, const Triangle *t2) -> bool { return t1->Centroid().y < t2->Centroid().y; });
 			break;
-		case Axis::Z:
+		case 2:
 			std::sort(primsVector->begin() + leftIndex, primsVector->begin() + rightIndex,
 				[](const Triangle *t1, const Triangle *t2) -> bool { return t1->Centroid().z < t2->Centroid().z; });
 			break;
 		}
 
 		// Find the splt index where the mid point divides the primitives in a left and right side
-		// @todo(Darren): Try binary search
-		int splitIndex = leftIndex;
+		uint8_t splitIndex = leftIndex;
 		for (size_t i = leftIndex; i < rightIndex; i++)
 		{
-			// @todo(Darren): Get Axis to use ints as default, maybe just get bvh working for now
-			if (primsVector->at(i)->Centroid()[static_cast<uint8_t>(axis)] > midPointOnAxis)
+			if (primsVector->at(i)->Centroid()[longestAxis] > midPointOnAxis)
 			{
 				splitIndex = i;
 				break;
@@ -145,23 +146,80 @@ bool BVH::Hit(const Ray &ray, float tMin, float tMax, HitRecord &rec) const
 {
 	if (!root) return false;
 
-	float tminLeft = 0.001f;
-	float tMaxLeft = FLT_MAX;
-
-	if (root->boundingBox.Hit(ray, tminLeft, tMaxLeft))
+	float closestSoFar = tMax;
+	if (root->boundingBox.Hit(ray, tMin, closestSoFar))
 	{
-		bool hit = Hit(root, ray, tMin, tMax, rec);
+		bool hit = Hit(root, ray, tMin, closestSoFar, rec);
 		return hit;
 	}
 
 	return false;
 }
 
-bool BVH::Hit(BVH_Node *node, const Ray &ray, float tMin, float tMax, HitRecord &rec) const
+bool BVH::Hit(BVH_Node *node, const Ray &ray, float &tMin, float &tMax, HitRecord &rec) const
 {
 	bool isIntersection = false;
 
-	if (node->isLeaf)
+	// We are not at a leaf node so check the left and right node of the current node
+	if (!node->isLeaf)
+	{
+		float tL0 = 0.0001f;
+		float tL1 = FLT_MAX;
+
+		float tR0 = 0.0001f;
+		float tR1 = FLT_MAX;
+
+		BVH_Node *firstNode = 0;
+		BVH_Node *secondNode = 0;
+		BVH_Node *leftNode = node->leftNode;
+
+		if (leftNode)
+		{
+			bool intersectedL = leftNode->boundingBox.Hit(ray, tL0, tL1);
+			if (intersectedL && tL0 <= tMax)
+			{
+				firstNode = leftNode;
+			}
+		}
+
+		BVH_Node *rightNode = node->rightNode;
+		if (rightNode)
+		{
+			bool intersectedR = rightNode->boundingBox.Hit(ray, tR0, tR1);
+			if (intersectedR && tR0 <= tMax)
+			{
+				secondNode = rightNode;
+			}
+		}
+
+		if (firstNode)
+		{
+			float thit1 = tMax;
+			bool isIntersect1 = Hit(firstNode, ray, tMin, thit1, rec);
+
+			if (isIntersect1 && thit1 < tMax)
+			{
+				tMax = thit1;
+				isIntersection = true;
+			}
+		}
+
+		if (secondNode)
+		{
+			float thit2 = tMax;
+
+			bool isIntersect2 = Hit(secondNode, ray, tMin, thit2, rec);
+
+			if (isIntersect2 && thit2 < tMax)
+			{
+				tMax = thit2;
+				isIntersection = true;
+			}
+		}
+
+	}
+	// Check intersection for all triangles contained in the leaf node
+	else
 	{
 		uint32_t startIndex = node->startIndex;
 		uint32_t noOfTriangles = node->nOfTriangles;
@@ -169,47 +227,11 @@ bool BVH::Hit(BVH_Node *node, const Ray &ray, float tMin, float tMax, HitRecord 
 		for (uint32_t i = startIndex; i < startIndex + noOfTriangles; i++)
 		{
 			if (primsVector->at(i)->Hit(ray, tMin, tMax, rec))
+			{
 				isIntersection = true;
- 		}
-	}
-	// We have not hit the lead node which contains the triangle intersectables
-	else
-	{
-		float tminLeft = 0.001f;
-		float tMaxLeft = FLT_MAX;
-		bool hitLeftNode = false;
-		BVH_Node *leftNode = node->leftNode;
-		if (leftNode)
-		{
-			hitLeftNode = node->leftNode->boundingBox.Hit(ray, tminLeft, tMaxLeft);
-		}
-
-		float tminRight = 0.001f;
-		float tMaxRight = FLT_MAX;
-		bool hitRightNode = false;
-		BVH_Node *rightNode = node->rightNode;
-		if (rightNode)
-		{
-			hitRightNode = node->rightNode->boundingBox.Hit(ray, tminRight, tMaxRight);
-		}
-
-		if (hitRightNode && hitRightNode)
-		{
-			// Decide which node we are going to traverse into
-			if (tminLeft < tminRight)
-				isIntersection = Hit(node->leftNode, ray, tMin, tMax, rec);
-			else if (tminRight < tminLeft)
-				isIntersection = Hit(node->rightNode, ray, tMin, tMax, rec);
-		}
-
-		if (hitLeftNode && !hitRightNode)
-		{
-			isIntersection = Hit(node->leftNode, ray, tMin, tMax, rec);
-		}
-
-		if (hitRightNode && !hitLeftNode)
-		{
-			isIntersection = Hit(node->rightNode, ray, tMin, tMax, rec);
+				// Record the closest hit
+				tMax = rec.t;
+			}
 		}
 	}
 

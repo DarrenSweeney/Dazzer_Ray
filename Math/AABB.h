@@ -4,8 +4,6 @@
 #include "Ray.h"
 #include <stdint.h>
 
-enum class Axis { X, Y, Z };
-
 class AABB
 {
 public:
@@ -17,7 +15,7 @@ public:
 	AABB(const Vector3 &a, const Vector3 &b);
 
 	bool Hit(const Ray &ray, float &tMin, float &tMax) const;
-	Axis GetLongestAxis() const;
+	uint8_t GetLongestAxis() const;
 	Vector3 GetCentroidPoint() const;
 	AABB ExpandBoundingBox(const AABB &box);
 	AABB GetSurroundingBox(const AABB &box0, const AABB& box1);

@@ -27,15 +27,15 @@ bool AABB::Hit(const Ray &ray, float &tMin, float &tMax) const
 	return true;
 }
 
-Axis AABB::GetLongestAxis() const
+uint8_t AABB::GetLongestAxis() const
 {
 	Vector3 vec = max - min;
 
-	if (vec.x > vec.y && vec.x > vec.z)	return Axis::X;
-	if (vec.y > vec.x && vec.y > vec.z)	return Axis::Y;
-	if (vec.z > vec.x && vec.z > vec.y)	return Axis::Z;
+	if (vec.x > vec.y && vec.x > vec.z)	return 0;
+	if (vec.y > vec.x && vec.y > vec.z)	return 1;
+	if (vec.z > vec.x && vec.z > vec.y)	return 2;
 
-	return Axis::X;
+	return 0;
 }
 
 Vector3 AABB::GetCentroidPoint() const

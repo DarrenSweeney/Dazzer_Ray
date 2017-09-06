@@ -23,7 +23,7 @@ Mesh::Mesh(tinyobj::attrib_t &attrib, std::vector<tinyobj::shape_t> &shapes, Mat
 	}
 
 	// Create the bounding volume hierarchy for the mesh
-	bvh = new BVH(&triangles, 30);
+	bvh = new BVH(&triangles, 50);
 
 	AABB box;
 	for (size_t i = 1; i < triangles.size(); i++)
@@ -43,22 +43,11 @@ Mesh::~Mesh()
 
 bool Mesh::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) const
 {
-#if 0
-	for (Triangle *triangle : triangles)
-	{
-		if (triangle->Hit(ray, tMin, tMax, hitRecord))
-		{
-			hitRecord.material = material;
-			return true;
-		}
-	}
-#else
 	if (bvh->Hit(ray, tMin, tMax, hitRecord))
 	{
 		hitRecord.material = material;
 		return true;
 	}
-#endif
 
 	return false;
 }

@@ -1,6 +1,6 @@
 #include "Triangle.h"
 
-#define CULLING false
+#define CULLING true
 
 Triangle::Triangle() { }
 
@@ -45,7 +45,7 @@ bool Triangle::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord)
 
 	float t = Dot(d2, qvec) * invDet;
 
-	if (t < tMin)
+	if (t < tMin || t > tMax)
 		return false;
 
 	hitRecord.t = t;
