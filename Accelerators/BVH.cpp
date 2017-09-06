@@ -97,7 +97,7 @@ void BVH::BuildRecursive(uint32_t leftIndex, uint32_t rightIndex, BVH_Node *node
 		}
 
 		// Find the splt index where the mid point divides the primitives in a left and right side
-		uint8_t splitIndex = leftIndex;
+		uint32_t splitIndex = leftIndex;
 		for (size_t i = leftIndex; i < rightIndex; i++)
 		{
 			if (primsVector->at(i)->Centroid()[longestAxis] > midPointOnAxis)

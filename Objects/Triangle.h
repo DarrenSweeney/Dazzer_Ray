@@ -2,6 +2,7 @@
 #define TRIANGLE_H
 
 #include "Hitable.h"
+#include "..\Materials\Metal.h"
 #include <float.h>
 
 class Triangle
