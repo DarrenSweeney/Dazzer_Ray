@@ -32,10 +32,10 @@
 
 struct TileData
 {
-	unsigned int tilePosX;
-	unsigned int tilePosY;
-	unsigned int tileWidth;
-	unsigned int tileHeight;
+	uint16_t tilePosX;
+	uint16_t tilePosY;
+	uint16_t tileWidth;
+	uint16_t tileHeight;
 };
 
 class Scene
@@ -60,7 +60,7 @@ private:
 	PPM_Image *ppmImage;
 	Mesh *mesh;
 	uint8_t numOfThreads;
-	unsigned int width, height, samples, tileSize;
+	uint16_t width, height, samples, tileSize;
 };
 
 #endif

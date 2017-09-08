@@ -3,7 +3,7 @@ Dazzer Ray
 // Things i need to do to complete this project
 - Implement multithreading where threads get a tile from a list.
 - Seperate into renderer and scene. I want something to similar to pt. (Do this last i think?)
-- Implement a BVH for mesh rendering
+- Add a glossy material?
 
 // Target Scene i would like to have on my portfolio
 - Pool table scene with depth of field and motion blur of ball being hit
@@ -11,15 +11,10 @@ Dazzer Ray
 - Monkey with simple background
 
 // Key fetures for portfolio?
-- Multithreading task system
+- Multithreading system
 - Depth of field
 - Motion blur
 - Model loading
 - BVH using the median split method
-- Custum profile loggin?
-
-// Things to try with BVH
-- Try previous bvh model in part2
-- Redo hit after figuring out the prims check was incorrect
 
 // @note(Darren): Use unint32_t and the like more through out code?

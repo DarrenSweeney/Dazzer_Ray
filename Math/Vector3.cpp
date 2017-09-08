@@ -98,25 +98,3 @@ float Vector3::LengthSquared() const
 {
 	return (e[0] * e[0]) + (e[1] * e[1]) + (e[2] * e[2]);
 }
-
-Vector3 UnitVector(const Vector3 &vec)
-{
-	return vec / vec.Lenght();
-}
-
-Vector3 Reflect(const Vector3 &v, const Vector3 &n)
-{
-	return v - 2 * Dot(v, n) * n;
-}
-
-float Dot(const Vector3 &v1, const Vector3 &v2)
-{
-	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
-}
-
-Vector3 Cross(const Vector3 &v1, const Vector3 &v2)
-{
-	return Vector3((v1.y * v2.z - v1.z * v2.y),
-		(-(v1.x * v2.z - v1.z * v2.x)),
-		(v1.x * v2.y - v1.y * v2.x));
-}

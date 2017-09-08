@@ -1,5 +1,6 @@
 #include "BVH.h"
 
+// @todo(Darren): Make the bvh work with hitables?
 BVH_Node::BVH_Node()
 	: startIndex(0), isLeaf(false), nOfTriangles(0), leftNode(nullptr), rightNode(nullptr)
 {
@@ -98,7 +99,7 @@ void BVH::BuildRecursive(uint32_t leftIndex, uint32_t rightIndex, BVH_Node *node
 
 		// Find the splt index where the mid point divides the primitives in a left and right side
 		uint32_t splitIndex = leftIndex;
-		for (size_t i = leftIndex; i < rightIndex; i++)
+		for (uint32_t i = leftIndex; i < rightIndex; i++)
 		{
 			if (primsVector->at(i)->Centroid()[longestAxis] > midPointOnAxis)
 			{

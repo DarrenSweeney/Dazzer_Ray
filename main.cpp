@@ -3,7 +3,10 @@
 int main()
 {
 	Scene scene;
-	scene.RenderScene();
+	{
+		PROFILE("Scene::RenderScene");
+		scene.RenderScene();
+	}
 
 	/*
 		@todo(Daren): Going to seperate renderer and scene to have something similar to pt.

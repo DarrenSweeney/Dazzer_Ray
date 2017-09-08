@@ -10,14 +10,14 @@ class PPM_Image
 {
 public:
 	PPM_Image();
-	PPM_Image(unsigned int imageWidth, unsigned int imageHeight);
+	PPM_Image(uint16_t imageWidth, uint16_t imageHeight);
 	~PPM_Image();
 
 	void WritePixel(unsigned int pixelPosX, unsigned pixelPosY, Vector3 &rgb);
 	void SavePPM(std::string fileName, std::ofstream &ppmFile);
 
 private:
-	unsigned int width, height;
+	uint16_t width, height;
 	uint8_t *data;
 };
 
