@@ -28,6 +28,9 @@ void BVH_Node::MakeLeaf(uint32_t index, uint32_t nTriangles)
 BVH::BVH(std::vector<Triangle*> *_primsVector, uint8_t _leafSize)
 	: primsVector(_primsVector), leafSize(_leafSize)
 {
+	if (_primsVector->size() == 0)
+		return;
+
 	PROFILE("BVH::Build");
 	Build();
 }

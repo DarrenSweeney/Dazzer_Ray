@@ -22,7 +22,6 @@ Scene::Scene()
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 	ParseObjFile(attrib, shapes, materials, "Resources/monkey.obj");
-	// @todo(Darren): Implement error handling for mesh loading
 	// @note(Darren): Not working with metal material, triangle normal fliped makes it work out transparent
 	mesh = new Mesh(attrib, shapes, new Lambertian(new ConstantTexture(Vector3(0.47f, 0.18f, 0.34f))));
 }
