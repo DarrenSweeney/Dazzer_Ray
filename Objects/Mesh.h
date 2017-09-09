@@ -8,7 +8,7 @@
 class Mesh : public Hitable
 {
 public:
-	Mesh(tinyobj::attrib_t &attrib, std::vector<tinyobj::shape_t> &shapes, Material *_material);
+	Mesh(const char *fileLoc, Material *_material);
 	~Mesh();
 
 	bool Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) const override;

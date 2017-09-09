@@ -52,8 +52,8 @@ void BVH::Build()
 		worldBound = worldBound.ExpandBoundingBox(hitableBound);
 	}
 
-	int leftIndex = 0;
-	int rightIndex = primsVector->size();
+	uint32_t leftIndex = 0;
+	uint32_t rightIndex = primsVector->size();
 
 	// Set the world bounding box to the root node
 	root = new BVH_Node();

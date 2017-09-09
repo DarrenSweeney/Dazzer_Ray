@@ -1,8 +1,13 @@
 #include "Mesh.h"
 
-Mesh::Mesh(tinyobj::attrib_t &attrib, std::vector<tinyobj::shape_t> &shapes, Material *_material)
+Mesh::Mesh(const char *fileLoc, Material *_material)
 	: material(_material)
 {
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+	ParseObjFile(attrib, shapes, materials, "Resources/monkey.obj");
+
 	std::vector<Vector3> vertexPositions;
 	vertexPositions.reserve(attrib.vertices.size() / 3);
 	for (size_t i = 0; i < attrib.vertices.size() / 3; i++)

@@ -1,3 +1,5 @@
+#define TINYOBJLOADER_IMPLEMENTATION
+
 #include "OBJ_Parser.h"
 
 bool ParseObjFile(tinyobj::attrib_t &attrib, std::vector<tinyobj::shape_t> &shapes,

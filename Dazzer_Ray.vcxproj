@@ -168,6 +168,7 @@
     <ClCompile Include="IO\PPM_Image.cpp" />
     <ClCompile Include="IO\ObjParser.cpp" />
     <ClCompile Include="Objects\Triangle.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Textures\CheckerTexture.cpp" />
     <ClCompile Include="Textures\ConstantTexture.cpp" />
@@ -176,6 +177,9 @@
   <ItemGroup>
     <ClInclude Include="Accelerators\BVH.h" />
     <ClInclude Include="Camera\Camera.h" />
+    <ClInclude Include="Materials\All_Materials.h" />
+    <ClInclude Include="Objects\All_Objects.h" />
+    <ClInclude Include="DazzerRay.h" />
     <ClInclude Include="Objects\Disk.h" />
     <ClInclude Include="IO\tiny_obj_loader.h" />
     <ClInclude Include="Lights\DiffuseLight.h" />
@@ -200,7 +204,9 @@
     <ClInclude Include="IO\OBJ_Parser.h" />
     <ClInclude Include="Objects\Triangle.h" />
     <ClInclude Include="Profiler.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Textures\All_Textures.h" />
     <ClInclude Include="Textures\CheckerTexture.h" />
     <ClInclude Include="Textures\ConstantTexture.h" />
     <ClInclude Include="Textures\ImageTexture.h" />

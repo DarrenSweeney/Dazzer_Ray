@@ -1,0 +1,6 @@
+#include "Disk.h"
+#include "Mesh.h"
+#include "Plane.h"
+#include "Rect.h"
+#include "Sphere.h"
+#include "Triangle.h"
