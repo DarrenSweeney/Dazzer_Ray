@@ -1,12 +1,27 @@
 # Dazzer_Ray
 
-This is a currently work in progress personal project to be completed before 30th of September 2017
+***This is a currently work in progress personal project to be completed before 30th of September 2017***
 
-Website: darrensweeney.net
+Dazzer Ray is a CPU based multi-threaded ray tracer written in C++ with a clean and simple API.
 
-Twitter: @_DarrenSweeney
+![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/moneky.png)
 
-// @note(Darren): Example oh how i want to demonstrate the basics of the API.
+**Website: darrensweeney.net**
+
+**Twitter: @_DarrenSweeney**
+
+---
+
+### Features
+- Multithreaded
+- Depth of field
+- Motion blur
+- Model loading
+- Bounding Volume Hirearchy accelerated structure
+- Easy API
+
+### Hello World
+The following code below demonstrates how easy it is to set up and render a scene
 
 ```cpp
 #include "DazzerRay.h"
