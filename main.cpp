@@ -26,16 +26,14 @@ int main()
 	float distanceToFocus = 10.0f;
 	float aperture = 0.0f;
 	float vfov = 90.0f;
+	uint16_t width = 1024;
+	uint16_t height = 512;
 
 	Camera camera(cameraPosition, lookAtPos, Vector3(0.0f, 1.0f, 0.0f), vfov,
-		float(1024) / float(512), aperture, distanceToFocus, 0.0f, 1.0f);
+		float(width) / float(height), aperture, distanceToFocus, 0.0f, 1.0f);
 
 	Renderer renderer(&scene, &camera, 1024, 512, 1, 4);
-
-	{
-		PROFILE("Scene::RenderScene");
-		renderer.RenderScene();
-	}
+	renderer.RenderScene();
 
 	return 0;
 }
