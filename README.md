@@ -45,7 +45,6 @@ int main()
 	Scene scene;
 	scene.Add(new Plane(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), redMat));
 	scene.Add(new Sphere(Vector3(0.0f, 1.0f, 0.5f), 1.0f, greenMat));
-	scene.Add(new Sphere(Vector3(0.0f, 1.0f, 0.5f), 1.0f, greenMat));
 
 	Renderer renderer(&scene, &camera, width, height, 512, 4);
 	renderer.RenderScene();
