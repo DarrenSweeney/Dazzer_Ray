@@ -23,7 +23,7 @@ bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) c
 {
 	Vector3 center = Center(ray.Time());
 	Vector3 m = ray.Origin() - center;
-	// Note(Darren): The ray direction is not normalized
+	// @note(Darren): The ray direction is not normalized
 	// Dot product of a vector itself is the square lenght of that vector
 	float a = Dot(ray.Direction(), ray.Direction());
 	float b = Dot(m, ray.Direction());
@@ -73,7 +73,6 @@ Vector2 Sphere::SphereUV(const Vector3 &p) const
 /*
 	Time is from 0-1 as set up in scene
 	Time between pos of sphere is also 0-1
-
 */
 Vector3 Sphere::Center(float time) const
 {
@@ -86,8 +85,14 @@ Vector3 Sphere::Center(float time) const
 
 bool Sphere::BoundingBox(float t0, float t1, AABB &box) const
 {
-	// todo(Darren): Might take out t0 and t1
-	//box = AABB(center - Vector3(radius, radius, radius), center + Vector3(radius, radius, radius));
+	if (!motionBlur)
+		box = AABB(startPos - Vector3(radius, radius, radius), startPos + Vector3(radius, radius, radius));
+	else
+	{
+		AABB box0(Center(t0) - Vector3(radius, radius, radius), Center(t0) + Vector3(radius, radius, radius));
+		AABB box1(Center(t1) - Vector3(radius, radius, radius), Center(t1) + Vector3(radius, radius, radius));
+		box = box.GetSurroundingBox(box0, box1);
+	}
 
 	return true;
 }

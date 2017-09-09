@@ -37,12 +37,6 @@ public:
 	bool BoundingBox(float t0, float t1, AABB &box) const override;
 
 private:
-	// @note(Darren): Making this a Triangle, triangle is not a hitable right now.
-	// Just leave until i get it working. Might have a BVH for scene of hitables 
-	// and BVH for mesh of hitables
-	// @note(Darren): When i make the bvh in the mesh class i will know the size already,
-	//				  so maybe avoid dynamic memory of vector and allocate up front. 
-	//				  Look into this.
 	std::vector<Triangle*> *primsVector;
 	uint8_t leafSize;
 

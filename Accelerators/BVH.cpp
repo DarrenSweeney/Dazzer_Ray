@@ -1,6 +1,5 @@
 #include "BVH.h"
 
-// @todo(Darren): Make the bvh work with hitables?
 BVH_Node::BVH_Node()
 	: startIndex(0), isLeaf(false), nOfTriangles(0), leftNode(nullptr), rightNode(nullptr)
 {

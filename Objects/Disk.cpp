@@ -1,7 +1,7 @@
 #include "Disk.h"
 
 Disk::Disk(Vector3 &_position, Vector3 &_normal, float _radius, Material *_material)
-	: position(_position), normal(_normal), radius(_radius), material(_material)
+	: position(_position), normal(UnitVector(_normal)), radius(_radius), material(_material)
 {
 
 }

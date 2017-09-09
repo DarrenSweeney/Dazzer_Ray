@@ -1,7 +1,7 @@
 #include "Plane.h"
 
 Plane::Plane(Vector3 &_position, Vector3 &_normal, Material *_material)
-	: position(_position), normal(_normal), material(_material)
+	: position(_position), normal(UnitVector(_normal)), material(_material)
 {
 
 }

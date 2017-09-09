@@ -11,7 +11,7 @@
 				B - Ray Direction
 				t - Ray parameter (any point on the line defined by the ray's origin and direction)
 
-	Note(Darren): When B is normalized to unit lenght, t corresponds to the actual distance from start point A
+	@note(Darren): When B is normalized to unit lenght, t corresponds to the actual distance from start point A
 */
 class Ray
 {
@@ -20,7 +20,6 @@ public:
 	Ray(const Vector3 &_origin, const Vector3 &_direction, float ti = 0.0)
 		: origin(_origin), direction(_direction), time(ti) { }
 
-	// @Note(Darren): Should i bother using return functions here? Getters and setters etc.
 	Vector3 Origin() const { return origin; }
 	Vector3 Direction() const { return direction; }
 	Vector3 PointAtParamater(float t) const { return origin + t * direction; }

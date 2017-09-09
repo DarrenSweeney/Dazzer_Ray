@@ -42,29 +42,25 @@ void Renderer::QueueThreadRenderTask()
 {
 	TileData tileToRender;
 
-	{ std::lock_guard<std::mutex> lock(tileMutex);
+	{	
+		std::lock_guard<std::mutex> lock(tileMutex);
 
-	if (tilesToRender.size() <= 0)
-		return;
+		if (tilesToRender.size() <= 0)
+			return;
 
-	// Get a tile that needs to be rendered
-	tileToRender = {
-		tilesToRender.back()
-	};
+		// Get a tile that needs to be rendered
+		tileToRender = {
+			tilesToRender.back()
+		};
 
-	std::cout << "Current Tile being rendered: " << tilesToRender.size()
-		<< " Rendered by Thread: " << std::this_thread::get_id() << std::endl;
+		std::cout << "Current Tile being rendered: " << tilesToRender.size()
+			<< " Rendered by Thread: " << std::this_thread::get_id() << std::endl;
 
-	// Remove the tile as it's going to be rendered
-	tilesToRender.pop_back();
+		// Remove the tile as it's going to be rendered
+		tilesToRender.pop_back();
 	}
 
-	{
-		// @todo(Darren): Add more info
-
-		PROFILE("Render_Image_Tile: ");
-		RenderTile(tileToRender);
-	}
+	RenderTile(tileToRender);
 }
 
 
@@ -112,25 +108,30 @@ void Renderer::RenderTile(TileData &tileData)
 	assert(tileData.tilePosX + tileData.tileWidth <= width);
 	assert(tileData.tilePosY + tileData.tileHeight <= height);
 
-	for (uint16_t y = tileData.tilePosY; y < tileData.tilePosY + tileData.tileHeight; y++)
 	{
-		for (uint16_t x = tileData.tilePosX; x < tileData.tilePosX + tileData.tileWidth; x++)
+		const char* profileName;
+		PROFILE("Render_Image_Tile: ");
+
+		for (uint16_t y = tileData.tilePosY; y < tileData.tilePosY + tileData.tileHeight; y++)
 		{
-			Vector3 col;
-
-			for (uint16_t s = 0; s < samples; s++)
+			for (uint16_t x = tileData.tilePosX; x < tileData.tilePosX + tileData.tileWidth; x++)
 			{
-				float u = float(x + randF(0.0f, 1.0f)) / width;
-				float v = float(y + randF(0.0f, 1.0f)) / height;
+				Vector3 col;
 
-				Ray ray = camera->GetRay(u, v);
-				Vector3 point = ray.PointAtParamater(2.0f);
-				col += Color(ray, &scene->sceneObects, 0);
+				for (uint16_t s = 0; s < samples; s++)
+				{
+					float u = float(x + randF(0.0f, 1.0f)) / width;
+					float v = float(y + randF(0.0f, 1.0f)) / height;
+
+					Ray ray = camera->GetRay(u, v);
+					Vector3 point = ray.PointAtParamater(2.0f);
+					col += Color(ray, &scene->sceneObects, 0);
+				}
+
+				col /= float(samples);
+				col = Vector3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
+				ppmImage->WritePixel(x, y, col);
 			}
-
-			col /= float(samples);
-			col = Vector3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
-			ppmImage->WritePixel(x, y, col);
 		}
 	}
 }
