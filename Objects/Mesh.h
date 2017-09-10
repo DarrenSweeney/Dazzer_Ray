@@ -8,7 +8,7 @@
 class Mesh : public Hitable
 {
 public:
-	Mesh(const char *fileLoc, Material *_material);
+	Mesh(const char *fileLoc, Material *_material, uint8_t bvhLeafSize);
 	~Mesh();
 
 	bool Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) const override;

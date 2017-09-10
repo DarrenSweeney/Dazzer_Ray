@@ -1,12 +1,12 @@
 #include "Mesh.h"
 
-Mesh::Mesh(const char *fileLoc, Material *_material)
+Mesh::Mesh(const char *fileLoc, Material *_material, uint8_t leafSize)
 	: material(_material)
 {
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
-	ParseObjFile(attrib, shapes, materials, "Resources/monkey.obj");
+	ParseObjFile(attrib, shapes, materials, fileLoc);
 
 	std::vector<Vector3> vertexPositions;
 	vertexPositions.reserve(attrib.vertices.size() / 3);
@@ -28,7 +28,7 @@ Mesh::Mesh(const char *fileLoc, Material *_material)
 	}
 
 	// Create the bounding volume hierarchy for the mesh
-	bvh = new BVH(&triangles, 50);
+	bvh = new BVH(&triangles, leafSize);
 
 	AABB box;
 	for (size_t i = 1; i < triangles.size(); i++)

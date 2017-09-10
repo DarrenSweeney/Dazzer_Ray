@@ -50,7 +50,7 @@ bool Triangle::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord)
 
 	hitRecord.t = t;
 	hitRecord.point = ray.PointAtParamater(hitRecord.t);
-	hitRecord.normal = -Cross(d1, d2);
+	hitRecord.normal = Cross(d1, d2);
 
 	return true;
 }

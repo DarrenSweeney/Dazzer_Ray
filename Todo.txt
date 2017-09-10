@@ -5,7 +5,7 @@ Dazzer Ray
 - Simple classic cornel box
 - Monkey with simple background
 
-// Key fetures for portfolio?
+// Key fetures
 - Multithreading system
 - Depth of field
 - Motion blur
@@ -16,7 +16,6 @@ Dazzer Ray
 // THINGS TO DO
 - Deleting of material in objects
 - Solving metal problem
-- Adding the basic scene for github readme
 - Print out bvh info, number of leafs
 - Clear all @todo's scattered around
 - Not writing to first 4 pixels at top of ppm image
