@@ -19,3 +19,4 @@ Dazzer Ray
 - Print out bvh info, number of leafs
 - Clear all @todo's scattered around
 - Not writing to first 4 pixels at top of ppm image
+- Marble like surface
