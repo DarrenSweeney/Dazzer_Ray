@@ -4,7 +4,7 @@
 
 Dazzer Ray is a CPU based multi-threaded ray tracer written in C++ with a clean and simple API.
 
-![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/scenes.png)
+![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/readmephoto.png)
 
 **Website: darrensweeney.net**
 
@@ -59,4 +59,5 @@ int main()
 ### Example Scenes
 
 ![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/testscene.png)
+![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/billiards_git.png)
 ![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/model.png)
