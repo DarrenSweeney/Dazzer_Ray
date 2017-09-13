@@ -1,5 +1,0 @@
-Dazzer Ray
-
-// THINGS TO DO
-- Clear all @todo's scattered around
-- Not writing to first 4 pixels at top of ppm image
