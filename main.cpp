@@ -9,12 +9,12 @@ int main()
 	Material *blackMat = new Lambertian(new ConstantTexture(Vector3()));
 	Material *light3 = new DiffuseLight(new ConstantTexture(Vector3(1.0f, 1.0f, 1.0f)));
 
-	Vector3 cameraPosition(0.0f, 10.0f, 17.0f);
+	Vector3 cameraPosition(4.0f, 20.0f, 15.0f);
 	Vector3 lookAtPos(0.0f, 1.0f, 0.0f);
 	float distanceToFocus = 11.5f;
 	float aperture = 0.1f;
 	float vfov = 35.0f;
-	uint16_t width = 1024;
+	uint16_t width = 768;
 	uint16_t height = 512;
 
 	Camera camera(cameraPosition, lookAtPos, Vector3(0.0f, 1.0f, 0.0f), vfov,
@@ -23,23 +23,23 @@ int main()
 	Scene scene;
 	scene.Add(new Plane(Vector3(), Vector3(0.0f, 1.0f, 0.0f), new Lambertian(new ConstantTexture(Vector3(0.1f, 0.96f, 0.1f)))));
 	// Yellow one ball
-	scene.Add(new Sphere(Vector3(-5.0f, 1.0f, -1.0f), 1.0f, new Lambertian(new ImageTexture("Resources/one.png"))));
-	scene.Add(new Sphere(Vector3(-5.0f, 1.05f, -1.0f), 1.1f, new Dielectric(1.6f)));
+	scene.Add(new Sphere(Vector3(-5.0f, 1.0f, -1.0f), 1.5f, new Lambertian(new ImageTexture("Resources/one.png"))));
+	scene.Add(new Sphere(Vector3(-5.0f, 1.05f, -1.0f), 1.6f, new Dielectric(1.6f)));
 	// Red three ball
-	scene.Add(new Sphere(Vector3(0.0f, 1.0f, 0.0f), Vector3(0.2f, 1.0f, -0.2f), 0.0f, 1.0f, 1.0f, new Lambertian(new ImageTexture("Resources/three.png"))));
-	scene.Add(new Sphere(Vector3(0.0f, 1.05f, 0.0f), 1.1f, new Dielectric(1.6f)));
+	scene.Add(new Sphere(Vector3(2.0f, 1.0f, 0.0f), Vector3(2.5f, 1.0f, 0.4f), 0.0f, 1.0f, 1.5f, new Lambertian(new ImageTexture("Resources/three.png"))));
+	scene.Add(new Sphere(Vector3(2.0f, 1.05f, 0.0f), Vector3(2.5f, 1.05f, 0.4f), 0.0f, 1.0f, 1.6f, new Dielectric(1.6f)));
 	// Blue ten ball
-	scene.Add(new Sphere(Vector3(2.4f, 1.0f, -1.0f), 1.0f, new Lambertian(new ImageTexture("Resources/ball.jpg"))));
-	scene.Add(new Sphere(Vector3(2.4f, 1.05f,-1.0f), 1.1f, new Dielectric(1.6f)));
+	scene.Add(new Sphere(Vector3(4.8f, 1.0f, -1.0f), Vector3(5.3f, 1.0f, 0.2f), 0.0f, 1.0f, 1.5f, new Lambertian(new ImageTexture("Resources/ball.jpg"))));
+	scene.Add(new Sphere(Vector3(4.8f, 1.05f,-1.0f), Vector3(5.3f, 1.05f, 0.2f), 0.0f, 1.0f, 1.6f, new Dielectric(1.6f)));
 	// Black eight ball
-	scene.Add(new Sphere(Vector3(-2.4f, 1.0f, -8.0f), 1.0f, new Lambertian(new ImageTexture("Resources/eight.png"))));
-	scene.Add(new Sphere(Vector3(-2.4f, 1.05f, -8.0f), 1.1f, new Dielectric(1.6f)));
+	scene.Add(new Sphere(Vector3(-2.4f, 1.0f, -8.0f), 1.5f, new Lambertian(new ImageTexture("Resources/eight.png"))));
+	scene.Add(new Sphere(Vector3(-2.4f, 1.05f, -8.0f), 1.6f, new Dielectric(1.6f)));
 
 	// Cue ball
-	scene.Add(new Sphere(Vector3(-0.8f, 1.0f, 5.0f), 1.0f, new Lambertian(new ConstantTexture(Vector3(1.0f, 1.0f, 1.0f)))));
-	scene.Add(new Sphere(Vector3(-0.8f, 1.05f, 5.0f), 1.1f, new Dielectric(1.6f)));
+	scene.Add(new Sphere(Vector3(-0.8f, 1.0f, 5.0f), 1.5f, new Lambertian(new ConstantTexture(Vector3(1.0f, 1.0f, 1.0f)))));
+	scene.Add(new Sphere(Vector3(-0.8f, 1.05f, 5.0f), 1.6f, new Dielectric(1.6f)));
 
-	Renderer renderer(&scene, &camera, width, height, 128, 4);
+	Renderer renderer(&scene, &camera, width, height, 512, 4);
 	renderer.RenderScene();
 
 	return 0;

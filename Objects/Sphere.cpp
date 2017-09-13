@@ -38,7 +38,7 @@ bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) c
 		{
 			hitRecord.t = temp;
 			hitRecord.point = ray.PointAtParamater(hitRecord.t);
-			hitRecord.normal = (hitRecord.point - center) / radius;
+			hitRecord.normal = (hitRecord.point - Center(ray.Time())) / radius;
 			hitRecord.uv = SphereUV(hitRecord.normal);
 			hitRecord.material = material;
 			return true;
@@ -46,11 +46,11 @@ bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) c
 
 		temp = (-b + sqrtf(discriminant)) / a;
 
-		if (temp < tMax && temp > tMin)
+		if (temp < tMax && temp > tMin)	
 		{
 			hitRecord.t = temp;
 			hitRecord.point = ray.PointAtParamater(hitRecord.t);
-			hitRecord.normal = (hitRecord.point - center) / radius;
+			hitRecord.normal = (hitRecord.point - Center(ray.Time())) / radius;
 			hitRecord.uv = SphereUV(hitRecord.normal);
 			hitRecord.material = material;
 			return true;
