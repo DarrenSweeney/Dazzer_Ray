@@ -6,6 +6,12 @@ Plane::Plane(Vector3 &_position, Vector3 &_normal, Material *_material)
 
 }
 
+Plane::~Plane()
+{
+	if (material)
+		delete material;
+}
+
 bool Plane::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) const
 {
 	float d = Dot(normal, ray.Direction());

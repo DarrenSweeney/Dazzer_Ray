@@ -1,22 +1,5 @@
 Dazzer Ray
 
-// Target Scene i would like to have on my portfolio
-- Pool table scene with depth of field and motion blur of ball being hit
-- Simple classic cornel box
-- Monkey with simple background
-
-// Key fetures
-- Multithreading system
-- Depth of field
-- Motion blur
-- Model loading
-- BVH using the median split method
-- Easy API
-
 // THINGS TO DO
-- Deleting of material in objects
-- Solving metal problem
-- Print out bvh info, number of leafs
 - Clear all @todo's scattered around
 - Not writing to first 4 pixels at top of ppm image
-- Marble like surface

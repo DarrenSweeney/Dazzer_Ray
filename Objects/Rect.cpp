@@ -8,6 +8,12 @@ XYRect::XYRect(float _x0, float _x1, float _y0, float _y1, float _k, bool _flipN
 
 }
 
+XYRect::~XYRect()
+{
+	if (material)
+		delete material;
+}
+
 bool XYRect::Hit(const Ray &ray, float t_min, float t_max, HitRecord &hitRecord) const
 {
 	float t = (k - ray.Origin().z) / ray.Direction().z;
@@ -44,6 +50,12 @@ XZRect::XZRect(float _x0, float _x1, float _z0, float _z1, float _k, bool _flipN
 
 }
 
+XZRect::~XZRect()
+{
+	if (material)
+		delete material;
+}
+
 bool XZRect::Hit(const Ray &ray, float t_min, float t_max, HitRecord &hitRecord) const
 {
 	float t = (k - ray.Origin().y) / ray.Direction().y;
@@ -78,6 +90,12 @@ YZRect::YZRect(float _y0, float _y1, float _z0, float _z1, float _k, bool _flipN
 	: y0(_y0), y1(_y1), z0(_z0), z1(_z1), k(_k), flipNormal(_flipNormal), material(mat)
 {
 
+}
+
+YZRect::~YZRect()
+{
+	if (material)
+		delete material;
 }
 
 bool YZRect::Hit(const Ray &ray, float t_min, float t_max, HitRecord &hitRecord) const

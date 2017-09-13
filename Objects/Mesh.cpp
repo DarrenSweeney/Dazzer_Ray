@@ -43,6 +43,9 @@ Mesh::~Mesh()
 	for (Triangle *triangle : triangles)
 		delete triangle;
 
+	if (material)
+		delete material;
+
 	delete bvh;
 }
 

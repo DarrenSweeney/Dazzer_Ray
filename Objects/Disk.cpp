@@ -6,6 +6,12 @@ Disk::Disk(Vector3 &_position, Vector3 &_normal, float _radius, Material *_mater
 
 }
 
+Disk::~Disk()
+{
+	if (material)
+		delete material;
+}
+
 bool Disk::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) const
 {
 	float d = Dot(normal, ray.Direction());

@@ -63,11 +63,6 @@ void BVH::Build()
 
 void BVH::BuildRecursive(uint32_t leftIndex, uint32_t rightIndex, BVH_Node *node)
 {
-	// @todo(Darren): Take this out
-	static int counter = 0;
-	counter++;
-	//printf("Counter is at: %i\n", counter);
-
 	// Check if the number of hitables is less than the threshold
 	if ((rightIndex - leftIndex) <= leafSize)
 	{
