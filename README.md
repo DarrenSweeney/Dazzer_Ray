@@ -59,4 +59,5 @@ int main()
 ### Example Scenes
 
 ![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/testscene.png)
+![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/billiards_git.png)
 ![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/model.png)
