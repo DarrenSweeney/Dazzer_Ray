@@ -8,6 +8,7 @@ int main()
 	Material *whiteMat = new Lambertian(new ConstantTexture(Vector3(0.73f, 0.73f, 0.73f)));
 	Material *blackMat = new Lambertian(new ConstantTexture(Vector3()));
 	Material *light3 = new DiffuseLight(new ConstantTexture(Vector3(1.0f, 1.0f, 1.0f)));
+	Material *redLight = new DiffuseLight(new ConstantTexture(Vector3(0.96f, 0.1f, 0.1f)));
 
 	Mesh *dragonMesh = new Mesh("Resources/Dragon.obj", new Lambertian(new ConstantTexture(Vector3(0.93f, 0.37f, 0.0f))), 200);
 
@@ -15,10 +16,10 @@ int main()
 	//Vector3 cameraPosition(0.0f, 160.0f, 140.0f);
 	//Vector3 lookAtPos(0.0f, 170.0f, 120.0f);
 
-	Vector3 cameraPosition(-1.3f, 2.2f, 1.5f);
-	Vector3 lookAtPos(0.3f, 0.8f, 0.0f);
-	float distanceToFocus = 10.0f;
-	float aperture = 0.1f;
+	Vector3 cameraPosition(-2.0f, 2.1f, 0.5f);
+	Vector3 lookAtPos(0.25f, 0.40f, -0.12f);
+	float distanceToFocus = 3.0f;
+	float aperture = 0.01f;
 	float vfov = 40.0f;
 	uint16_t width = 1024;
 	uint16_t height = 512;
@@ -27,10 +28,13 @@ int main()
 		float(width) / float(height), aperture, distanceToFocus, 0.0f, 1.0f);
 
 	Scene scene;
-	scene.Add(new Plane(Vector3(0.0f, 0.2f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), new Metal(Vector3(0.4f, 0.6f, 0.0f), 0.9f)));
+	scene.Add(new Plane(Vector3(0.0f, 0.2f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), new Metal(Vector3(0.4f, 0.6f, 0.0f), 0.7f)));
 	scene.Add(dragonMesh);
+	scene.Add(new XZRect(-1.0f, 1.0f, -1.0f, 1.0f, 3.0f, false, light3));
+	scene.Add(new Sphere(Vector3(2.0f, 0.8f, -0.5f), 0.6f, new Metal(Vector3(0.9f, 0.9f, 0.85f))));
+	scene.Add(new Sphere(Vector3(2.0f, 0.3f, -0.5f), 0.1f, redLight));
 
-	Renderer renderer(&scene, &camera, width, height, 8, 8);
+	Renderer renderer(&scene, &camera, width, height, 1, 8);
 	renderer.RenderScene();
 
 	return 0;
