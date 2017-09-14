@@ -14,8 +14,6 @@ PPM_Image::~PPM_Image()
 	delete[] data;
 }
 
-// @todo(Darren): Check for different size images
-// @todo(Darren): Not writting some pixels at the top, look into this
 void PPM_Image::WritePixel(uint16_t pixelPosX, uint16_t pixelPosY, Vector3 &rgb)
 {
 	data[(pixelPosY * width * 3) + (pixelPosX * 3) + 0] = uint8_t(255.99 * rgb.r);

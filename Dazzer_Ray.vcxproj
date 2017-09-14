@@ -165,7 +165,7 @@
     <ClCompile Include="IO\PPM_Image.cpp" />
     <ClCompile Include="IO\ObjParser.cpp" />
     <ClCompile Include="Objects\Triangle.cpp" />
-    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Textures\CheckerTexture.cpp" />
     <ClCompile Include="Textures\ConstantTexture.cpp" />
@@ -201,7 +201,7 @@
     <ClInclude Include="IO\OBJ_Parser.h" />
     <ClInclude Include="Objects\Triangle.h" />
     <ClInclude Include="Profiler.h" />
-    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Textures\All_Textures.h" />
     <ClInclude Include="Textures\CheckerTexture.h" />
@@ -209,9 +209,6 @@
     <ClInclude Include="Textures\ImageTexture.h" />
     <ClInclude Include="IO\stb_image.h" />
     <ClInclude Include="Textures\Texture.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

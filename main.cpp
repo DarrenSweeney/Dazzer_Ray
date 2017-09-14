@@ -9,27 +9,28 @@ int main()
 	Material *blackMat = new Lambertian(new ConstantTexture(Vector3()));
 	Material *light3 = new DiffuseLight(new ConstantTexture(Vector3(1.0f, 1.0f, 1.0f)));
 
-	Mesh *wingedMesh = new Mesh("Resources/Winged_Victory.obj", new Lambertian(new ConstantTexture(Vector3(0.7f, 0.48f, 0.59f))), 200);
+	Mesh *dragonMesh = new Mesh("Resources/Dragon.obj", new Lambertian(new ConstantTexture(Vector3(0.93f, 0.37f, 0.0f))), 200);
 
 	// From below looking above
 	//Vector3 cameraPosition(0.0f, 160.0f, 140.0f);
 	//Vector3 lookAtPos(0.0f, 170.0f, 120.0f);
 
-	Vector3 cameraPosition(0.0f, 200.0f, 190.0f);
-	Vector3 lookAtPos(0.0f, 200.0f, 120.0f);
+	Vector3 cameraPosition(-1.3f, 2.2f, 1.5f);
+	Vector3 lookAtPos(0.3f, 0.8f, 0.0f);
 	float distanceToFocus = 10.0f;
-	float aperture = 0.0f;
-	float vfov = 75.0f;
+	float aperture = 0.1f;
+	float vfov = 40.0f;
 	uint16_t width = 1024;
-	uint16_t height = 1024;
+	uint16_t height = 512;
 
 	Camera camera(cameraPosition, lookAtPos, Vector3(0.0f, 1.0f, 0.0f), vfov,
 		float(width) / float(height), aperture, distanceToFocus, 0.0f, 1.0f);
 
 	Scene scene;
-	scene.Add(wingedMesh);
+	scene.Add(new Plane(Vector3(0.0f, 0.2f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), new Metal(Vector3(0.4f, 0.6f, 0.0f), 0.9f)));
+	scene.Add(dragonMesh);
 
-	Renderer renderer(&scene, &camera, width, height, 1, 8);
+	Renderer renderer(&scene, &camera, width, height, 8, 8);
 	renderer.RenderScene();
 
 	return 0;

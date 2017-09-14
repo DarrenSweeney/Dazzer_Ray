@@ -79,6 +79,7 @@ void Renderer::RenderScene()
 			uint16_t currentTilePos = tileWidth * i; // @note(Darren): Avoid narrowing converson here
 			if (i == numThreads - 1 && sum != width)
 			{
+				// @todo(Darren): Fix this
 				//tileWidth = width + (width - currentTileWidth);
 			}
 			tilesToRender.push_back(TileData{ currentTilePos, 0, tileWidth, height });
@@ -109,6 +110,7 @@ void Renderer::RenderTile(TileData &tileData)
 	assert(tileData.tilePosY + tileData.tileHeight <= height);
 
 	{
+		// @todo(Darren): Add better profile names
 		const char* profileName;
 		PROFILE("Render_Image_Tile: ");
 

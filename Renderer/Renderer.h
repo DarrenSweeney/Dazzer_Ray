@@ -5,11 +5,11 @@
 #include <mutex>
 #include <assert.h>
 
-#include "Profiler.h"
-#include "Camera\Camera.h"
-#include "Scene\Scene.h"
-#include "IO\PPM_Image.h"
-#include "Materials\Material.h"
+#include "..\Profiler.h"
+#include "..\Camera\Camera.h"
+#include "..\Scene\Scene.h"
+#include "..\IO\PPM_Image.h"
+#include "..\Materials\Material.h"
 
 struct TileData
 {
