@@ -16,8 +16,8 @@ int main()
 	//Vector3 cameraPosition(0.0f, 160.0f, 140.0f);
 	//Vector3 lookAtPos(0.0f, 170.0f, 120.0f);
 
-	Vector3 cameraPosition(-2.0f, 2.1f, 0.5f);
-	Vector3 lookAtPos(0.25f, 0.40f, -0.12f);
+	Vector3 cameraPosition(-2.0f, 2.2f, 0.5f);
+	Vector3 lookAtPos(0.25f, 0.45f, -0.12f);
 	float distanceToFocus = 3.0f;
 	float aperture = 0.01f;
 	float vfov = 40.0f;
@@ -28,13 +28,14 @@ int main()
 		float(width) / float(height), aperture, distanceToFocus, 0.0f, 1.0f);
 
 	Scene scene;
-	scene.Add(new Plane(Vector3(0.0f, 0.2f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), new Metal(Vector3(0.4f, 0.6f, 0.0f), 0.5f)));
+	scene.Add(new Plane(Vector3(0.0f, 0.2f, 0.0f), Vector3(0.0f, 1.0f, 0.0f),
+		new Lambertian(new CheckerTexture(new ConstantTexture(Vector3(0.7f, 0.7f, 0.7f)), new ConstantTexture(Vector3())))));
 	scene.Add(dragonMesh);
-	scene.Add(new XZRect(-1.0f, 1.0f, -1.0f, 1.0f, 3.0f, false, light3));
-	scene.Add(new Sphere(Vector3(1.7f, 0.8f, -0.0f), 0.6f, new Metal(Vector3(0.9f, 0.9f, 0.85f))));
+	scene.Add(new XZRect(1.0f, 3.0f, -4.0f, 0.0f, 3.0f, false, light3));
+	scene.Add(new Sphere(Vector3(1.3f, 0.8f, -0.0f), 0.6f, new Metal(Vector3(0.9f, 0.9f, 0.85f))));
 	scene.Add(new Sphere(Vector3(-0.8f, 1.1f, -0.7f), 0.08f, redLight));
 
-	Renderer renderer(&scene, &camera, width, height, 1, 8);
+	Renderer renderer(&scene, &camera, width, height, 8, 8);
 	renderer.RenderScene();
 
 	return 0;
