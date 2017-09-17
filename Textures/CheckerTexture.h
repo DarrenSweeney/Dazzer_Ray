@@ -8,6 +8,7 @@ class CheckerTexture : public Texture
 public:
 	CheckerTexture();
 	CheckerTexture(Texture *t0, Texture *t1);
+	~CheckerTexture();
 
 	Vector3 Value(const Vector2 &uv, const Vector3 &p) const override;
 

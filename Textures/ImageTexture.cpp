@@ -6,6 +6,15 @@ ImageTexture::ImageTexture(const char* imageLoc)
 {
 	int comp;
 	imageData = stbi_load(imageLoc, &width, &height, &comp, 0);
+
+	if (!imageData)
+		printf("ImageTexture:: Image was not loaded");
+}
+
+ImageTexture::~ImageTexture()
+{
+	if (imageData)
+		delete imageData;
 }
 
 Vector3 ImageTexture::Value(const Vector2 &uv, const Vector3 &p) const

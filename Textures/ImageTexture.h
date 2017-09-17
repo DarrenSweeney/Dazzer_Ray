@@ -11,6 +11,7 @@ class ImageTexture : public Texture
 public:
 	ImageTexture();
 	ImageTexture(const char* imageLoc);
+	~ImageTexture();
 
 	Vector3 Value(const Vector2 &uv, const Vector3 &p) const override;
 

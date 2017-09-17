@@ -110,8 +110,6 @@ void Renderer::RenderTile(TileData &tileData)
 	assert(tileData.tilePosY + tileData.tileHeight <= height);
 
 	{
-		// @todo(Darren): Add better profile names
-		const char* profileName;
 		PROFILE("Render_Image_Tile: ");
 
 		for (uint16_t y = tileData.tilePosY; y < tileData.tilePosY + tileData.tileHeight; y++)
