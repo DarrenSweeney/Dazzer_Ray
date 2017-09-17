@@ -1,10 +1,8 @@
 # Dazzer_Ray
 
-***This is a currently work in progress personal project to be completed before 30th of September 2017***
-
 Dazzer Ray is a CPU based multi-threaded ray tracer written in C++ with a clean and simple API.
 
-![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/readmephoto2.png)
+![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/git_read_me.png)
 
 **Website: darrensweeney.net**
 
@@ -58,6 +56,7 @@ int main()
 ---
 ### Example Scenes
 
-![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/cornellbox.png)
 ![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/billiards_git1.png)
+![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/cornellbox.png)
+![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/dof_dragon.png)
 ![alt text](https://dsweeneyblog.files.wordpress.com/2017/09/model.png)
