@@ -71,21 +71,21 @@ void Renderer::RenderScene()
 
 		// Divide the retangle image into chunks based of number of threads
 		// @note(Darren): Gonna split across horizontal, so each tile can access data continous
-		uint16_t tileWidth = width / numThreads;
+		uint16_t tileHeight = height / numThreads;
 		uint16_t sum = 0;
 		for (uint16_t i = 0; i < numThreads; i++)
 		{
-			sum += tileWidth;
-			uint16_t currentTilePos = tileWidth * i; // @note(Darren): Avoid narrowing converson here
+			sum += tileHeight;
+			uint16_t tileHeightPos = tileHeight * i; // @note(Darren): Avoid narrowing converson here
 			if (i == numThreads - 1 && sum != width)
 			{
-				// @todo(Darren): Fix this
-				//tileWidth = width + (width - currentTileWidth);
+				tileHeight = height - tileHeightPos;
+				sum += height - sum;
 			}
-			tilesToRender.push_back(TileData{ currentTilePos, 0, tileWidth, height });
+			tilesToRender.push_back(TileData{ 0, tileHeightPos, width, tileHeight});
 		}
 
-		assert(sum == width);
+		assert(sum == height);
 
 		for (uint8_t i = 0; i < numThreads; i++)
 		{
