@@ -15,8 +15,7 @@ Dazzer Ray is a CPU based multi-threaded ray tracer written in C++ with a clean 
 - Depth of field
 - Motion blur
 - Model loading
-- Bounding Volume Hirearchy accelerated structure
-- Easy API
+- Bounding Volume Hierarchy accelerated structure
 
 ### Hello World
 The following code below demonstrates how easy it is to set up and render a scene
