@@ -25,7 +25,7 @@ bool Disk::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) con
 		return false;
 
 	Vector3 point = ray.PointAtParamater(t);
-	float distanceToPlaneOrigin = (position - point).Lenght();
+	float distanceToPlaneOrigin = (position - point).Length();
 
 	if (distanceToPlaneOrigin >= radius)
 		return false;

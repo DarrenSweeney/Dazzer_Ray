@@ -89,7 +89,7 @@ Vector3& Vector3::operator/=(const float value)
 	return *this;
 }
 
-float Vector3::Lenght() const
+float Vector3::Length() const
 {
 	return sqrtf((e[0] * e[0]) + (e[1] * e[1]) + (e[2] * e[2]));
 }

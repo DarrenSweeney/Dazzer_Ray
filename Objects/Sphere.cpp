@@ -24,7 +24,7 @@ bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) c
 	Vector3 center = Center(ray.Time());
 	Vector3 m = ray.Origin() - center;
 	// @note(Darren): The ray direction is not normalized
-	// Dot product of a vector itself is the square lenght of that vector
+	// Dot product of a vector itself is the square length of that vector
 	float a = Dot(ray.Direction(), ray.Direction());
 	float b = Dot(m, ray.Direction());
 	float c = Dot(m, m) - (radius * radius);

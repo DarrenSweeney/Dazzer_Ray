@@ -17,13 +17,13 @@ bool Dielectric::Scatter(const Ray &rayIn, const HitRecord &hitRecord, Vector3 &
 	{
 		outwardNormal = -hitRecord.normal;
 		ni_over_nt = refractiveIndex;
-		cosine = refractiveIndex * Dot(rayIn.Direction(), hitRecord.normal) / rayIn.Direction().Lenght();
+		cosine = refractiveIndex * Dot(rayIn.Direction(), hitRecord.normal) / rayIn.Direction().Length();
 	}
 	else
 	{
 		outwardNormal = hitRecord.normal;
 		ni_over_nt = 1.0f / refractiveIndex;
-		cosine = -Dot(rayIn.Direction(), hitRecord.normal) / rayIn.Direction().Lenght();
+		cosine = -Dot(rayIn.Direction(), hitRecord.normal) / rayIn.Direction().Length();
 	}
 
 	if (Refract(rayIn.Direction(), outwardNormal, ni_over_nt, refracted))

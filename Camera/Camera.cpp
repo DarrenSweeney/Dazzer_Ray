@@ -3,11 +3,11 @@
 Camera::Camera() { }
 
 Camera::Camera(Vector3 &position, Vector3 &lookAt, Vector3 &upVec, float vfov, float aspectRatio,
-	float aperature, float focusDistance, float _shutterOpenTime, float _shutterCloseTime)
+	float aperture, float focusDistance, float _shutterOpenTime, float _shutterCloseTime)
 {
 	shutterOpenTime = _shutterOpenTime;
 	shutterCloseTime = _shutterCloseTime;
-	lensRadius = aperature / 2;
+	lensRadius = aperture / 2;
 
 	origin = position;
 	w = UnitVector(position - lookAt);

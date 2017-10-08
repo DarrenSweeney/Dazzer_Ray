@@ -34,7 +34,7 @@ public:
 	Vector3& operator*=(const float value);
 	Vector3& operator/=(const float value);
 
-	float Lenght() const;
+	float Length() const;
 	float LengthSquared() const;
 };
 
@@ -50,7 +50,7 @@ inline Vector3 Reflect(const Vector3 &v, const Vector3 &n)
 
 inline Vector3 UnitVector(const Vector3 &vec)
 {
-	return vec / vec.Lenght();
+	return vec / vec.Length();
 }
 
 inline Vector3 Cross(const Vector3 &v1, const Vector3 &v2)
