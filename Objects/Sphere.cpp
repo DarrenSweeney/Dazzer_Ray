@@ -21,12 +21,12 @@ Sphere::~Sphere()
 
 bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) const
 {
-	Vector3 center = Center(ray.Time());
-	Vector3 m = ray.Origin() - center;
+	Vector3 center = Center(ray.time);
+	Vector3 m = ray.origin - center;
 	// @note(Darren): The ray direction is not normalized
 	// Dot product of a vector itself is the square length of that vector
-	float a = Dot(ray.Direction(), ray.Direction());
-	float b = Dot(m, ray.Direction());
+	float a = Dot(ray.direction, ray.direction);
+	float b = Dot(m, ray.direction);
 	float c = Dot(m, m) - (radius * radius);
 	float discriminant = b*b - a*c;
 
@@ -38,7 +38,7 @@ bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) c
 		{
 			hitRecord.t = temp;
 			hitRecord.point = ray.PointAtParamater(hitRecord.t);
-			hitRecord.normal = (hitRecord.point - Center(ray.Time())) / radius;
+			hitRecord.normal = (hitRecord.point - Center(ray.time)) / radius;
 			hitRecord.uv = SphereUV(hitRecord.normal);
 			hitRecord.material = material;
 			return true;
@@ -50,7 +50,7 @@ bool Sphere::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) c
 		{
 			hitRecord.t = temp;
 			hitRecord.point = ray.PointAtParamater(hitRecord.t);
-			hitRecord.normal = (hitRecord.point - Center(ray.Time())) / radius;
+			hitRecord.normal = (hitRecord.point - Center(ray.time)) / radius;
 			hitRecord.uv = SphereUV(hitRecord.normal);
 			hitRecord.material = material;
 			return true;

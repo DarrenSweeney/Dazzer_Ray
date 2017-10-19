@@ -1,9 +1,11 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "..\Math\Ray.h"
 #include "..\Math\Sampler.h"
 #include "..\Math\MathUtil.h"
+#include "..\Math\Ray.h"
+
+//class Ray;
 
 class Camera
 {
@@ -12,7 +14,7 @@ public:
 	Camera(Vector3 &position, Vector3 &lookAt, Vector3 &upVec, float vfov, float aspectRatio,
 		float aperture, float focusDistance, float shutterOpenTime, float shutterCloseTime);
 
-	Ray GetRay(float s, float t);
+	void CalculateRay(Ray &ray, float s, float t);
 
 private:
 	Vector3 origin;

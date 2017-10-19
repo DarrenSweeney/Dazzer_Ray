@@ -11,38 +11,39 @@
 #include "..\IO\PPM_Image.h"
 #include "..\Materials\Material.h"
 
-struct TileData
-{
-	uint16_t tilePosX;
-	uint16_t tilePosY;
-	uint16_t tileWidth;
-	uint16_t tileHeight;
-};
+//class Scene;
+//class HitableList;
+//class Camera;
 
 class Renderer
 {
 public:
-	Renderer(Scene *scene, Camera *camera, uint32_t width, 
-		uint32_t height, uint16_t samples, uint8_t numThreads);
+	Renderer(uint32_t width, uint32_t height, uint16_t samples, uint8_t numThreads);
 	~Renderer();
 
-	void RenderScene();
+	void RenderScene(Camera *camera, Scene *scene);
 
 private:
-	Vector3 Color(const Ray &ray, HitableList *world, uint16_t depth);
-	void QueueThreadRenderTask();
-	void RenderTile(TileData &tileData);
+	struct TileData
+	{
+		uint16_t tilePosX;
+		uint16_t tilePosY;
+		uint16_t tileWidth;
+		uint16_t tileHeight;
+	};
 
-	Camera *camera;
-	Scene *scene;
+	Vector3 Color(const Ray &ray, HitableList *world, uint16_t depth);
+	void QueueThreadRenderTask(Camera *camera, Scene *scene);
+	void RenderTile(Camera *camera, Scene *scene, const TileData &tileData);
+
 	PPM_Image *ppmImage;
 	uint16_t width, height;
 	uint16_t samples;
 	uint8_t numThreads;
+	std::vector<TileData> tilesToRender;
 
 	std::vector<std::thread> threads;
 	std::mutex tileMutex;
-	std::vector<TileData> tilesToRender;
 };
 
 #endif

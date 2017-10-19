@@ -15,7 +15,7 @@ bool Triangle::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord)
 {
 	Vector3 d1 = p2 - p1;
 	Vector3 d2 = p3 - p1;
-	Vector3 pvec = Cross(ray.Direction(), d2);
+	Vector3 pvec = Cross(ray.direction, d2);
 	float det = Dot(d1, pvec);
 
 #if CULLING
@@ -31,14 +31,14 @@ bool Triangle::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord)
 
 	float invDet = 1 / det;
 
-	Vector3 tvec = ray.Origin() - p1;
+	Vector3 tvec = ray.origin - p1;
 	float u = Dot(tvec, pvec) * invDet;
 
 	if (u < 0 || u > 1) 
 		return false;
 
 	Vector3 qvec = Cross(tvec, d1);
-	float v = Dot(ray.Direction(), qvec) * invDet;
+	float v = Dot(ray.direction, qvec) * invDet;
 
 	if (v < 0 || u + v > 1) 
 		return false;

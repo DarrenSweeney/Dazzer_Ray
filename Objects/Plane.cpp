@@ -14,12 +14,12 @@ Plane::~Plane()
 
 bool Plane::Hit(const Ray &ray, float tMin, float tMax, HitRecord &hitRecord) const
 {
-	float d = Dot(normal, ray.Direction());
+	float d = Dot(normal, ray.direction);
 
 	if (fabs(d) < 0.001f)
 		return false;
 
-	Vector3 a = position - ray.Origin();
+	Vector3 a = position - ray.origin;
 	float t = Dot(a, normal) / d;
 	if (t < 0.001f)
 		return false;

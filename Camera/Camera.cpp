@@ -24,11 +24,14 @@ Camera::Camera(Vector3 &position, Vector3 &lookAt, Vector3 &upVec, float vfov, f
 	vertical = 2 * halfHeight * focusDistance * v;
 }
 
-Ray Camera::GetRay(float s, float t)
+void Camera::CalculateRay(Ray &ray, float s, float t)
 {
 	Vector3 rd = lensRadius * RandomInUnitDisk();
 	Vector3 offset = u * rd.x + v * rd.y;
 	float time = shutterOpenTime + randF(0.0f, 1.0f) * (shutterCloseTime - shutterOpenTime);
 
-	return Ray(origin + offset, lowerLeftCorner + s * horizontal + t * vertical - origin - offset, time);
+	// @brett_refactor(darren): Can not longer access ray variables because of forward declartion.
+	ray.origin = origin + offset;
+	ray.direction = lowerLeftCorner + s * horizontal + t * vertical - origin - offset;
+	ray.time = time;
 }

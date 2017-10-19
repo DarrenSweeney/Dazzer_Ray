@@ -5,3 +5,5 @@
 #include "Materials\All_Materials.h"
 #include "Textures\All_Textures.h"
 #include "Renderer\Renderer.h"
+#include "Camera\Camera.h"
+#include "Scene\Scene.h"

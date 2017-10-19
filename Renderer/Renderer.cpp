@@ -1,8 +1,7 @@
 #include "Renderer.h"
 
-Renderer::Renderer(Scene *_scene, Camera *_camera, uint32_t _width,
-	uint32_t _height, uint16_t _samples, uint8_t _numThreads)
-	:	camera(_camera), scene(_scene), width(_width), height(_height), samples(_samples), numThreads(_numThreads)
+Renderer::Renderer(uint32_t _width, uint32_t _height, uint16_t _samples, uint8_t _numThreads)
+	:	width(_width), height(_height), samples(_samples), numThreads(_numThreads)
 {
 	ppmImage = new PPM_Image(width, height);
 }
@@ -30,15 +29,14 @@ Vector3 Renderer::Color(const Ray &ray, HitableList *world, uint16_t depth)
 	}
 	else
 	{
-		Vector3 unitDirection = UnitVector(ray.Direction());
+		Vector3 unitDirection = UnitVector(ray.direction);
 		float t = 0.5f * (unitDirection.y + 1.0f);
 
 		return Lerp(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.23f, 0.37f, 0.41f), t);
 	}
 }
 
-
-void Renderer::QueueThreadRenderTask()
+void Renderer::QueueThreadRenderTask(Camera *camera, Scene *scene)
 {
 	TileData tileToRender;
 
@@ -60,11 +58,11 @@ void Renderer::QueueThreadRenderTask()
 		tilesToRender.pop_back();
 	}
 
-	RenderTile(tileToRender);
+	RenderTile(camera, scene, tileToRender);
 }
 
 
-void Renderer::RenderScene()
+void Renderer::RenderScene(Camera *camera, Scene *scene)
 {
 	{
 		PROFILE("Total Render Time");
@@ -89,7 +87,7 @@ void Renderer::RenderScene()
 
 		for (uint8_t i = 0; i < numThreads; i++)
 		{
-			threads.push_back(std::thread(&Renderer::QueueThreadRenderTask, this));
+			threads.push_back(std::thread(&Renderer::QueueThreadRenderTask, this, camera, scene));
 		}
 
 		for (std::thread &t : threads)
@@ -104,7 +102,7 @@ void Renderer::RenderScene()
 	printf("PPM Image Saved\n");
 }
 
-void Renderer::RenderTile(TileData &tileData)
+void Renderer::RenderTile(Camera *camera, Scene *scene, const TileData &tileData)
 {
 	assert(tileData.tilePosX + tileData.tileWidth <= width);
 	assert(tileData.tilePosY + tileData.tileHeight <= height);
@@ -117,13 +115,14 @@ void Renderer::RenderTile(TileData &tileData)
 			for (uint16_t x = tileData.tilePosX; x < tileData.tilePosX + tileData.tileWidth; x++)
 			{
 				Vector3 col;
+				Ray ray;
 
 				for (uint16_t s = 0; s < samples; s++)
 				{
 					float u = float(x + randF(0.0f, 1.0f)) / width;
 					float v = float(y + randF(0.0f, 1.0f)) / height;
 
-					Ray ray = camera->GetRay(u, v);
+					camera->CalculateRay(ray, u, v);
 					Vector3 point = ray.PointAtParamater(2.0f);
 					col += Color(ray, &scene->sceneObects, 0);
 				}

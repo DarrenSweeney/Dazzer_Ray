@@ -6,27 +6,27 @@ Dielectric::Dielectric(float ri)
 bool Dielectric::Scatter(const Ray &rayIn, const HitRecord &hitRecord, Vector3 &attenuation, Ray &scattered) const
 {
 	Vector3 outwardNormal;
-	Vector3 reflected = Reflect(rayIn.Direction(), hitRecord.normal);
+	Vector3 reflected = Reflect(rayIn.direction, hitRecord.normal);
 	float ni_over_nt;
 	attenuation = Vector3(1.0f, 1.0f, 1.0f);
 	Vector3 refracted;
 	float reflectProb;
 	float cosine;
 	
-	if (Dot(rayIn.Direction(), hitRecord.normal) > 0)
+	if (Dot(rayIn.direction, hitRecord.normal) > 0)
 	{
 		outwardNormal = -hitRecord.normal;
 		ni_over_nt = refractiveIndex;
-		cosine = refractiveIndex * Dot(rayIn.Direction(), hitRecord.normal) / rayIn.Direction().Length();
+		cosine = refractiveIndex * Dot(rayIn.direction, hitRecord.normal) / rayIn.direction.Length();
 	}
 	else
 	{
 		outwardNormal = hitRecord.normal;
 		ni_over_nt = 1.0f / refractiveIndex;
-		cosine = -Dot(rayIn.Direction(), hitRecord.normal) / rayIn.Direction().Length();
+		cosine = -Dot(rayIn.direction, hitRecord.normal) / rayIn.direction.Length();
 	}
 
-	if (Refract(rayIn.Direction(), outwardNormal, ni_over_nt, refracted))
+	if (Refract(rayIn.direction, outwardNormal, ni_over_nt, refracted))
 	{
 		reflectProb = Schlick(cosine, refractiveIndex);
 	}
